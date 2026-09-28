@@ -16,6 +16,11 @@ CREATE TABLE IF NOT EXISTS fiscal_documents(id text primary key,user_id text ref
 for(const t of ['clients','inventory','service_orders','budgets','sales','fiscal_documents']){
   await q('ALTER TABLE '+t+' ADD COLUMN IF NOT EXISTS user_id text REFERENCES users(id) ON DELETE CASCADE');
 }
+await q("ALTER TABLE budgets ADD COLUMN IF NOT EXISTS brand text");
+await q("ALTER TABLE budgets ADD COLUMN IF NOT EXISTS model text");
+await q("ALTER TABLE budgets ADD COLUMN IF NOT EXISTS year text");
+await q("ALTER TABLE budgets ADD COLUMN IF NOT EXISTS color text");
+
 let first=(await q('select id from users order by created_at asc limit 1')).rows[0];
 if(first){
   for(const t of ['clients','inventory','service_orders','budgets','sales','fiscal_documents']){
@@ -58,8 +63,10 @@ app.put('/api/orders/:id',auth,wrap(async(r,s)=>{let x=r.body;s.json((await q(`u
 app.delete('/api/orders/:id',auth,wrap(async(r,s)=>{await q('delete from service_orders where id=$1 and user_id=$2',[r.params.id,r.user.sub]);s.json({ok:true})}));
 // orçamentos + IA
 app.get('/api/budgets',auth,wrap(async(r,s)=>s.json((await q('select * from budgets where user_id=$1 order by created_at desc',[r.user.sub])).rows.map(x=>({...x,grand_total:+x.grand_total})))));
-app.post('/api/budgets',auth,wrap(async(r,s)=>{let x=r.body,it=x.items||[],t=money(x.grand_total??it.reduce((a,b)=>a+(+b.total||0),0));s.json((await q('insert into budgets(id,user_id,client_name,plate,items,grand_total,status) values($1,$2,$3,$4,$5,$6,$7) returning *',[uid(),r.user.sub,x.client_name||'',plate(x.plate),JSON.stringify(it),t,x.status||'aberto'])).rows[0])}));
-app.put('/api/budgets/:id',auth,wrap(async(r,s)=>{let x=r.body,it=Array.isArray(x.items)?x.items:[],t=money(x.grand_total??it.reduce((a,b)=>a+(+b.total||0),0)),p=plate(x.plate),status=['aberto','aprovado','recusado','concluido'].includes(String(x.status||''))?String(x.status):'aberto';let row=(await q('update budgets set client_name=$1,plate=$2,items=$3,grand_total=$4,status=$5 where id=$6 and user_id=$7 returning *',[x.client_name||'',p,JSON.stringify(it),t,status,r.params.id,r.user.sub])).rows[0];if(!row)return s.status(404).json({error:'Orçamento não encontrado nesta conta.'});s.json({...row,grand_total:+row.grand_total})}));
+app.post('/api/budgets',auth,wrap(async(r,s)=>{let x=r.body,it=Array.isArray(x.items)?x.items:[],t=money(x.grand_total??it.reduce((a,b)=>a+(+b.total||0),0)),p=plate(x.plate);let row=(await q('insert into budgets(id,user_id,client_name,plate,brand,model,year,color,items,grand_total,status) values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) returning *',[uid(),r.user.sub,x.client_name||'',p,x.brand||'',x.model||'',x.year||'',x.color||'',JSON.stringify(it),t,x.status||'aberto'])).rows[0];if(p.length===7&&(x.brand||x.model))await cache(r.user.sub,p,x,'orcamento');s.json({...row,grand_total:+row.grand_total})}));
+app.put('/api/budgets/:id',auth,wrap(async(r,s)=>{let x=r.body,it=Array.isArray(x.items)?x.items:[],t=money(x.grand_total??it.reduce((a,b)=>a+(+b.total||0),0)),p=plate(x.plate),status=['aberto','aprovado','recusado','concluido'].includes(String(x.status||''))?String(x.status):'aberto';let row=(await q('update budgets set client_name=$1,plate=$2,brand=$3,model=$4,year=$5,color=$6,items=$7,grand_total=$8,status=$9 where id=$10 and user_id=$11 returning *',[x.client_name||'',p,x.brand||'',x.model||'',x.year||'',x.color||'',JSON.stringify(it),t,status,r.params.id,r.user.sub])).rows[0];if(!row)return s.status(404).json({error:'Orçamento não encontrado nesta conta.'});if(p.length===7&&(x.brand||x.model))await cache(r.user.sub,p,x,'orcamento');s.json({...row,grand_total:+row.grand_total})}));
+app.delete('/api/budgets/:id',auth,wrap(async(r,s)=>{let row=(await q('delete from budgets where id=$1 and user_id=$2 returning id',[r.params.id,r.user.sub])).rows[0];if(!row)return s.status(404).json({error:'Orçamento não encontrado nesta conta.'});s.json({ok:true})}));
+
 
 function normText(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9$., ]/g,' ').replace(/\s+/g,' ').trim()}
 const numWords={um:1,uma:1,dois:2,duas:2,tres:3,quatro:4,cinco:5,seis:6,sete:7,oito:8,nove:9,dez:10};
