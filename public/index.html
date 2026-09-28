@@ -204,44 +204,146 @@ body:after{
 .attManual{display:grid;grid-template-columns:1fr 110px auto;gap:7px;align-items:end}
 @media(max-width:760px){.attFields{grid-template-columns:1fr}.attSummary{position:static}.attManual{grid-template-columns:1fr 100px}.attManual .btn{grid-column:1/-1}}
 
-.startRideWrap{margin-top:20px;display:flex;align-items:center;gap:12px}
+
+.startRideWrap{margin-top:22px;display:flex;align-items:center;perspective:900px}
 .startRideBtn{
-  position:relative;isolation:isolate;display:flex;align-items:center;justify-content:space-between;gap:18px;
-  width:min(430px,100%);min-height:68px;padding:0 18px 0 22px;border:1px solid rgba(255,74,80,.58);
-  border-radius:18px;color:#fff;cursor:pointer;overflow:hidden;
+  --mx:50%;--my:50%;--rx:0deg;--ry:0deg;
+  position:relative;isolation:isolate;display:grid;grid-template-columns:auto 1fr 62px;align-items:center;gap:14px;
+  width:min(500px,100%);min-height:84px;padding:10px 12px 10px 14px;
+  border:1px solid rgba(255,82,88,.48);border-radius:22px;color:#fff;cursor:pointer;overflow:hidden;
   background:
-    radial-gradient(circle at 82% 50%,rgba(255,255,255,.12),transparent 17%),
-    linear-gradient(115deg,#ff1b23 0%,#c70b12 48%,#6d0509 100%);
-  box-shadow:0 18px 48px rgba(255,24,32,.24),inset 0 1px 0 rgba(255,255,255,.22),0 0 0 1px rgba(255,24,32,.05);
-  transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s,border-color .25s;
+    radial-gradient(circle at var(--mx) var(--my),rgba(255,255,255,.17),transparent 24%),
+    radial-gradient(circle at 88% 50%,rgba(255,24,32,.18),transparent 29%),
+    linear-gradient(115deg,#1b0a0c 0%,#10090b 34%,#09090b 70%,#160608 100%);
+  box-shadow:
+    0 24px 65px rgba(0,0,0,.42),
+    0 0 0 1px rgba(255,24,32,.04),
+    inset 0 1px 0 rgba(255,255,255,.11),
+    inset 0 -18px 42px rgba(255,24,32,.035);
+  transform:rotateX(var(--rx)) rotateY(var(--ry)) translateZ(0);
+  transform-style:preserve-3d;
+  transition:transform .16s ease,border-color .22s,box-shadow .22s,filter .22s;
+  will-change:transform;
 }
 .startRideBtn:before{
-  content:"";position:absolute;inset:-60% -25%;z-index:-1;
-  background:linear-gradient(105deg,transparent 36%,rgba(255,255,255,.28) 48%,rgba(255,255,255,.07) 54%,transparent 64%);
-  transform:translateX(-70%) rotate(2deg);animation:startRideSheen 2.8s ease-in-out infinite;
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:-2;
+  background:
+    repeating-linear-gradient(90deg,transparent 0 27px,rgba(255,255,255,.018) 28px),
+    linear-gradient(105deg,transparent 30%,rgba(255,255,255,.05) 44%,rgba(255,24,32,.09) 50%,rgba(255,255,255,.025) 56%,transparent 70%);
+  background-size:auto,220% 100%;background-position:0 0,-120% 0;
+  animation:startRideSweep 4.4s ease-in-out infinite;
 }
 .startRideBtn:after{
-  content:"";position:absolute;inset:5px;border:1px solid rgba(255,255,255,.08);border-radius:13px;pointer-events:none;
+  content:"";position:absolute;inset:5px;border-radius:16px;pointer-events:none;z-index:5;
+  border:1px solid rgba(255,255,255,.055);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.36),inset 0 0 34px rgba(255,24,32,.025);
 }
-.startRideBtn:hover{transform:translateY(-3px) scale(1.015);box-shadow:0 24px 60px rgba(255,24,32,.36),0 0 28px rgba(255,24,32,.13)}
-.startRideBtn:active{transform:scale(.985)}
-.startRideText{display:grid;text-align:left;line-height:1}
-.startRideText strong{font-size:17px;letter-spacing:.3px}
-.startRideText small{margin-top:6px;font-size:8px;letter-spacing:2.1px;text-transform:uppercase;color:rgba(255,255,255,.64)}
-.startRideIcon{
-  width:40px;height:40px;flex:0 0 40px;border-radius:50%;display:grid;place-items:center;
-  background:rgba(0,0,0,.24);border:1px solid rgba(255,255,255,.16);
-  box-shadow:inset 0 0 18px rgba(0,0,0,.22);animation:startRidePulse 1.8s ease-in-out infinite;
+.startRideBtn:hover{
+  border-color:rgba(255,88,94,.86);
+  box-shadow:0 30px 78px rgba(0,0,0,.5),0 0 42px rgba(255,24,32,.16),inset 0 1px 0 rgba(255,255,255,.15);
+  filter:saturate(1.08);
 }
-.startRideIcon span{display:block;font-size:20px;transform:translateX(0);animation:startRideArrow 1.2s ease-in-out infinite}
-@keyframes startRideSheen{0%,38%{transform:translateX(-75%) rotate(2deg)}68%,100%{transform:translateX(78%) rotate(2deg)}}
-@keyframes startRidePulse{0%,100%{box-shadow:inset 0 0 18px rgba(0,0,0,.22),0 0 0 0 rgba(255,255,255,.16)}50%{box-shadow:inset 0 0 18px rgba(0,0,0,.22),0 0 0 7px rgba(255,255,255,0)}}
-@keyframes startRideArrow{0%,100%{transform:translateX(-2px)}50%{transform:translateX(3px)}}
-@media(max-width:760px){
-  .startRideWrap{margin-top:18px}.startRideBtn{width:100%;min-height:64px;border-radius:16px}
-  .startRideText strong{font-size:16px}.startRideText small{font-size:7px}
+.startRideBtn:active{transform:rotateX(var(--rx)) rotateY(var(--ry)) scale(.985)}
+.startRideRail{
+  width:5px;height:52px;border-radius:999px;position:relative;overflow:hidden;
+  background:#2a0c0f;border:1px solid #451216;box-shadow:inset 0 0 9px #000;
+}
+.startRideRail:before{
+  content:"";position:absolute;left:0;right:0;height:40%;top:-45%;
+  background:linear-gradient(#ff7176,#ff1820);box-shadow:0 0 13px #ff1820;
+  animation:startRideRail 1.7s ease-in-out infinite;
+}
+.startRideText{display:grid;text-align:left;line-height:1;transform:translateZ(26px);min-width:0}
+.startRideLabel{display:flex;align-items:center;gap:9px}
+.startRideLabel strong{font-size:18px;letter-spacing:.45px;white-space:nowrap}
+.startRideLive{width:7px;height:7px;border-radius:50%;background:#ff2a31;box-shadow:0 0 0 4px rgba(255,24,32,.08),0 0 16px #ff1820;animation:startRideLive 1.35s ease-in-out infinite}
+.startRideText small{margin-top:8px;font-size:8px;letter-spacing:2.25px;text-transform:uppercase;color:rgba(255,255,255,.48);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.startRideHud{width:58px;height:58px;position:relative;display:grid;place-items:center;transform:translateZ(32px)}
+.startRideHud:before{
+  content:"";position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(from 30deg,transparent 0 10%,#ff232a 10% 17%,transparent 17% 35%,rgba(255,255,255,.28) 35% 37%,transparent 37% 64%,#7d1116 64% 73%,transparent 73%);
+  -webkit-mask:radial-gradient(circle,transparent 57%,#000 59%);
+  mask:radial-gradient(circle,transparent 57%,#000 59%);
+  filter:drop-shadow(0 0 7px rgba(255,24,32,.55));
+  animation:startRideRotor 3.6s linear infinite;
+}
+.startRideHud:after{
+  content:"";position:absolute;inset:7px;border-radius:50%;border:1px dashed rgba(255,255,255,.13);
+  animation:startRideRotor 7s linear infinite reverse;
+}
+.startRideCore{
+  width:37px;height:37px;border-radius:50%;display:grid;place-items:center;position:relative;z-index:2;
+  background:radial-gradient(circle at 38% 30%,#3a1518,#13090b 55%,#070708);
+  border:1px solid rgba(255,80,86,.34);
+  box-shadow:inset 0 0 16px #000,0 0 18px rgba(255,24,32,.13);
+}
+.startRideCore span{font-size:20px;transform:translateX(-1px);animation:startRideArrow 1.25s ease-in-out infinite}
+.startRideTicks{position:absolute;inset:3px;border-radius:50%;pointer-events:none}
+.startRideTicks:before,.startRideTicks:after{content:"";position:absolute;left:50%;top:-2px;width:1px;height:6px;background:#ff3d43;box-shadow:0 50px 0 rgba(255,61,67,.45)}
+.startRideTicks:after{transform:rotate(90deg);transform-origin:50% 31px}
+.startRideProgress{position:absolute;left:14px;right:14px;bottom:6px;height:2px;border-radius:2px;overflow:hidden;background:rgba(255,255,255,.055)}
+.startRideProgress i{display:block;width:100%;height:100%;transform:scaleX(.08);transform-origin:left;background:linear-gradient(90deg,#ff2027,#ff7b7f,#fff);box-shadow:0 0 12px #ff1820;animation:startRideIdleProgress 2.6s ease-in-out infinite}
+.startRideCode{
+  position:absolute;right:86px;top:9px;font:700 7px/1 monospace;letter-spacing:1.5px;color:rgba(255,255,255,.22);
+  transform:translateZ(16px)
+}
+.startRideParticles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.startRideParticles i{position:absolute;width:2px;height:2px;border-radius:50%;background:#ff5a60;opacity:0;box-shadow:0 0 8px #ff1820}
+.startRideParticles i:nth-child(1){left:72%;top:22%}.startRideParticles i:nth-child(2){left:79%;top:68%}.startRideParticles i:nth-child(3){left:62%;top:76%}.startRideParticles i:nth-child(4){left:88%;top:36%}.startRideParticles i:nth-child(5){left:55%;top:18%}.startRideParticles i:nth-child(6){left:91%;top:72%}
+.startRideBtn:hover .startRideParticles i{animation:startRideSpark 1.6s ease-out infinite}
+.startRideParticles i:nth-child(2){animation-delay:.2s!important}.startRideParticles i:nth-child(3){animation-delay:.5s!important}.startRideParticles i:nth-child(4){animation-delay:.8s!important}.startRideParticles i:nth-child(5){animation-delay:1.05s!important}.startRideParticles i:nth-child(6){animation-delay:1.3s!important}
+
+.startRideBtn.is-igniting{
+  pointer-events:none;border-color:#ff555b;
+  box-shadow:0 0 0 1px rgba(255,255,255,.1),0 0 55px rgba(255,24,32,.34),0 28px 80px #000;
+  animation:startRideLock .62s cubic-bezier(.2,.8,.2,1) both;
+}
+.startRideBtn.is-igniting .startRideHud:before{animation-duration:.45s}
+.startRideBtn.is-igniting .startRideHud:after{animation-duration:.8s}
+.startRideBtn.is-igniting .startRideLive{background:#fff;box-shadow:0 0 18px #fff,0 0 32px #ff1820}
+.startRideBtn.is-igniting .startRideProgress i{animation:none;transform:scaleX(1);transition:transform .62s cubic-bezier(.15,.8,.2,1)}
+.startRideBtn.is-igniting .startRideRail:before{height:100%;top:0;transition:.55s ease}
+.startRideBtn.is-igniting .startRideCore{background:#ff1820;box-shadow:0 0 24px rgba(255,24,32,.8),0 0 52px rgba(255,24,32,.35)}
+
+.rideTransition{
+  position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(255,24,32,.16),transparent 19%),
+    repeating-linear-gradient(90deg,transparent 0 42px,rgba(255,255,255,.018) 43px),
+    #030303;
+  display:grid;place-items:center;transition:opacity .18s ease;
+}
+.rideTransition.on{opacity:1}
+.rideTransition:before{
+  content:"";width:min(54vw,480px);aspect-ratio:1;border-radius:50%;
+  border:1px solid rgba(255,24,32,.28);box-shadow:0 0 0 32px rgba(255,24,32,.03),0 0 0 74px rgba(255,24,32,.018),0 0 70px rgba(255,24,32,.22);
+  animation:rideTransitionRing .62s cubic-bezier(.2,.8,.2,1) both;
+}
+.rideTransition:after{
+  content:"ATENDIMENTO // ONLINE";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  font-size:10px;letter-spacing:3px;font-weight:900;color:#fff;text-shadow:0 0 18px #ff1820;
 }
 
+@keyframes startRideSweep{0%,35%{background-position:0 0,-120% 0}70%,100%{background-position:0 0,140% 0}}
+@keyframes startRideRail{0%,100%{top:-45%}50%{top:105%}}
+@keyframes startRideRotor{to{transform:rotate(360deg)}}
+@keyframes startRideLive{0%,100%{opacity:.5;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
+@keyframes startRideArrow{0%,100%{transform:translateX(-2px)}50%{transform:translateX(3px)}}
+@keyframes startRideIdleProgress{0%,100%{transform:scaleX(.08);opacity:.45}50%{transform:scaleX(.34);opacity:1}}
+@keyframes startRideSpark{0%{opacity:0;transform:translate(0,0) scale(.5)}25%{opacity:1}100%{opacity:0;transform:translate(18px,-16px) scale(1.6)}}
+@keyframes startRideLock{0%{transform:scale(1)}35%{transform:scale(.985)}70%{transform:scale(1.015)}100%{transform:scale(1)}}
+@keyframes rideTransitionRing{from{transform:scale(.55) rotate(-18deg);opacity:0}to{transform:scale(1.15) rotate(14deg);opacity:1}}
+
+@media(max-width:760px){
+  .startRideWrap{margin-top:18px}
+  .startRideBtn{width:100%;min-height:78px;border-radius:19px;grid-template-columns:auto 1fr 56px;padding-left:12px}
+  .startRideLabel strong{font-size:15px}.startRideText small{font-size:7px;letter-spacing:1.45px}
+  .startRideHud{width:54px;height:54px}.startRideCode{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .startRideBtn{transform:none!important}
+  .startRideBtn:before,.startRideRail:before,.startRideHud:before,.startRideHud:after,.startRideLive,.startRideCore span,.startRideProgress i,.startRideParticles i,.rideTransition:before{animation:none!important}
+}
 .quickDeck{margin:0 0 14px;padding:15px;border:1px solid #27272d;border-radius:20px;background:radial-gradient(circle at 8% 0,rgba(255,24,32,.10),transparent 28%),linear-gradient(145deg,rgba(17,17,20,.94),rgba(8,8,10,.96));box-shadow:0 18px 48px rgba(0,0,0,.22);position:relative;overflow:hidden}
 .quickDeck:before{content:"";position:absolute;left:-20%;right:-20%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,24,32,.75),transparent);animation:quickDeckScan 4.2s ease-in-out infinite}
 .quickHead{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:11px}.quickHead b{font-size:12px;letter-spacing:1.5px}.quickHead small{color:#6f6f77;font-size:9px;letter-spacing:1.3px;text-transform:uppercase}
@@ -303,6 +405,33 @@ function hero(t,s,a){return '<div class="hero"><div><div class="eyebrow">MF / RI
 function badge(s){var c=s==='concluido'||s==='emitida'?'g':s==='pendente'||s==='rascunho'?'y':'r';return '<span class="badge '+c+'">'+esc(String(s||'-').replaceAll('_',' '))+'</span>'}
 function modal(title,html){qs('#modal').innerHTML='<div class="modalCard"><div class="modalHead"><b>'+esc(title)+'</b><button class="btn" onclick="closeModal()">×</button></div><div class="modalBody">'+html+'</div></div>';qs('#modal').classList.remove('hide')}function closeModal(){qs('#modal').classList.add('hide');qs('#modal').innerHTML=''}
 async function del(url,back){if(!confirm('Excluir este registro?'))return;try{await api(url,{method:'DELETE'});toast('Excluído.');back()}catch(e){toast(e.message,true)}}
+
+function bindStartRide(){
+  var b=qs('#startRideBtn');if(!b)return;
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function resetTilt(){b.style.setProperty('--rx','0deg');b.style.setProperty('--ry','0deg');b.style.setProperty('--mx','50%');b.style.setProperty('--my','50%')}
+  b.onpointermove=function(e){
+    if(reduce||b.classList.contains('is-igniting'))return;
+    var r=b.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+    b.style.setProperty('--mx',(x*100).toFixed(1)+'%');b.style.setProperty('--my',(y*100).toFixed(1)+'%');
+    b.style.setProperty('--ry',((x-.5)*9).toFixed(2)+'deg');b.style.setProperty('--rx',((.5-y)*7).toFixed(2)+'deg');
+  };
+  b.onpointerleave=resetTilt;
+  b.onclick=function(){
+    if(b.classList.contains('is-igniting'))return;
+    if(reduce){go('atendimento');return}
+    resetTilt();b.classList.add('is-igniting');
+    var t=qs('#startRideTitle'),s=qs('#startRideSub');
+    if(t)t.textContent='INICIANDO…';if(s)s.textContent='SINCRONIZANDO MÓDULOS';
+    var fx=document.createElement('div');fx.className='rideTransition';document.body.appendChild(fx);
+    requestAnimationFrame(function(){fx.classList.add('on')});
+    setTimeout(async function(){
+      await go('atendimento');
+      fx.classList.remove('on');
+      setTimeout(function(){fx.remove()},180);
+    },620);
+  };
+}
 async function overview(){
   var d=await api('/dashboard'),o=await api('/orders');
   var open=Math.max(0,+d.open_orders||0),gauge=Math.min(92,Math.max(18,28+open*9));
@@ -318,13 +447,14 @@ async function overview(){
     return '<button class="quickLink '+x.cls+'" data-overview-go="'+x.page+'"><div class="quickTop"><span class="quickIcon">'+x.icon+'</span><span class="quickArrow">›</span></div><div><b>'+x.label+'</b><small class="quickCount">'+x.count+'</small><small>'+x.meta+'</small></div></button>';
   }).join('');
   var mainAction='<button class="btn red" data-overview-go="atendimento">+ Iniciar atendimento</button>';
-  var cockpit='<section class="cockpit"><div class="cockpitCopy"><div class="kicker">MF MOTO PEÇAS // OPERAÇÃO AO VIVO</div><h2>CONTROLE TOTAL.<br><span class="redtxt">RITMO DE PISTA.</span></h2><p>Vendas, oficina, peças e clientes em um único painel. Tudo que precisa de atenção aparece primeiro.</p><div class="startRideWrap"><button class="startRideBtn" data-overview-go="atendimento"><span class="startRideText"><strong>INICIAR ATENDIMENTO</strong><small>Cliente · Moto · IA · Orçamento · OS · Venda</small></span><span class="startRideIcon"><span>›</span></span></button></div></div><div class="gaugeWrap"><div class="gauge" style="background:conic-gradient(var(--red) 0 '+gauge+'%,#2a2a2f '+gauge+'% 82%,#151518 82% 100%)"><div class="gaugeInner"><strong>'+d.open_orders+'</strong><span>OS ABERTAS</span></div></div></div></section>';
+  var cockpit='<section class="cockpit"><div class="cockpitCopy"><div class="kicker">MF MOTO PEÇAS // OPERAÇÃO AO VIVO</div><h2>CONTROLE TOTAL.<br><span class="redtxt">RITMO DE PISTA.</span></h2><p>Vendas, oficina, peças e clientes em um único painel. Tudo que precisa de atenção aparece primeiro.</p><div class="startRideWrap"><button class="startRideBtn" id="startRideBtn" type="button" aria-label="Iniciar atendimento"><span class="startRideRail"></span><span class="startRideText"><span class="startRideLabel"><i class="startRideLive"></i><strong id="startRideTitle">INICIAR ATENDIMENTO</strong></span><small id="startRideSub">Cliente · Moto · IA · Orçamento · OS · Venda</small></span><span class="startRideHud"><span class="startRideTicks"></span><span class="startRideCore"><span>›</span></span></span><span class="startRideCode">MF//IGN-01</span><span class="startRideProgress"><i></i></span><span class="startRideParticles"><i></i><i></i><i></i><i></i><i></i><i></i></span></button></div></div><div class="gaugeWrap"><div class="gauge" style="background:conic-gradient(var(--red) 0 '+gauge+'%,#2a2a2f '+gauge+'% 82%,#151518 82% 100%)"><div class="gaugeInner"><strong>'+d.open_orders+'</strong><span>OS ABERTAS</span></div></div></div></section>';
   var shortcuts='<section class="quickDeck"><div class="quickHead"><div><b>ATALHOS RÁPIDOS</b><small style="display:block">Acesso direto às áreas que você mais usa</small></div><small>toque para abrir</small></div><div class="quickLinks">'+quickHtml+'</div></section>';
   var statHtml='<div class="grid stats">'+stats.map(function(x){return '<div class="card stat"><small>'+x[0]+'</small><b>'+x[1]+'</b><span style="position:absolute;right:14px;top:12px;color:#4d4d55;font-size:16px">'+x[2]+'</span></div>'}).join('')+'</div>';
   var recent=o.slice(0,6).map(function(x){return '<div class="row"><div><b>'+esc(x.client_name||x.plate)+'</b><small>'+esc([x.brand,x.model,x.plate].filter(Boolean).join(' · '))+'</small></div>'+badge(x.status)+'</div>'}).join('')||'<div class="empty">Nenhuma moto na oficina ainda.</div>';
   var lower='<div class="grid two" style="margin-top:12px"><div class="card"><div class="title"><b>ORDENS RECENTES</b><button class="btn" data-overview-go="orders">Ver todas</button></div><div class="list">'+recent+'</div></div><div class="card"><div class="title"><b>ATALHOS DE BOX</b><span class="badge r">RIDE CONTROL</span></div><div class="list"><button class="btn" data-overview-go="atendimento">Novo atendimento →</button><button class="btn" data-overview-go="budgets">Ver orçamentos →</button><button class="btn" data-overview-go="orders">Acompanhar OS →</button><button class="btn" data-overview-go="inventory">Gerenciar estoque →</button></div></div></div>';
   qs('#content').innerHTML=hero('VISÃO GERAL','Cockpit operacional da MF Moto Peças.',mainAction)+cockpit+shortcuts+statHtml+lower;
   document.querySelectorAll('[data-overview-go]').forEach(function(b){b.onclick=function(){go(b.dataset.overviewGo)}});
+  bindStartRide();
 }
 async function clients(){S.clients=await api('/clients');qs('#content').innerHTML=hero('CLIENTES','Cadastro e histórico da oficina.','<button class="btn red" onclick="openClient()">+ Novo cliente</button>')+'<div class="toolbar"><input id="clientSearch" class="input" placeholder="Buscar cliente"></div><div class="tableWrap"><table class="table"><thead><tr><th>Nome</th><th>Telefone</th><th>E-mail</th><th>CPF/CNPJ</th><th></th></tr></thead><tbody id="clientRows"></tbody></table></div>';function paint(v){qs('#clientRows').innerHTML=(v.map(function(c){return '<tr><td><b>'+esc(c.name)+'</b></td><td>'+esc(c.phone)+'</td><td>'+esc(c.email)+'</td><td>'+esc(c.cpf_cnpj)+'</td><td><button class="btn danger" onclick="del(\'/clients/'+c.id+'\',clients)">Excluir</button></td></tr>'}).join('')||'<tr><td colspan="5" class="empty">Nenhum cliente.</td></tr>')}paint(S.clients);qs('#clientSearch').oninput=function(e){var x=e.target.value.toLowerCase();paint(S.clients.filter(function(c){return JSON.stringify(c).toLowerCase().includes(x)}))}}
 function openClient(){modal('Novo cliente','<form id="clientForm" class="form"><div class="field"><label>Nome</label><input name="name" class="input" required></div><div class="field"><label>Telefone</label><input name="phone" class="input"></div><div class="field"><label>E-mail</label><input name="email" type="email" class="input"></div><div class="field"><label>CPF/CNPJ</label><input name="cpf_cnpj" class="input"></div><button class="btn red span">Salvar cliente</button></form>');qs('#clientForm').onsubmit=async function(e){e.preventDefault();try{await api('/clients',{method:'POST',body:JSON.stringify(Object.fromEntries(new FormData(e.target)))});closeModal();toast('Cliente salvo.');clients()}catch(x){toast(x.message,true)}}}
