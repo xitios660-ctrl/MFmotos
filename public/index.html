@@ -417,7 +417,49 @@ async function lookupAttPlate(){
 }
 function resetAttendance(){S.cart=[];S.attDraft=attDefaults();pos()}
 
-async function pos(){S.inventory=await api('/inventory');S.clients=await api('/clients');var products=S.inventory.filter(function(x){return x.quantity>0}).map(function(x){return '<div class="product" data-name="'+esc(x.name.toLowerCase())+'" onclick="cartAdd(\''+x.id+'\')"><b>'+esc(x.name)+'</b><small>'+x.quantity+' em estoque</small><div class="price">'+brl(x.price)+'</div></div>'}).join('')||'<div class="empty">Sem produtos.</div>';var cart=S.cart.map(function(x){return '<div class="cartline"><span>'+esc(x.name)+'<br><small>'+brl(x.price)+'</small></span><input class="input" type="number" min="1" max="'+(x.stock||9999)+'" value="'+x.q+'" onchange="cartQty(\''+x.id+'\',this.value)"><button class="btn danger" onclick="cartRm(\''+x.id+'\')">×</button></div>'}).join('')||'<div class="empty">Vazio</div>';qs('#content').innerHTML=hero('ATENDIMENTO','IA, peças, orçamento, OS e venda em uma única tela.','<button class="btn" onclick="openAttendHistory()">Histórico</button><button class="btn" onclick="S.cart=[];pos()">Limpar atendimento</button>')+'<div class="posgrid"><div><div class="ai"><b>✦ IA DO ATENDIMENTO</b><div class="field"><textarea id="hubAIText" placeholder="Ex.: 2 pneus de 250 reais + troca de óleo de 80 reais"></textarea></div><button id="hubAIButton" class="btn red full" onclick="hubAI()">Montar com IA</button></div><div class="toolbar"><input id="productSearch" class="input" placeholder="Buscar produto"></div><div class="products">'+products+'</div></div><div class="card"><b>CARRINHO</b>'+cart+'<div class="field"><label>Cliente</label><select id="saleClient"><option value="">Consumidor</option>'+S.clients.map(function(c){return '<option value="'+c.id+'">'+esc(c.name)+'</option>'}).join('')+'</select></div><div class="field"><label>Pagamento</label><select id="payment"><option value="pix">Pix</option><option value="dinheiro">Dinheiro</option><option value="debito">Débito</option><option value="credito">Crédito</option></select></div><div class="field"><label>Desconto</label><input id="discount" class="input" type="number" step=".01" value="0"></div><div style="display:grid;gap:8px"><button class="btn" onclick="createPDVBudget()">Salvar como orçamento</button><button class="btn" onclick="openOrder()">Abrir ordem de serviço</button><button class="btn red full" onclick="finishSale()">Finalizar venda · '+brl(S.cart.reduce(function(a,x){return a+x.price*x.q},0))+'</button></div></div></div>';qs('#productSearch').oninput=function(e){var x=e.target.value.toLowerCase();document.querySelectorAll('.product').forEach(function(p){p.style.display=p.dataset.name.includes(x)?'':'none'})}}
+async function pos(){
+  S.inventory=await api('/inventory');
+  S.clients=await api('/clients');
+  var d=attDraft();
+  var products=S.inventory.filter(function(x){return x.quantity>0}).map(function(x){
+    return '<div class="product" data-name="'+esc((x.name+' '+(x.sku||'')+' '+(x.category||'')).toLowerCase())+'" onclick="cartAdd(\''+x.id+'\')"><b>'+esc(x.name)+'</b><small>'+x.quantity+' em estoque</small><div class="price">'+brl(x.price)+'</div></div>';
+  }).join('')||'<div class="empty">Sem produtos em estoque.</div>';
+  var cart=S.cart.map(function(x){
+    return '<div class="cartline"><span>'+esc(x.name)+'<br><small>'+(x.manual?'Serviço / item manual':'Produto do estoque')+' · '+brl(x.price)+'</small></span><input class="input" type="number" min="1" max="'+(x.stock||9999)+'" value="'+x.q+'" onchange="cartQty(\''+x.id+'\',this.value)"><button class="btn danger" onclick="cartRm(\''+x.id+'\')">×</button></div>';
+  }).join('')||'<div class="empty">A IA ou os produtos adicionados aparecem aqui.</div>';
+  var total=S.cart.reduce(function(a,x){return a+(+x.price||0)*(+x.q||1)},0);
+  qs('#content').innerHTML=
+    hero('ATENDIMENTO','Preencha uma vez. O sistema cadastra cliente, orçamento, OS e venda automaticamente.','<button class="btn" onclick="openAttendHistory()">Histórico</button><button class="btn" onclick="resetAttendance()">Novo / limpar</button>')+
+    '<div class="posgrid"><div>'+
+      '<div class="card"><div class="title"><b>1. CLIENTE</b><span class="badge g">CADASTRO AUTOMÁTICO</span></div><div class="attFields">'+
+        '<div class="field span"><label>Cliente já cadastrado (opcional)</label><select id="attClientSelect" onchange="selectAttClient(this.value)"><option value="">Novo cliente / consumidor</option>'+S.clients.map(function(x){return '<option value="'+x.id+'" '+(d.client_id===x.id?'selected':'')+'>'+esc(x.name)+'</option>'}).join('')+'</select></div>'+
+        '<div class="field"><label>Nome</label><input id="attClientName" class="input" value="'+esc(d.client_name||'')+'" placeholder="Nome do cliente" onchange="captureAttDraft()"></div>'+
+        '<div class="field"><label>Telefone</label><input id="attPhone" class="input" value="'+esc(d.phone||'')+'" placeholder="(11) 99999-9999" onchange="captureAttDraft()"></div>'+
+        '<div class="field"><label>E-mail</label><input id="attEmail" class="input" type="email" value="'+esc(d.email||'')+'" placeholder="Opcional" onchange="captureAttDraft()"></div>'+
+        '<div class="field"><label>CPF/CNPJ</label><input id="attDoc" class="input" value="'+esc(d.cpf_cnpj||'')+'" placeholder="Opcional" onchange="captureAttDraft()"></div>'+
+      '</div></div>'+
+      '<div class="card"><div class="title"><b>2. MOTO / PLACA</b><span class="badge">OS automática com placa</span></div><div class="attFields">'+
+        '<div class="field span"><label>Placa</label><div class="plateScan" id="attPlateScan"><div style="display:flex;gap:6px"><input id="attPlate" class="input" maxlength="7" value="'+esc(d.plate||'')+'" placeholder="ABC1D23" onchange="captureAttDraft()"><button id="attPlateLookup" class="btn" type="button" onclick="lookupAttPlate()">Consultar</button></div></div></div>'+
+        '<div class="field"><label>Marca</label><input id="attBrand" class="input" value="'+esc(d.brand||'')+'" onchange="captureAttDraft()"></div>'+
+        '<div class="field"><label>Modelo</label><input id="attModel" class="input" value="'+esc(d.model||'')+'" onchange="captureAttDraft()"></div>'+
+        '<div class="field"><label>Ano</label><input id="attYear" class="input" value="'+esc(d.year||'')+'" onchange="captureAttDraft()"></div>'+
+        '<div class="field"><label>Cor</label><input id="attColor" class="input" value="'+esc(d.color||'')+'" onchange="captureAttDraft()"></div>'+
+        '<div id="attVehicleResult" class="span scanResult muted">Com placa completa, o Confirmar também cria a Ordem de Serviço.</div>'+
+      '</div></div>'+
+      '<div class="ai"><div class="title"><b>3. ✦ IA DO ATENDIMENTO</b><span class="badge g">GRÁTIS</span></div><textarea id="hubAIText" placeholder="Ex.: troca de óleo de 80 + 2 pneus de 250 reais"></textarea><button id="hubAIButton" class="btn red full" style="margin-top:8px" onclick="hubAI()">Montar com IA</button></div>'+
+      '<div class="card"><div class="title"><b>4. PEÇAS DO ESTOQUE</b><input id="productSearch" class="input" style="max-width:260px" placeholder="Buscar peça"></div><div class="products">'+products+'</div></div>'+
+      '<div class="card"><div class="title"><b>SERVIÇO / ITEM MANUAL</b></div><div class="attManual"><div class="field"><label>Descrição</label><input id="manualName" class="input" placeholder="Ex.: mão de obra"></div><div class="field"><label>Valor</label><input id="manualPrice" class="input" type="number" step=".01" min="0" placeholder="0,00"></div><button class="btn" onclick="addManualAttendanceItem()">+ Adicionar</button></div></div>'+
+    '</div>'+
+    '<div class="card attSummary"><div class="title"><b>ATENDIMENTO ATUAL</b><b class="gold" style="font-size:20px">'+brl(total)+'</b></div>'+cart+
+      '<div class="field"><label>Serviço / queixa / observação</label><textarea id="attDescription" placeholder="Ex.: revisão, troca de pastilha..." onchange="captureAttDraft()">'+esc(d.description||'')+'</textarea></div>'+
+      '<label class="attPay"><input id="attPaid" type="checkbox" '+(d.paid?'checked':'')+' onchange="captureAttDraft()"><span><b>Pagamento realizado agora</b><small style="display:block;color:#777">Se marcado, registra a venda e baixa o estoque.</small></span></label>'+
+      '<div class="attFields"><div class="field"><label>Pagamento</label><select id="attPayment" onchange="captureAttDraft()"><option value="pix">Pix</option><option value="dinheiro">Dinheiro</option><option value="debito">Débito</option><option value="credito">Crédito</option></select></div><div class="field"><label>Desconto</label><input id="attDiscount" class="input" type="number" step=".01" min="0" value="'+esc(d.discount||0)+'" onchange="captureAttDraft()"></div></div>'+
+      '<div class="warn" style="margin-top:10px">Confirmar cadastra/atualiza o cliente, cria o orçamento, cria a OS quando houver placa e registra a venda quando o pagamento estiver marcado.</div>'+
+      '<button id="confirmAttendanceBtn" class="btn red full" style="min-height:52px;font-size:15px" onclick="confirmAttendance()">CONFIRMAR ATENDIMENTO · '+brl(total)+'</button>'+
+    '</div></div>';
+  var pay=qs('#attPayment');if(pay)pay.value=d.payment_method||'pix';
+  qs('#productSearch').oninput=function(e){var x=e.target.value.toLowerCase();document.querySelectorAll('.product').forEach(function(p){p.style.display=p.dataset.name.includes(x)?'':'none'})};
+}
 function cartAdd(id){var p=S.inventory.find(function(x){return x.id===id}),z=S.cart.find(function(x){return x.id===id});if(z)z.q=Math.min(z.q+1,p.quantity);else S.cart.push({id:p.id,inventory_id:p.id,name:p.name,price:+p.price,q:1,stock:p.quantity,manual:false});pos()}function cartQty(id,v){var x=S.cart.find(function(z){return z.id===id});x.q=Math.max(1,Math.min(x.stock,+v||1));pos()}function cartRm(id){S.cart=S.cart.filter(function(x){return x.id!==id});pos()}
 async function hubAI(){
   var el=qs('#hubAIText'),txt=el?el.value.trim():'';
