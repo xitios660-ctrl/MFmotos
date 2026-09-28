@@ -460,8 +460,34 @@ async function pos(){
   var pay=qs('#attPayment');if(pay)pay.value=d.payment_method||'pix';
   qs('#productSearch').oninput=function(e){var x=e.target.value.toLowerCase();document.querySelectorAll('.product').forEach(function(p){p.style.display=p.dataset.name.includes(x)?'':'none'})};
 }
-function cartAdd(id){var p=S.inventory.find(function(x){return x.id===id}),z=S.cart.find(function(x){return x.id===id});if(z)z.q=Math.min(z.q+1,p.quantity);else S.cart.push({id:p.id,inventory_id:p.id,name:p.name,price:+p.price,q:1,stock:p.quantity,manual:false});pos()}function cartQty(id,v){var x=S.cart.find(function(z){return z.id===id});x.q=Math.max(1,Math.min(x.stock,+v||1));pos()}function cartRm(id){S.cart=S.cart.filter(function(x){return x.id!==id});pos()}
+function cartAdd(id){
+  captureAttDraft();
+  var p=S.inventory.find(function(x){return x.id===id}),z=S.cart.find(function(x){return (x.inventory_id||x.id)===id});
+  if(!p)return;
+  if(z)z.q=Math.min((z.q||1)+1,p.quantity);
+  else S.cart.push({id:p.id,inventory_id:p.id,name:p.name,price:+p.price,q:1,stock:p.quantity,manual:false});
+  pos();
+}
+function cartQty(id,v){
+  captureAttDraft();
+  var x=S.cart.find(function(z){return z.id===id});
+  if(x)x.q=Math.max(1,Math.min(x.stock||9999,+v||1));
+  pos();
+}
+function cartRm(id){
+  captureAttDraft();
+  S.cart=S.cart.filter(function(x){return x.id!==id});
+  pos();
+}
+function addManualAttendanceItem(){
+  captureAttDraft();
+  var n=qs('#manualName').value.trim(),p=+qs('#manualPrice').value||0;
+  if(!n)return toast('Informe o serviço ou item.',true);
+  S.cart.push({id:'manual-'+Date.now(),inventory_id:null,name:n,price:p,q:1,stock:9999,manual:true});
+  pos();
+}
 async function hubAI(){
+  captureAttDraft();
   var el=qs('#hubAIText'),txt=el?el.value.trim():'';
   if(!txt)return toast('Descreva o que o cliente precisa.',true);
   var btn=qs('#hubAIButton');if(btn){btn.disabled=true;btn.textContent='IA montando...'}
@@ -477,10 +503,43 @@ async function hubAI(){
         S.cart.push({id:'ia-'+Date.now()+'-'+i,inventory_id:null,name:x.name||'Serviço',price:+x.unit_price||0,q:+x.quantity||1,stock:9999,manual:true});
       }
     });
-    await pos();toast('IA adicionou os itens ao atendimento.');
+    await pos();
+    toast('IA montou o atendimento.');
   }catch(e){toast(e.message,true)}
 }
-
+async function confirmAttendance(){
+  var d=captureAttDraft();
+  if(!S.cart.length)return toast('Adicione pelo menos um produto ou serviço.',true);
+  if(d.plate&&String(d.plate).length<7)return toast('A placa está incompleta. Complete ou deixe em branco.',true);
+  var items=S.cart.map(function(x){return {inventory_id:x.manual?null:(x.inventory_id||x.id),name:x.name,quantity:+x.q||1,unit_price:+x.price||0,type:x.manual?'servico':'produto'}});
+  var body=Object.assign({},d,{paid:!!d.paid,discount:+d.discount||0,items:items});
+  var btn=qs('#confirmAttendanceBtn');
+  if(btn){btn.disabled=true;btn.textContent='CONFIRMANDO...'}
+  try{
+    var r=await api('/attendances/confirm',{method:'POST',body:JSON.stringify(body)});
+    S.cart=[];S.attDraft=attDefaults();
+    await pos();
+    showAttendanceResult(r);
+  }catch(e){
+    toast(e.message,true);
+    if(btn){btn.disabled=false;btn.textContent='CONFIRMAR ATENDIMENTO'}
+  }
+}
+function showAttendanceResult(r){
+  S.lastAttendance=r;
+  var bits=[];
+  if(r.client)bits.push('Cliente cadastrado/atualizado');
+  if(r.budget)bits.push('Orçamento criado');
+  if(r.order)bits.push('Ordem de serviço criada');
+  if(r.sale)bits.push('Venda registrada e estoque baixado');
+  modal('Atendimento confirmado','<div class="card"><div class="title"><b>TUDO SALVO</b><span class="badge g">OK</span></div><div id="attResultList" class="list"></div><div id="attResultButtons" style="display:grid;gap:8px;margin-top:12px"></div></div>');
+  qs('#attResultList').innerHTML=bits.map(function(x){return '<div class="row"><span>'+esc(x)+'</span><b class="green">✓</b></div>'}).join('');
+  var box=qs('#attResultButtons');
+  if(r.budget){var b=document.createElement('button');b.className='btn';b.textContent='Imprimir orçamento 80mm';b.onclick=function(){print80('ORÇAMENTO',S.lastAttendance.budget)};box.appendChild(b)}
+  if(r.order){var o=document.createElement('button');o.className='btn';o.textContent='Imprimir OS 80mm';o.onclick=function(){print80('ORDEM DE SERVIÇO',S.lastAttendance.order)};box.appendChild(o)}
+  if(r.sale){var v=document.createElement('button');v.className='btn red';v.textContent='Imprimir venda 80mm';v.onclick=function(){print80('VENDA',S.lastAttendance.sale)};box.appendChild(v)}
+  var f=document.createElement('button');f.className='btn';f.textContent='Fechar';f.onclick=closeModal;box.appendChild(f);
+}
 
 async function openAttendHistory(){
   try{
