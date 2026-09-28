@@ -216,12 +216,12 @@ body:after{
 </section>
 <div id="app" class="app hide">
 <aside class="side"><div class="brand"><div class="mf">MF</div><div><b>MF MOTO PEÇAS</b><small>GESTÃO</small></div></div><nav id="nav" class="nav"></nav></aside>
-<main class="main"><header class="top"><span>MF / <b id="crumb">VISÃO GERAL</b><span class="systemStatus"><i class="liveDot"></i>Sistema online</span></span><div class="actions"><button class="btn" onclick="openOrder()">+ Abrir OS</button><button class="btn" onclick="logout()">Sair</button></div></header><div id="content" class="content"></div></main>
+<main class="main"><header class="top"><span>MF / <b id="crumb">VISÃO GERAL</b><span class="systemStatus"><i class="liveDot"></i>Sistema online</span></span><div class="actions"><button class="btn red" onclick="go(\'atendimento\')">+ Atendimento</button><button class="btn" onclick="logout()">Sair</button></div></header><div id="content" class="content"></div></main>
 <nav id="mobileNav" class="mobile"></nav>
 </div>
 <div id="modal" class="modal hide"></div><div id="toast" class="toast hide"></div>
 <script>
-var NAV=[['overview','⌁','Visão geral'],['pos','▣','PDV'],['inventory','▦','Estoque'],['orders','⚙','Ordens'],['budgets','◇','Orçamentos'],['clients','♙','Clientes'],['fiscal','§','Fiscal'],['security','⌾','Segurança']];
+var NAV=[['overview','⌁','Visão geral'],['atendimento','⚙','Atendimento'],['inventory','▦','Estoque'],['clients','♙','Clientes'],['fiscal','§','Fiscal'],['security','⌾','Segurança']];
 var S={token:localStorage.mf_token||'',page:'overview',clients:[],inventory:[],orders:[],budgets:[],sales:[],fiscal:[],cart:[],chat:[],aiDraft:null};
 function qs(s){return document.querySelector(s)}function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
 function brl(n){return Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}function dt(d){return d?new Date(d).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'}):'-'}
@@ -235,7 +235,7 @@ var authMode='login';function authModeSet(m){authMode=m;qs('#tabLogin').classLis
 qs('#tabLogin').onclick=function(){authModeSet('login')};qs('#tabRegister').onclick=function(){authModeSet('register')};
 qs('#authForm').onsubmit=async function(e){e.preventDefault();try{var body={name:qs('#authName').value,email:qs('#authEmail').value,password:qs('#authPass').value};var d=await api('/auth/'+(authMode==='login'?'login':'register'),{method:'POST',body:JSON.stringify(body)});S.token=d.token;localStorage.mf_token=S.token;await boot()}catch(x){qs('#authError').textContent=x.message}};
 function navs(){var a=NAV.map(function(n){return '<button data-page="'+n[0]+'" class="'+(S.page===n[0]?'on':'')+'">'+n[1]+' '+n[2]+'</button>'}).join('');qs('#nav').innerHTML=a;qs('#mobileNav').innerHTML=a;document.querySelectorAll('[data-page]').forEach(function(b){b.onclick=function(){go(b.dataset.page)}})}
-async function boot(){showApp(true);navs();await go('overview')}async function go(p){S.page=p;navs();var n=NAV.find(function(x){return x[0]===p});qs('#crumb').textContent=(n?n[2]:p).toUpperCase();var fn={overview:overview,pos:pos,inventory:inventory,orders:orders,budgets:budgets,clients:clients,fiscal:fiscal,security:security}[p];if(fn)try{await fn();var box=qs('#content');box.classList.remove('page-enter');void box.offsetWidth;box.classList.add('page-enter')}catch(e){toast(e.message,true)}}
+async function boot(){showApp(true);navs();await go('overview')}async function go(p){S.page=p;navs();var n=NAV.find(function(x){return x[0]===p});qs('#crumb').textContent=(n?n[2]:p).toUpperCase();var fn={overview:overview,atendimento:pos,pos:pos,inventory:inventory,orders:orders,budgets:budgets,clients:clients,fiscal:fiscal,security:security}[p];if(fn)try{await fn();var box=qs('#content');box.classList.remove('page-enter');void box.offsetWidth;box.classList.add('page-enter')}catch(e){toast(e.message,true)}}
 function hero(t,s,a){return '<div class="hero"><div><div class="eyebrow">MF / RIDE CONTROL</div><h1>'+t+'</h1><div class="muted">'+s+'</div></div><div class="actions">'+(a||'')+'</div></div>'}
 function badge(s){var c=s==='concluido'||s==='emitida'?'g':s==='pendente'||s==='rascunho'?'y':'r';return '<span class="badge '+c+'">'+esc(String(s||'-').replaceAll('_',' '))+'</span>'}
 function modal(title,html){qs('#modal').innerHTML='<div class="modalCard"><div class="modalHead"><b>'+esc(title)+'</b><button class="btn" onclick="closeModal()">×</button></div><div class="modalBody">'+html+'</div></div>';qs('#modal').classList.remove('hide')}function closeModal(){qs('#modal').classList.add('hide');qs('#modal').innerHTML=''}
