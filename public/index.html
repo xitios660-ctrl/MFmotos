@@ -263,7 +263,7 @@ async function budgets(){
       var names=items.map(function(x){return x.name}).filter(Boolean);
       var summary=names.length?names.slice(0,2).join(', ')+(names.length>2?' +'+(names.length-2):''):'Sem itens';
       var moto=[b.brand,b.model,b.year,b.color].filter(Boolean).join(' · ');
-      return '<tr><td><b>'+esc(b.client_name||'-')+'</b><br><small>'+esc(b.plate||'Sem placa')+(moto?' · '+esc(moto):'')+'</small></td><td><b>'+esc(summary)+'</b><br><small>'+items.length+' item'+(items.length===1?'':'s')+'</small></td><td class="gold money">'+brl(b.grand_total)+'</td><td>'+badge(b.status)+'</td><td>'+dt(b.created_at)+'</td><td><div class="actions"><button class="btn" onclick="editBudget(\''+b.id+'\')">Editar</button><button class="btn danger" onclick="deleteBudget(\''+b.id+'\')">Excluir</button></div></td></tr>';
+      return '<tr><td><b>'+esc(b.client_name||'-')+'</b><br><small>'+esc(b.plate||'Sem placa')+(moto?' · '+esc(moto):'')+'</small></td><td><b>'+esc(summary)+'</b><br><small>'+items.length+' item'+(items.length===1?'':'s')+'</small></td><td class="gold money">'+brl(b.grand_total)+'</td><td>'+badge(b.status)+'</td><td>'+dt(b.created_at)+'</td><td><div class="actions"><button class="btn" onclick="printBudget80(\''+b.id+'\')">Imprimir 80mm</button><button class="btn" onclick="editBudget(\''+b.id+'\')">Editar</button><button class="btn danger" onclick="deleteBudget(\''+b.id+'\')">Excluir</button></div></td></tr>';
     }).join('')||'<tr><td colspan="6" class="empty">Nenhum orçamento encontrado.</td></tr>');
   }
   paint(S.budgets);
@@ -341,7 +341,7 @@ async function openBudget(){
     var d=Object.fromEntries(new FormData(e.target)),calc=refreshBudgetPreview('budgetLines','budgetPreview','budgetTotal');
     if(!calc.items.length)return toast('Gere ou informe pelo menos um item/serviço.',true);
     d.items=calc.items;d.grand_total=calc.total;d.status='aberto';
-    try{await api('/budgets',{method:'POST',body:JSON.stringify(d)});S.aiDraft=null;S.chat=[];closeModal();toast('Orçamento salvo.');budgets()}catch(x){toast(x.message,true)}
+    try{var saved=await api('/budgets',{method:'POST',body:JSON.stringify(d)});S.aiDraft=null;S.chat=[];closeModal();await budgets();showPrintPrompt('ORÇAMENTO',saved)}catch(x){toast(x.message,true)}
   };
 }
 function editBudget(id){
@@ -385,7 +385,7 @@ async function finishSale(){if(!S.cart.length)return toast('Carrinho vazio.',tru
 async function security(){
   var me=await api('/me');
   qs('#content').innerHTML=
-    hero('SEGURANÇA','Controle de acesso da central MF.','<button class="btn" onclick="logout()">Encerrar sessão</button>')+
+    hero('SEGURANÇA','Controle de acesso da central MF.','<button class="btn" onclick="testPrint80()">Testar impressora 80mm</button><button class="btn" onclick="logout()">Encerrar sessão</button>')+
     '<div class="securityGrid">'+
       '<div class="card securityMark"><div><div class="lockCore">⌾</div><div style="text-align:center;margin-top:14px"><b>'+esc(me.name||'Usuário MF')+'</b><small style="display:block;color:#777">'+esc(me.email||'')+'</small></div></div></div>'+
       '<div class="card"><div class="title"><b>ALTERAR SENHA</b><span class="badge g">ACESSO PROTEGIDO</span></div>'+
