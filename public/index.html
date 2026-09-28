@@ -378,9 +378,112 @@ async function deleteBudget(id){
   try{await api('/budgets/'+id,{method:'DELETE'});toast('Orçamento excluído.');budgets()}catch(e){toast(e.message,true)}
 }
 
-async function pos(){S.inventory=await api('/inventory');S.clients=await api('/clients');var products=S.inventory.filter(function(x){return x.quantity>0}).map(function(x){return '<div class="product" data-name="'+esc(x.name.toLowerCase())+'" onclick="cartAdd(\''+x.id+'\')"><b>'+esc(x.name)+'</b><small>'+x.quantity+' em estoque</small><div class="price">'+brl(x.price)+'</div></div>'}).join('')||'<div class="empty">Sem produtos.</div>';var cart=S.cart.map(function(x){return '<div class="cartline"><span>'+esc(x.name)+'<br><small>'+brl(x.price)+'</small></span><input class="input" type="number" min="1" max="'+x.stock+'" value="'+x.q+'" onchange="cartQty(\''+x.id+'\',this.value)"><button class="btn danger" onclick="cartRm(\''+x.id+'\')">×</button></div>'}).join('')||'<div class="empty">Vazio</div>';qs('#content').innerHTML=hero('PDV','Venda rápida com baixa automática no estoque.','<button class="btn" onclick="S.cart=[];pos()">Limpar</button>')+'<div class="posgrid"><div><div class="toolbar"><input id="productSearch" class="input" placeholder="Buscar produto"></div><div class="products">'+products+'</div></div><div class="card"><b>CARRINHO</b>'+cart+'<div class="field"><label>Cliente</label><select id="saleClient"><option value="">Consumidor</option>'+S.clients.map(function(c){return '<option value="'+c.id+'">'+esc(c.name)+'</option>'}).join('')+'</select></div><div class="field"><label>Pagamento</label><select id="payment"><option value="pix">Pix</option><option value="dinheiro">Dinheiro</option><option value="debito">Débito</option><option value="credito">Crédito</option></select></div><div class="field"><label>Desconto</label><input id="discount" class="input" type="number" step=".01" value="0"></div><button class="btn red full" onclick="finishSale()">Finalizar · '+brl(S.cart.reduce(function(a,x){return a+x.price*x.q},0))+'</button></div></div>';qs('#productSearch').oninput=function(e){var x=e.target.value.toLowerCase();document.querySelectorAll('.product').forEach(function(p){p.style.display=p.dataset.name.includes(x)?'':'none'})}}
+async function pos(){S.inventory=await api('/inventory');S.clients=await api('/clients');var products=S.inventory.filter(function(x){return x.quantity>0}).map(function(x){return '<div class="product" data-name="'+esc(x.name.toLowerCase())+'" onclick="cartAdd(\''+x.id+'\')"><b>'+esc(x.name)+'</b><small>'+x.quantity+' em estoque</small><div class="price">'+brl(x.price)+'</div></div>'}).join('')||'<div class="empty">Sem produtos.</div>';var cart=S.cart.map(function(x){return '<div class="cartline"><span>'+esc(x.name)+'<br><small>'+brl(x.price)+'</small></span><input class="input" type="number" min="1" max="'+x.stock+'" value="'+x.q+'" onchange="cartQty(\''+x.id+'\',this.value)"><button class="btn danger" onclick="cartRm(\''+x.id+'\')">×</button></div>'}).join('')||'<div class="empty">Vazio</div>';qs('#content').innerHTML=hero('PDV','Venda rápida, orçamento direto e impressão térmica 80 mm.','<button class="btn" onclick="S.cart=[];pos()">Limpar</button>')+'<div class="posgrid"><div><div class="toolbar"><input id="productSearch" class="input" placeholder="Buscar produto"></div><div class="products">'+products+'</div></div><div class="card"><b>CARRINHO</b>'+cart+'<div class="field"><label>Cliente</label><select id="saleClient"><option value="">Consumidor</option>'+S.clients.map(function(c){return '<option value="'+c.id+'">'+esc(c.name)+'</option>'}).join('')+'</select></div><div class="field"><label>Pagamento</label><select id="payment"><option value="pix">Pix</option><option value="dinheiro">Dinheiro</option><option value="debito">Débito</option><option value="credito">Crédito</option></select></div><div class="field"><label>Desconto</label><input id="discount" class="input" type="number" step=".01" value="0"></div><div style="display:grid;gap:8px"><button class="btn" onclick="createPDVBudget()">Gerar orçamento deste carrinho</button><button class="btn red full" onclick="finishSale()">Finalizar venda · '+brl(S.cart.reduce(function(a,x){return a+x.price*x.q},0))+'</button></div></div></div>';qs('#productSearch').oninput=function(e){var x=e.target.value.toLowerCase();document.querySelectorAll('.product').forEach(function(p){p.style.display=p.dataset.name.includes(x)?'':'none'})}}
 function cartAdd(id){var p=S.inventory.find(function(x){return x.id===id}),z=S.cart.find(function(x){return x.id===id});if(z)z.q=Math.min(z.q+1,p.quantity);else S.cart.push({id:p.id,name:p.name,price:+p.price,q:1,stock:p.quantity});pos()}function cartQty(id,v){var x=S.cart.find(function(z){return z.id===id});x.q=Math.max(1,Math.min(x.stock,+v||1));pos()}function cartRm(id){S.cart=S.cart.filter(function(x){return x.id!==id});pos()}
-async function finishSale(){if(!S.cart.length)return toast('Carrinho vazio.',true);var cid=qs('#saleClient').value,c=S.clients.find(function(x){return x.id===cid});try{var sale=await api('/sales',{method:'POST',body:JSON.stringify({client_name:c?c.name:'',items:S.cart.map(function(x){return {inventory_id:x.id,quantity:x.q,unit_price:x.price}}),discount:+qs('#discount').value||0,payment_method:qs('#payment').value})});S.cart=[];toast('Venda finalizada: '+brl(sale.total));pos()}catch(e){toast(e.message,true)}}
+async function finishSale(){if(!S.cart.length)return toast('Carrinho vazio.',true);var cid=qs('#saleClient').value,cl=S.clients.find(function(x){return x.id===cid});try{var sale=await api('/sales',{method:'POST',body:JSON.stringify({client_name:cl?cl.name:'',items:S.cart.map(function(x){return {inventory_id:x.id,quantity:x.q,unit_price:x.price}}),discount:+qs('#discount').value||0,payment_method:qs('#payment').value})});S.cart=[];await pos();showPrintPrompt('VENDA',sale)}catch(e){toast(e.message,true)}}
+
+
+async function createPDVBudget(){
+  if(!S.cart.length)return toast('Carrinho vazio.',true);
+  var cid=qs('#saleClient').value,cl=S.clients.find(function(x){return x.id===cid});
+  var items=S.cart.map(function(x){return {inventory_id:x.id,name:x.name,quantity:x.q,unit_price:+x.price,total:moneyClient(x.q*x.price)}});
+  var total=items.reduce(function(a,x){return a+x.total},0);
+  modal('Orçamento rápido do PDV',
+    '<form id="pdvBudgetForm" class="form">'+
+    '<div class="field"><label>Cliente</label><input class="input" name="client_name" value="'+esc(cl?cl.name:'')+'" placeholder="Nome do cliente"></div>'+
+    '<div class="field"><label>Placa</label><div class="plateScan" id="pdvBudgetScan"><div style="display:flex;gap:6px"><input class="input" id="pdvBudgetPlate" name="plate" maxlength="7" placeholder="ABC1D23"><button class="btn" type="button" id="pdvBudgetLookup">Consultar</button></div></div></div>'+
+    '<div class="field"><label>Marca</label><input class="input" name="brand" id="pdvBudgetBrand"></div>'+
+    '<div class="field"><label>Modelo</label><input class="input" name="model" id="pdvBudgetModel"></div>'+
+    '<div class="field"><label>Ano</label><input class="input" name="year" id="pdvBudgetYear"></div>'+
+    '<div class="field"><label>Cor</label><input class="input" name="color" id="pdvBudgetColor"></div>'+
+    '<div id="pdvBudgetVehicle" class="span scanResult muted">A placa é opcional. Se informar, o sistema tenta puxar a moto.</div>'+
+    '<div class="span list">'+items.map(function(x){return '<div class="row"><div><b>'+esc(x.name)+'</b><small>'+x.quantity+' × '+brl(x.unit_price)+'</small></div><b>'+brl(x.total)+'</b></div>'}).join('')+'</div>'+
+    '<div class="span row"><b>Total do orçamento</b><b class="gold">'+brl(total)+'</b></div>'+
+    '<button class="btn red span">Salvar orçamento e preparar impressão</button></form>');
+  qs('#pdvBudgetLookup').onclick=async function(){
+    var p=qs('#pdvBudgetPlate').value.trim(),scan=qs('#pdvBudgetScan'),btn=qs('#pdvBudgetLookup'),res=qs('#pdvBudgetVehicle');
+    if(p.length<7)return toast('Digite a placa completa.',true);
+    scan.classList.add('scanning');btn.textContent='Buscando...';
+    try{
+      var d=await api('/vehicle/'+p);
+      if(d.found){
+        qs('#pdvBudgetBrand').value=d.brand||'';
+        qs('#pdvBudgetModel').value=d.model||'';
+        qs('#pdvBudgetYear').value=d.year||'';
+        qs('#pdvBudgetColor').value=d.color||'';
+        res.textContent='Moto localizada: '+[d.brand,d.model,d.year,d.color].filter(Boolean).join(' · ');
+      }else res.textContent=d.message||'Veículo não localizado.';
+    }catch(e){toast(e.message,true)}
+    finally{scan.classList.remove('scanning');btn.textContent='Consultar'}
+  };
+  qs('#pdvBudgetForm').onsubmit=async function(e){
+    e.preventDefault();
+    var d=Object.fromEntries(new FormData(e.target));
+    d.items=items;d.grand_total=total;d.status='aberto';
+    try{
+      var saved=await api('/budgets',{method:'POST',body:JSON.stringify(d)});
+      closeModal();
+      showPrintPrompt('ORÇAMENTO',saved);
+    }catch(x){toast(x.message,true)}
+  };
+}
+function printBudget80(id){
+  var b=S.budgets.find(function(x){return x.id===id});
+  if(!b)return toast('Orçamento não encontrado.',true);
+  print80('ORÇAMENTO',b);
+}
+function showPrintPrompt(type,data){
+  S.printJob={type:type,data:data};
+  var total=Number(data.total!=null?data.total:data.grand_total||0);
+  modal(type==='VENDA'?'Venda concluída':'Orçamento salvo',
+    '<div class="card"><div class="title"><b>'+type+' PRONTO</b><span class="badge g">80 MM</span></div>'+
+    '<div class="row"><span>Total</span><b class="gold">'+brl(total)+'</b></div>'+
+    '<p class="muted">O documento está salvo. Toque abaixo para imprimir na térmica de 80 mm.</p>'+
+    '<div style="display:grid;gap:8px"><button class="btn red full" onclick="printCurrent80()">Imprimir 80 mm</button><button class="btn full" onclick="closeModal()">Fechar</button></div></div>');
+}
+function printCurrent80(){
+  if(!S.printJob)return toast('Nenhum documento para imprimir.',true);
+  print80(S.printJob.type,S.printJob.data);
+}
+function testPrint80(){
+  print80('TESTE',{id:'TESTE-80MM',client_name:'Cliente de teste',items:[{name:'Óleo 10W40',quantity:1,unit_price:39.9,total:39.9},{name:'Filtro de óleo',quantity:1,unit_price:18,total:18}],total:57.9,grand_total:57.9,payment_method:'pix',created_at:new Date().toISOString()});
+}
+function print80(type,data){
+  var items=Array.isArray(data.items)?data.items:[];
+  var total=Number(data.total!=null?data.total:data.grand_total||0);
+  var subtotal=Number(data.subtotal!=null?data.subtotal:total);
+  var discount=Number(data.discount||0);
+  var vehicle=[data.brand,data.model,data.year,data.color].filter(Boolean).join(' · ');
+  var rows=items.map(function(x){
+    var qty=Number(x.quantity||1),unit=Number(x.unit_price||0),line=Number(x.total!=null?x.total:qty*unit);
+    return '<div class="item"><b>'+esc(x.name||'Item')+'</b><div class="line"><span>'+qty+' x '+brl(unit)+'</span><b>'+brl(line)+'</b></div></div>';
+  }).join('');
+  var w=window.open('','_blank','width=420,height=720');
+  if(!w)return toast('Permita pop-ups para imprimir.',true);
+  var out=[];
+  out.push('<!doctype html><html><head><meta charset="utf-8"><title>MF Moto Peças</title><style>');
+  out.push('@page{size:80mm auto;margin:3mm}*{box-sizing:border-box}body{width:74mm;margin:0 auto;color:#000;background:#fff;font:12px/1.35 Arial,sans-serif}.center{text-align:center}.brand{font-size:20px;font-weight:900}.sub{font-size:10px}.dash{border-top:1px dashed #000;margin:8px 0}.line{display:flex;justify-content:space-between;gap:8px}.item{margin:7px 0}.total{font-size:17px;font-weight:900}.muted{font-size:10px}.printBtn{display:block;margin:12px 0;padding:10px;width:100%}@media print{.printBtn{display:none}body{width:74mm}}');
+  out.push('</style></head><body>');
+  out.push('<div class="center brand">MF MOTO PEÇAS</div>');
+  out.push('<div class="center sub">MAIS QUE PEÇAS, É PAIXÃO SOBRE DUAS RODAS.</div>');
+  out.push('<div class="dash"></div><b>'+esc(type)+'</b>');
+  out.push('<div class="muted">Código: '+esc(String(data.id||'').slice(0,14))+'</div>');
+  out.push('<div class="muted">Data: '+new Date(data.created_at||Date.now()).toLocaleString('pt-BR')+'</div>');
+  if(data.client_name)out.push('<div>Cliente: <b>'+esc(data.client_name)+'</b></div>');
+  if(data.plate)out.push('<div>Placa: <b>'+esc(data.plate)+'</b></div>');
+  if(vehicle)out.push('<div>Moto: '+esc(vehicle)+'</div>');
+  out.push('<div class="dash"></div>'+rows+'<div class="dash"></div>');
+  if(type==='VENDA'){
+    out.push('<div class="line"><span>Subtotal</span><span>'+brl(subtotal)+'</span></div>');
+    if(discount)out.push('<div class="line"><span>Desconto</span><span>- '+brl(discount)+'</span></div>');
+  }
+  out.push('<div class="line total"><span>TOTAL</span><span>'+brl(total)+'</span></div>');
+  if(data.payment_method)out.push('<div>Pagamento: '+esc(String(data.payment_method).toUpperCase())+'</div>');
+  out.push('<div class="dash"></div><div class="center muted">Documento gerado pelo MF Moto Peças</div>');
+  out.push('<button class="printBtn" onclick="window.print()">IMPRIMIR 80 MM</button>');
+  out.push('</body></html>');
+  w.document.open();w.document.write(out.join(''));w.document.close();
+}
 
 async function security(){
   var me=await api('/me');
