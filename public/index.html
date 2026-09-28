@@ -361,6 +361,121 @@ body:after{
 .quickCount{font-size:17px!important;color:#f1f1f2!important;font-weight:900;letter-spacing:-.5px}.quickAlert .quickIcon{background:#1d1607;border-color:#5a4613;color:#ffd166}.quickFiscal .quickIcon{background:#091714;border-color:#17483c;color:#58dca8}
 @keyframes quickDeckScan{0%,100%{transform:translateX(-35%);opacity:.15}50%{transform:translateX(35%);opacity:.7}}
 @media(max-width:980px){.quickLinks{grid-template-columns:repeat(3,1fr)}}@media(max-width:760px){.quickDeck{padding:13px;border-radius:17px}.quickHead{align-items:flex-start;flex-direction:column;gap:2px}.quickLinks{display:flex;overflow-x:auto;gap:8px;padding-bottom:3px;scroll-snap-type:x mandatory;scrollbar-width:none}.quickLinks::-webkit-scrollbar{display:none}.quickLink{flex:0 0 145px;min-height:90px;scroll-snap-align:start}}
+
+/* ===== UNIVERSAL MF BUTTON MOTION SYSTEM ===== */
+button.uiMotion:not(.startRideBtn){
+  --bx:50%;--by:50%;--btx:0px;--bty:0px;
+  position:relative;isolation:isolate;overflow:hidden;
+  transform:translate3d(var(--btx),var(--bty),0);
+  transition:
+    transform .17s cubic-bezier(.2,.8,.2,1),
+    box-shadow .22s ease,
+    border-color .22s ease,
+    background .22s ease,
+    color .22s ease,
+    filter .22s ease;
+  will-change:transform;
+}
+button.uiMotion:not(.startRideBtn)::before{
+  content:"";position:absolute;inset:-1px;pointer-events:none;z-index:-1;
+  background:
+    radial-gradient(circle at var(--bx) var(--by),rgba(255,255,255,.20),transparent 24%),
+    linear-gradient(105deg,transparent 32%,rgba(255,255,255,.09) 48%,transparent 64%);
+  opacity:.38;transform:none!important;transition:opacity .2s ease;
+}
+button.uiMotion:not(.startRideBtn)::after{
+  content:"";position:absolute;left:-35%;right:-35%;bottom:0;height:1px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(255,24,32,.0),rgba(255,24,32,.8),rgba(255,24,32,.0),transparent);
+  transform:translateX(-55%);opacity:.2;
+  transition:transform .42s cubic-bezier(.2,.8,.2,1),opacity .2s;
+}
+button.uiMotion:not(.startRideBtn):hover{
+  transform:translate3d(var(--btx),calc(var(--bty) - 2px),0) scale(1.012);
+  border-color:#5a5a63!important;
+  box-shadow:0 13px 32px rgba(0,0,0,.28),0 0 18px rgba(255,24,32,.07),inset 0 1px 0 rgba(255,255,255,.07);
+  filter:saturate(1.05);
+}
+button.uiMotion:not(.startRideBtn):hover::before{opacity:.78}
+button.uiMotion:not(.startRideBtn):hover::after{transform:translateX(55%);opacity:.8}
+button.uiMotion:not(.startRideBtn):active,
+button.uiMotion.ui-press:not(.startRideBtn){
+  transform:translate3d(var(--btx),var(--bty),0) scale(.965)!important;
+  box-shadow:0 5px 16px rgba(0,0,0,.34),inset 0 2px 9px rgba(0,0,0,.28)!important;
+}
+button.uiMotion.red:not(.startRideBtn){
+  border:1px solid rgba(255,86,92,.58)!important;
+  background:
+    radial-gradient(circle at var(--bx) var(--by),rgba(255,255,255,.14),transparent 28%),
+    linear-gradient(135deg,#ff2028,#b4070d 72%,#6e0509);
+  box-shadow:0 13px 30px rgba(255,24,32,.20),inset 0 1px 0 rgba(255,255,255,.16);
+}
+button.uiMotion.red:not(.startRideBtn):hover{
+  border-color:rgba(255,117,122,.9)!important;
+  box-shadow:0 18px 44px rgba(255,24,32,.30),0 0 28px rgba(255,24,32,.12),inset 0 1px 0 rgba(255,255,255,.2);
+}
+button.uiMotion.danger:not(.startRideBtn){
+  border-color:#5b1c20!important;
+  background:linear-gradient(145deg,#260b0e,#13090a)!important;
+  color:#ff8d91!important;
+}
+button.uiMotion.danger:not(.startRideBtn):hover{
+  border-color:#9b292f!important;
+  color:#fff!important;
+  box-shadow:0 14px 32px rgba(140,14,22,.20),0 0 22px rgba(255,24,32,.08)!important;
+}
+button.uiMotion:disabled{
+  opacity:.48;cursor:not-allowed;filter:saturate(.35)!important;transform:none!important;
+}
+.nav button.uiMotion{
+  overflow:hidden;
+}
+.nav button.uiMotion:hover{
+  transform:translateX(5px) scale(1.01)!important;
+}
+.nav button.uiMotion::after{
+  left:auto;right:8px;bottom:auto;top:50%;width:5px;height:5px;border-radius:50%;
+  background:#ff3037;box-shadow:0 0 13px #ff1820;
+  transform:translateY(-50%) scale(.25);opacity:0;
+}
+.nav button.uiMotion:hover::after,.nav button.uiMotion.on::after{
+  transform:translateY(-50%) scale(1);opacity:1;
+}
+.tabs button.uiMotion{
+  border:1px solid transparent;
+}
+.tabs button.uiMotion:hover{
+  border-color:#33343a;box-shadow:inset 0 0 22px rgba(255,255,255,.025),0 7px 18px rgba(0,0,0,.15);
+}
+.tabs button.uiMotion.on{
+  border-color:#4b171b;background:linear-gradient(180deg,#2b0c0f,#171012);box-shadow:inset 0 -2px 0 var(--red),0 7px 20px rgba(0,0,0,.2);
+}
+.mobile button.uiMotion{
+  overflow:hidden;
+}
+.mobile button.uiMotion:hover{transform:translateY(-2px) scale(1.03)!important}
+.modalHead .btn.uiMotion{
+  border-radius:10px;min-width:38px;
+}
+.passToggle.uiMotion{
+  background:linear-gradient(180deg,#171719,#0c0c0e);
+}
+.uiMotionBurst{
+  position:absolute;pointer-events:none;z-index:8;width:8px;height:8px;border-radius:50%;
+  background:rgba(255,255,255,.82);box-shadow:0 0 16px rgba(255,24,32,.8);
+  transform:translate(-50%,-50%) scale(.3);opacity:0;
+  animation:uiMotionBurst .48s ease-out forwards;
+}
+@keyframes uiMotionBurst{
+  0%{opacity:.9;transform:translate(-50%,-50%) scale(.3);box-shadow:0 0 0 0 rgba(255,24,32,.25),0 0 16px rgba(255,24,32,.8)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.9);box-shadow:0 0 0 22px rgba(255,24,32,0),0 0 6px rgba(255,24,32,0)}
+}
+@media(hover:none){
+  button.uiMotion:not(.startRideBtn):hover{transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  button.uiMotion:not(.startRideBtn){transform:none!important}
+  button.uiMotion:not(.startRideBtn)::after,.uiMotionBurst{animation:none!important;transition:none!important}
+}
 </style>
 </head>
 <body>
@@ -399,11 +514,44 @@ async function loadRegistrationStatus(){try{var d=await api('/auth/registration-
 var authMode='login';function authModeSet(m){authMode=m;qs('#tabLogin').classList.toggle('on',m==='login');qs('#tabRegister').classList.toggle('on',m==='register');qs('#nameField').classList.toggle('hide',m==='login');qs('#authSubmit').textContent=m==='login'?'ENTRAR NA CENTRAL':'CRIAR ACESSO'}
 qs('#tabLogin').onclick=function(){authModeSet('login')};qs('#tabRegister').onclick=function(){authModeSet('register')};
 qs('#authForm').onsubmit=async function(e){e.preventDefault();try{var body={name:qs('#authName').value,email:qs('#authEmail').value,password:qs('#authPass').value};var d=await api('/auth/'+(authMode==='login'?'login':'register'),{method:'POST',body:JSON.stringify(body)});S.token=d.token;localStorage.mf_token=S.token;await boot()}catch(x){qs('#authError').textContent=x.message}};
-function navs(){var a=NAV.map(function(n){return '<button data-page="'+n[0]+'" class="'+(S.page===n[0]?'on':'')+'">'+n[1]+' '+n[2]+'</button>'}).join('');qs('#nav').innerHTML=a;qs('#mobileNav').innerHTML=a;document.querySelectorAll('[data-page]').forEach(function(b){b.onclick=function(){go(b.dataset.page)}})}
-async function boot(){showApp(true);navs();await go('overview')}async function go(p){S.page=p;navs();var n=NAV.find(function(x){return x[0]===p});qs('#crumb').textContent=(n?n[2]:p).toUpperCase();var fn={overview:overview,atendimento:pos,pos:pos,inventory:inventory,orders:orders,budgets:budgets,clients:clients,fiscal:fiscal,security:security}[p];if(fn)try{await fn();var box=qs('#content');box.classList.remove('page-enter');void box.offsetWidth;box.classList.add('page-enter')}catch(e){toast(e.message,true)}}
+
+function bindMotionButtons(root){
+  root=root||document;
+  root.querySelectorAll('button:not(.startRideBtn)').forEach(function(b){
+    if(b.dataset.motionBound)return;
+    b.dataset.motionBound='1';b.classList.add('uiMotion');
+    b.addEventListener('pointermove',function(e){
+      if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+      var r=b.getBoundingClientRect(),x=(e.clientX-r.left)/Math.max(1,r.width),y=(e.clientY-r.top)/Math.max(1,r.height);
+      b.style.setProperty('--bx',(x*100).toFixed(1)+'%');
+      b.style.setProperty('--by',(y*100).toFixed(1)+'%');
+      b.style.setProperty('--btx',((x-.5)*2.4).toFixed(2)+'px');
+      b.style.setProperty('--bty',((y-.5)*1.8).toFixed(2)+'px');
+    });
+    b.addEventListener('pointerleave',function(){
+      b.style.setProperty('--bx','50%');b.style.setProperty('--by','50%');
+      b.style.setProperty('--btx','0px');b.style.setProperty('--bty','0px');
+    });
+    b.addEventListener('pointerdown',function(e){
+      b.classList.add('ui-press');
+      if(!window.matchMedia||!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+        var r=b.getBoundingClientRect(),p=document.createElement('i');
+        p.className='uiMotionBurst';p.style.left=(e.clientX-r.left)+'px';p.style.top=(e.clientY-r.top)+'px';
+        b.appendChild(p);setTimeout(function(){p.remove()},520);
+      }
+    });
+    ['pointerup','pointercancel','pointerleave'].forEach(function(ev){b.addEventListener(ev,function(){b.classList.remove('ui-press')})});
+  });
+}
+var motionObserver=new MutationObserver(function(ms){
+  ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===1){if(n.matches&&n.matches('button:not(.startRideBtn)'))bindMotionButtons(n.parentNode||document);else if(n.querySelectorAll)bindMotionButtons(n)}})});
+});
+motionObserver.observe(document.documentElement,{childList:true,subtree:true});
+function navs(){var a=NAV.map(function(n){return '<button data-page="'+n[0]+'" class="'+(S.page===n[0]?'on':'')+'">'+n[1]+' '+n[2]+'</button>'}).join('');qs('#nav').innerHTML=a;qs('#mobileNav').innerHTML=a;document.querySelectorAll('[data-page]').forEach(function(b){b.onclick=function(){go(b.dataset.page)}});bindMotionButtons(document)}
+async function boot(){showApp(true);navs();await go('overview')}async function go(p){S.page=p;navs();var n=NAV.find(function(x){return x[0]===p});qs('#crumb').textContent=(n?n[2]:p).toUpperCase();var fn={overview:overview,atendimento:pos,pos:pos,inventory:inventory,orders:orders,budgets:budgets,clients:clients,fiscal:fiscal,security:security}[p];if(fn)try{await fn();var box=qs('#content');box.classList.remove('page-enter');void box.offsetWidth;box.classList.add('page-enter');bindMotionButtons(document)}catch(e){toast(e.message,true)}}
 function hero(t,s,a){return '<div class="hero"><div><div class="eyebrow">MF / RIDE CONTROL</div><h1>'+t+'</h1><div class="muted">'+s+'</div></div><div class="actions">'+(a||'')+'</div></div>'}
 function badge(s){var c=s==='concluido'||s==='emitida'?'g':s==='pendente'||s==='rascunho'?'y':'r';return '<span class="badge '+c+'">'+esc(String(s||'-').replaceAll('_',' '))+'</span>'}
-function modal(title,html){qs('#modal').innerHTML='<div class="modalCard"><div class="modalHead"><b>'+esc(title)+'</b><button class="btn" onclick="closeModal()">×</button></div><div class="modalBody">'+html+'</div></div>';qs('#modal').classList.remove('hide')}function closeModal(){qs('#modal').classList.add('hide');qs('#modal').innerHTML=''}
+function modal(title,html){qs('#modal').innerHTML='<div class="modalCard"><div class="modalHead"><b>'+esc(title)+'</b><button class="btn" onclick="closeModal()">×</button></div><div class="modalBody">'+html+'</div></div>';qs('#modal').classList.remove('hide');bindMotionButtons(qs('#modal'))}function closeModal(){qs('#modal').classList.add('hide');qs('#modal').innerHTML=''}
 async function del(url,back){if(!confirm('Excluir este registro?'))return;try{await api(url,{method:'DELETE'});toast('Excluído.');back()}catch(e){toast(e.message,true)}}
 
 function bindStartRide(){
@@ -916,7 +1064,7 @@ async function security(){
 async function fiscal(){S.fiscal=await api('/fiscal');S.sales=await api('/sales');qs('#content').innerHTML=hero('FISCAL','Rascunhos e emissão via provedor autorizado.','<button class="btn red" onclick="openFiscal()">+ Nova nota</button>')+'<div class="warn"><b>Emissão correta:</b> sem credenciais de provedor fiscal/SEFAZ, o documento permanece em rascunho. Só aparece como emitido após autorização real.</div><div class="tableWrap"><table class="table"><thead><tr><th>Tipo</th><th>Cliente</th><th>Total</th><th>Status</th><th>Chave/ref.</th><th></th></tr></thead><tbody>'+(S.fiscal.map(function(f){return '<tr><td><b>'+esc(f.type)+'</b></td><td>'+esc(f.client_name||'Consumidor')+'</td><td>'+brl(f.total)+'</td><td>'+badge(f.status)+'</td><td><small>'+esc(f.access_key||f.provider_ref||'-')+'</small></td><td>'+(f.status==='rascunho'?'<button class="btn" onclick="issueFiscal(\''+f.id+'\')">Emitir</button>':'')+'</td></tr>'}).join('')||'<tr><td colspan="6" class="empty">Nenhum documento.</td></tr>')+'</tbody></table></div>'}
 function openFiscal(){modal('Novo documento fiscal','<form id="fiscalForm" class="form"><div class="field"><label>Venda</label><select name="sale_id" id="fiscalSale"><option value="">Avulsa</option>'+S.sales.map(function(s){return '<option value="'+s.id+'">'+dt(s.created_at)+' · '+brl(s.total)+'</option>'}).join('')+'</select></div><div class="field"><label>Tipo</label><select name="type"><option>NFC-e</option><option>NF-e</option><option>NFS-e</option></select></div><div class="field"><label>Cliente</label><input id="fiscalClient" class="input" name="client_name"></div><div class="field"><label>CPF/CNPJ</label><input class="input" name="client_document"></div><div class="field span"><label>Total</label><input id="fiscalTotal" class="input" type="number" step=".01" name="total" required></div><textarea id="fiscalItems" class="hide" name="items">[]</textarea><button class="btn red span">Salvar rascunho</button></form>');qs('#fiscalSale').onchange=function(e){var s=S.sales.find(function(x){return x.id===e.target.value});if(s){qs('#fiscalClient').value=s.client_name||'';qs('#fiscalTotal').value=s.total;qs('#fiscalItems').value=JSON.stringify(s.items||[])}};qs('#fiscalForm').onsubmit=async function(e){e.preventDefault();var d=Object.fromEntries(new FormData(e.target));d.items=JSON.parse(d.items||'[]');try{await api('/fiscal',{method:'POST',body:JSON.stringify(d)});closeModal();toast('Rascunho fiscal criado.');fiscal()}catch(x){toast(x.message,true)}}}
 async function issueFiscal(id){try{await api('/fiscal/'+id+'/issue',{method:'POST'});toast('Documento autorizado.');fiscal()}catch(e){toast(e.message,true)}}
-if(S.token)boot();else{showApp(false);loadRegistrationStatus()}
+bindMotionButtons(document);if(S.token)boot();else{showApp(false);loadRegistrationStatus()}
 </script>
 </body>
 </html>
