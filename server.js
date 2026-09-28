@@ -68,11 +68,70 @@ app.put('/api/budgets/:id',auth,wrap(async(r,s)=>{let x=r.body,it=Array.isArray(
 app.delete('/api/budgets/:id',auth,wrap(async(r,s)=>{let row=(await q('delete from budgets where id=$1 and user_id=$2 returning id',[r.params.id,r.user.sub])).rows[0];if(!row)return s.status(404).json({error:'Orçamento não encontrado nesta conta.'});s.json({ok:true})}));
 
 
-function normText(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9$., ]/g,' ').replace(/\s+/g,' ').trim()}
-const numWords={um:1,uma:1,dois:2,duas:2,tres:3,quatro:4,cinco:5,seis:6,sete:7,oito:8,nove:9,dez:10};
-function qtyFromMessage(m){let n=normText(m),a=n.match(/^\s*(\d{1,3})\b/);if(a)return Math.max(1,+a[1]);for(let [w,v] of Object.entries(numWords))if(new RegExp('^'+w+'\\b').test(n))return v;return 1}
-function explicitPrice(m){let n=normText(m),tests=[/r\$\s*(\d+(?:[.,]\d{1,2})?)/,/\b(?:de|por|a)\s+(\d+(?:[.,]\d{1,2})?)\s*(?:reais|real|cada)?\b/,/\b(\d+(?:[.,]\d{1,2})?)\s*(?:reais|real)\b/];for(let re of tests){let x=n.match(re);if(x)return money(String(x[1]).replace(',','.'))}return 0}
-function localBudget(message,rows){let raw=String(message||'').trim(),n=normText(raw),qty=qtyFromMessage(raw),given=explicitPrice(raw),stop=new Set(['quero','preciso','orcamento','de','do','da','para','por','com','sem','um','uma','dois','duas','tres','quatro','cinco','seis','sete','oito','nove','dez','reais','real','cada','r']);let words=n.split(' ').filter(x=>x.length>2&&!stop.has(x)&&!/^\d/.test(x));let best=null,score=0;for(let p of rows){let hay=normText([p.name,p.category,(p.moto_models||[]).join(' ')].join(' '));let s=words.reduce((a,w)=>a+(hay.includes(w)?1:0),0);if(s>score){score=s;best=p}}let unit=0,fromInventory=false,name='Item informado';if(best&&score>0){name=best.name;unit=money(best.price);fromInventory=unit>0}if(!unit&&given){unit=given;name=(best&&best.name)||raw.replace(/\b(?:de|por|a)\s+r?\$?\s*\d+(?:[.,]\d{1,2})?\s*(?:reais|real|cada)?\b/i,'').trim()||'Item informado'}let item={name:name,quantity:qty,unit_price:unit,total:money(qty*unit),from_inventory:fromInventory,needs_price:!unit};if(!unit)return {reply:'Não encontrei um preço para esse item. Cadastre a peça no estoque ou informe o valor unitário no pedido.',items:[item],grand_total:0,provider:'local-gratis'};let unitText=unit.toFixed(2).replace('.',','),totalText=item.total.toFixed(2).replace('.',',');return {reply:'Orçamento calculado: '+qty+'x '+name+' a R$ '+unitText+' = R$ '+totalText+'.',items:[item],grand_total:item.total,provider:'local-gratis'}}
+function normText(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9$.,+; ]/g,' ').replace(/\s+/g,' ').trim()}
+const wordNums={zero:0,um:1,uma:1,dois:2,duas:2,tres:3,quatro:4,cinco:5,seis:6,sete:7,oito:8,nove:9,dez:10,onze:11,doze:12,treze:13,catorze:14,quatorze:14,quinze:15,dezesseis:16,dezessete:17,dezoito:18,dezenove:19,vinte:20,trinta:30,quarenta:40,cinquenta:50,sessenta:60,setenta:70,oitenta:80,noventa:90,cem:100,cento:100};
+function simpleNumberText(v){
+  let s=normText(v).replace(/\b(reais|real|cada)\b/g,'').trim();
+  if(!s)return null;
+  let numeric=s.match(/^\d+(?:[.,]\d{1,2})?$/);
+  if(numeric)return Number(s.replace(',','.'));
+  let decimal=s.match(/^([a-z]+|\d+)\s+e\s+([a-z]+|\d{1,2})$/);
+  if(decimal){
+    let a=/^\d+$/.test(decimal[1])?+decimal[1]:wordNums[decimal[1]],b=/^\d+$/.test(decimal[2])?+decimal[2]:wordNums[decimal[2]];
+    if(Number.isFinite(a)&&Number.isFinite(b)){
+      if(a<10&&b>=10&&b<100)return money(a+b/100);
+      if(a>=20&&a%10===0&&b<10)return a+b;
+    }
+  }
+  let parts=s.split(/\s+e\s+|\s+/).filter(Boolean),total=0,seen=false;
+  for(let p of parts){if(wordNums[p]===undefined)return null;total+=wordNums[p];seen=true}
+  return seen?total:null;
+}
+function qtyPrefix(segment){
+  let n=normText(segment),m=n.match(/^(\d{1,3})\b/);
+  if(m)return {qty:Math.max(1,+m[1]),rest:n.slice(m[0].length).trim()};
+  let first=n.split(' ')[0],v=wordNums[first];
+  if(Number.isFinite(v)&&v>0)return {qty:v,rest:n.slice(first.length).trim()};
+  return {qty:1,rest:n};
+}
+function bestInventoryMatch(text,rows){
+  let n=normText(text),stop=new Set(['quero','preciso','orcamento','de','do','da','para','por','com','sem','reais','real','cada','veiculo','moto']);
+  let words=n.split(' ').filter(x=>x.length>2&&!stop.has(x)&&!/^\d/.test(x));
+  let best=null,score=0;
+  for(let p of rows){
+    let hay=normText([p.name,p.category,(p.moto_models||[]).join(' ')].join(' '));
+    let s=words.reduce((a,w)=>a+(hay.includes(w)?1:0),0);
+    if(s>score){score=s;best=p}
+  }
+  return score>0?best:null;
+}
+function parseLocalItem(segment,rows){
+  let src=normText(segment),q=qtyPrefix(src),rest=q.rest,price=0,nameText=rest;
+  let marker=rest.match(/\b(?:de|por|a)\s+(.+?)\s*$/);
+  if(marker){
+    let candidate=marker[1].trim(),parsed=simpleNumberText(candidate);
+    if(parsed!==null&&parsed>=0){price=money(parsed);nameText=rest.slice(0,marker.index).trim()}
+  }
+  if(!price){
+    let rm=rest.match(/\br\$\s*(\d+(?:[.,]\d{1,2})?)/),tail=rest.match(/\b(\d+(?:[.,]\d{1,2})?)\s*(?:reais|real)\b/);
+    let x=rm||tail;if(x){price=money(String(x[1]).replace(',','.'));nameText=rest.slice(0,x.index).replace(/\b(?:de|por|a)\s*$/,'').trim()}
+  }
+  nameText=nameText.replace(/\b(?:de|por|a)\s*$/,'').trim();
+  let best=bestInventoryMatch(nameText,rows),fromInventory=false,name=nameText||'Item informado';
+  if(best){name=best.name;if(!price&&+best.price>0){price=money(best.price);fromInventory=true}}
+  let item={name:name,quantity:q.qty,unit_price:price,total:money(q.qty*price),from_inventory:fromInventory,needs_price:!price};
+  return item;
+}
+function localBudget(message,rows){
+  let raw=String(message||'').trim(),work=raw.replace(/^ve[ií]culo[^.]*\.\s*/i,'').trim();
+  let parts=work.split(/\s*(?:\+|;|\bmais\b)\s*/i).map(x=>x.trim()).filter(Boolean);
+  if(!parts.length)parts=[work];
+  let items=parts.map(x=>parseLocalItem(x,rows)).filter(x=>x.name);
+  let total=money(items.reduce((a,x)=>a+x.total,0)),pending=items.filter(x=>x.needs_price);
+  let lines=items.map(x=>x.quantity+'x '+x.name+(x.needs_price?' (preço pendente)':' a R$ '+x.unit_price.toFixed(2).replace('.',',')+' = R$ '+x.total.toFixed(2).replace('.',',')));
+  let reply=pending.length?'Orçamento montado, mas '+pending.length+' item(ns) ainda precisam de preço.':'Orçamento calculado: '+lines.join(' + ')+'.';
+  return {reply:reply,items:items,grand_total:total,provider:'local-gratis'};
+}
 function parseAIText(txt){try{let t=String(txt||'').trim(),f=String.fromCharCode(96).repeat(3);if(t.startsWith(f)){let p=t.indexOf('\n');if(p>=0)t=t.slice(p+1);if(t.endsWith(f))t=t.slice(0,-3)}return JSON.parse(t.trim())}catch{return null}}
 async function openAIBudget(key,model,prompt){let rr=await fetch('https://api.openai.com/v1/responses',{method:'POST',headers:{'content-type':'application/json',authorization:'Bearer '+key},body:JSON.stringify({model:model,input:prompt,max_output_tokens:1200}),signal:AbortSignal.timeout(20000)}),d=await rr.json();if(!rr.ok)throw new Error((d&&d.error&&d.error.message)||'Falha no provedor de IA.');let txt=d.output_text||(d.output||[]).flatMap(o=>o.content||[]).map(x=>x.text||'').join('');let parsed=parseAIText(txt);if(!parsed)throw new Error('Resposta de IA inválida.');return parsed}
 app.post('/api/ai/budget',auth,wrap(async(r,s)=>{let rows=(await q('select name,category,price,quantity,moto_models from inventory where user_id=$1 order by name',[r.user.sub])).rows;let provider=String(process.env.AI_PROVIDER||'local').toLowerCase();if(provider==='openai'&&process.env.OPENAI_API_KEY){let inv=rows.map(x=>x.name+'|'+x.price+'|'+x.quantity+'|'+(x.moto_models||[]).join(',')).join('\n');let prompt='Você é o orçamentista da MF Moto Peças. Use somente preços do estoque abaixo ou preços informados pelo usuário. Nunca invente valor. Retorne SOMENTE JSON no formato {"reply":"texto","items":[{"name":"","quantity":1,"unit_price":0,"total":0,"from_inventory":true,"needs_price":false}],"grand_total":0}.\nESTOQUE:\n'+inv+'\nPEDIDO:'+String(r.body.message||'');try{let out=await openAIBudget(process.env.OPENAI_API_KEY,process.env.OPENAI_MODEL||'gpt-4.1-mini',prompt);return s.json(Object.assign({},out,{provider:'openai'}))}catch(e){console.warn('IA externa indisponível, usando modo local:',e.message)}}return s.json(localBudget(r.body.message,rows))}));
