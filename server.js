@@ -21,6 +21,12 @@ await q("ALTER TABLE budgets ADD COLUMN IF NOT EXISTS model text");
 await q("ALTER TABLE budgets ADD COLUMN IF NOT EXISTS year text");
 await q("ALTER TABLE budgets ADD COLUMN IF NOT EXISTS color text");
 await q("ALTER TABLE service_orders ADD COLUMN IF NOT EXISTS items jsonb DEFAULT '[]'");
+await q("CREATE TABLE IF NOT EXISTS attendances(id text primary key,user_id text references users(id) on delete cascade,client_id text references clients(id) on delete set null,client_name text,phone text,email text,cpf_cnpj text,plate text,brand text,model text,year text,color text,description text,items jsonb default '[]',total numeric(12,2) default 0,discount numeric(12,2) default 0,payment_method text,status text default 'aberto',created_at timestamptz default now(),updated_at timestamptz default now())");
+await q("ALTER TABLE budgets ADD COLUMN IF NOT EXISTS attendance_id text REFERENCES attendances(id) ON DELETE SET NULL");
+await q("ALTER TABLE service_orders ADD COLUMN IF NOT EXISTS attendance_id text REFERENCES attendances(id) ON DELETE SET NULL");
+await q("ALTER TABLE sales ADD COLUMN IF NOT EXISTS attendance_id text REFERENCES attendances(id) ON DELETE SET NULL");
+await q("CREATE INDEX IF NOT EXISTS idx_attendances_user_id ON attendances(user_id)");
+
 
 let first=(await q('select id from users order by created_at asc limit 1')).rows[0];
 if(first){
@@ -44,6 +50,64 @@ app.post('/api/auth/login',wrap(async(r,s)=>{let u=(await q('select * from users
 app.get('/api/me',auth,(r,s)=>s.json(r.user));
 app.post('/api/auth/password',auth,wrap(async(r,s)=>{let current=String(r.body.current_password||''),next=String(r.body.new_password||'');if(next.length<8)return s.status(400).json({error:'A nova senha precisa ter pelo menos 8 caracteres.'});if(current===next)return s.status(400).json({error:'Escolha uma senha diferente da atual.'});let u=(await q('select password_hash from users where id=$1',[r.user.sub])).rows[0];if(!u||!await bcrypt.compare(current,u.password_hash))return s.status(401).json({error:'Senha atual incorreta.'});await q('update users set password_hash=$1 where id=$2',[await bcrypt.hash(next,12),r.user.sub]);s.json({ok:true,message:'Senha alterada com sucesso.'})}));
 app.get('/api/dashboard',auth,wrap(async(r,s)=>{let u=r.user.sub,[c,o,i,b,v,l]=await Promise.all([q('select count(*)::int n from clients where user_id=$1',[u]),q("select count(*)::int n,count(*) filter(where status<>'concluido')::int open from service_orders where user_id=$1",[u]),q('select count(*)::int n from inventory where user_id=$1',[u]),q('select count(*)::int n from budgets where user_id=$1',[u]),q("select coalesce(sum(total),0)::float total,count(*)::int n from sales where user_id=$1 and created_at>=date_trunc('day',now())",[u]),q('select count(*)::int n from inventory where user_id=$1 and quantity<=min_quantity',[u])]);s.json({clients:c.rows[0].n,orders:o.rows[0].n,open_orders:o.rows[0].open,inventory:i.rows[0].n,budgets:b.rows[0].n,today_sales:v.rows[0].total,today_sales_count:v.rows[0].n,low_stock:l.rows[0].n})}));
+
+app.get('/api/attendances',auth,wrap(async(r,s)=>{
+  let rows=(await q('select * from attendances where user_id=$1 order by created_at desc',[r.user.sub])).rows;
+  s.json(rows.map(x=>({...x,total:+x.total,discount:+x.discount})));
+}));
+app.post('/api/attendances/confirm',auth,wrap(async(r,s)=>{
+  let x=r.body||{},u=r.user.sub,p=plate(x.plate),rawItems=Array.isArray(x.items)?x.items:[];
+  if(!rawItems.length)return s.status(400).json({error:'Adicione pelo menos um produto ou serviço.'});
+  let items=rawItems.map(z=>({inventory_id:z.inventory_id||null,name:String(z.name||'Item').trim()||'Item',quantity:Math.max(1,+z.quantity||1),unit_price:money(z.unit_price),type:z.type==='produto'?'produto':'servico'}));
+  let total=money(items.reduce((a,z)=>a+z.quantity*z.unit_price,0)),discount=money(x.discount),clientName=String(x.client_name||'').trim();
+  let c=await pool.connect();
+  try{
+    await c.query('begin');
+    let client=null;
+    if(x.client_id)client=(await c.query('select * from clients where id=$1 and user_id=$2',[x.client_id,u])).rows[0]||null;
+    if(!client&&clientName){
+      if(String(x.email||'').trim())client=(await c.query('select * from clients where user_id=$1 and lower(email)=lower($2) limit 1',[u,String(x.email).trim()])).rows[0]||null;
+      if(!client&&String(x.phone||'').trim())client=(await c.query('select * from clients where user_id=$1 and phone=$2 limit 1',[u,String(x.phone).trim()])).rows[0]||null;
+      if(!client)client=(await c.query('select * from clients where user_id=$1 and lower(name)=lower($2) limit 1',[u,clientName])).rows[0]||null;
+    }
+    if(client){
+      client=(await c.query("update clients set name=coalesce(nullif($1,''),name),phone=coalesce(nullif($2,''),phone),email=coalesce(nullif($3,''),email),cpf_cnpj=coalesce(nullif($4,''),cpf_cnpj) where id=$5 and user_id=$6 returning *",[clientName,String(x.phone||'').trim(),String(x.email||'').trim(),String(x.cpf_cnpj||'').trim(),client.id,u])).rows[0];
+    }else if(clientName){
+      client=(await c.query('insert into clients(id,user_id,name,phone,email,cpf_cnpj) values($1,$2,$3,$4,$5,$6) returning *',[uid(),u,clientName,String(x.phone||'').trim(),String(x.email||'').trim(),String(x.cpf_cnpj||'').trim()])).rows[0];
+    }
+    if(client)clientName=client.name;
+    let attendanceId=uid(),description=String(x.description||'').trim()||items.map(z=>z.name).join(', '),status=x.paid?'pago':(p.length===7?'oficina':'orcamento');
+    let attendance=(await c.query('insert into attendances(id,user_id,client_id,client_name,phone,email,cpf_cnpj,plate,brand,model,year,color,description,items,total,discount,payment_method,status) values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18) returning *',[attendanceId,u,client?.id||null,clientName,String(x.phone||''),String(x.email||''),String(x.cpf_cnpj||''),p,String(x.brand||''),String(x.model||''),String(x.year||''),String(x.color||''),description,JSON.stringify(items),total,discount,String(x.payment_method||'pix'),status])).rows[0];
+    let budget=(await c.query("insert into budgets(id,user_id,attendance_id,client_name,plate,brand,model,year,color,items,grand_total,status) values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,'aberto') returning *",[uid(),u,attendanceId,clientName,p,String(x.brand||''),String(x.model||''),String(x.year||''),String(x.color||''),JSON.stringify(items),total])).rows[0];
+    let order=null;
+    if(p.length===7){
+      order=(await c.query("insert into service_orders(id,user_id,attendance_id,client_id,client_name,plate,brand,model,year,color,description,status,estimated_cost,items) values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,'pendente',$12,$13) returning *",[uid(),u,attendanceId,client?.id||null,clientName,p,String(x.brand||''),String(x.model||''),String(x.year||''),String(x.color||''),description,total,JSON.stringify(items)])).rows[0];
+      await c.query("insert into vehicle_cache_user(user_id,plate,brand,model,year,color,source) values($1,$2,$3,$4,$5,$6,'atendimento') on conflict(user_id,plate) do update set brand=excluded.brand,model=excluded.model,year=excluded.year,color=excluded.color,source=excluded.source,updated_at=now()",[u,p,String(x.brand||''),String(x.model||''),String(x.year||''),String(x.color||'')]);
+    }
+    let sale=null;
+    if(x.paid){
+      let sold=[],subtotal=0;
+      for(let z of items){
+        let qty=z.quantity,unit=z.unit_price,name=z.name;
+        if(z.inventory_id){
+          let prod=(await c.query('select * from inventory where id=$1 and user_id=$2 for update',[z.inventory_id,u])).rows[0];
+          if(!prod)throw new Error('Produto não encontrado no estoque: '+name);
+          if(prod.quantity<qty)throw new Error('Estoque insuficiente: '+prod.name);
+          await c.query('update inventory set quantity=quantity-$1,updated_at=now() where id=$2 and user_id=$3',[qty,prod.id,u]);
+          name=prod.name;if(!unit)unit=money(prod.price);
+          sold.push({inventory_id:prod.id,name,quantity:qty,unit_price:unit,total:money(qty*unit),type:'produto'});
+        }else sold.push({name,quantity:qty,unit_price:unit,total:money(qty*unit),type:z.type||'servico'});
+        subtotal+=qty*unit;
+      }
+      subtotal=money(subtotal);
+      let saleTotal=money(Math.max(0,subtotal-discount));
+      sale=(await c.query('insert into sales(id,user_id,attendance_id,client_name,items,subtotal,discount,total,payment_method) values($1,$2,$3,$4,$5,$6,$7,$8,$9) returning *',[uid(),u,attendanceId,clientName,JSON.stringify(sold),subtotal,discount,saleTotal,String(x.payment_method||'pix')])).rows[0];
+    }
+    await c.query('commit');
+    s.json({ok:true,attendance:{...attendance,total:+attendance.total,discount:+attendance.discount},client,budget:{...budget,grand_total:+budget.grand_total},order:order?{...order,estimated_cost:+order.estimated_cost,final_cost:+order.final_cost}:null,sale:sale?{...sale,subtotal:+sale.subtotal,discount:+sale.discount,total:+sale.total}:null});
+  }catch(e){await c.query('rollback');s.status(400).json({error:e.message})}finally{c.release()}
+}));
+
 // clientes
 app.get('/api/clients',auth,wrap(async(r,s)=>s.json((await q('select * from clients where user_id=$1 order by created_at desc',[r.user.sub])).rows)));
 app.post('/api/clients',auth,wrap(async(r,s)=>{let x=r.body;if(!x.name)return s.status(400).json({error:'Nome obrigatório.'});s.json((await q('insert into clients(id,user_id,name,phone,email,cpf_cnpj) values($1,$2,$3,$4,$5,$6) returning *',[uid(),r.user.sub,x.name,x.phone||'',x.email||'',x.cpf_cnpj||''])).rows[0])}));
