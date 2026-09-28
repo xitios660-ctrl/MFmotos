@@ -627,7 +627,7 @@ function printBudget80(id){
 }
 function showPrintPrompt(type,data){
   S.printJob={type:type,data:data};
-  var total=Number(data.total!=null?data.total:data.grand_total||0);
+  var total=Number(data.total!=null?data.total:(data.grand_total!=null?data.grand_total:(data.final_cost||data.estimated_cost||0)));
   modal(type==='VENDA'?'Venda concluída':(type==='ORDEM DE SERVIÇO'?'OS aberta':'Orçamento salvo'),
     '<div class="card"><div class="title"><b>'+type+' PRONTO</b><span class="badge g">80 MM</span></div>'+
     '<div class="row"><span>Total</span><b class="gold">'+brl(total)+'</b></div>'+
@@ -643,7 +643,7 @@ function testPrint80(){
 }
 function print80(type,data){
   var items=Array.isArray(data.items)?data.items:[];
-  var total=Number(data.total!=null?data.total:data.grand_total||0);
+  var total=Number(data.total!=null?data.total:(data.grand_total!=null?data.grand_total:(data.final_cost||data.estimated_cost||0)));
   var subtotal=Number(data.subtotal!=null?data.subtotal:total);
   var discount=Number(data.discount||0);
   var vehicle=[data.brand,data.model,data.year,data.color].filter(Boolean).join(' · ');
