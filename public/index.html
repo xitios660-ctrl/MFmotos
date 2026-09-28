@@ -263,7 +263,7 @@ async function security(){
     '<div class="securityGrid">'+
       '<div class="card securityMark"><div><div class="lockCore">⌾</div><div style="text-align:center;margin-top:14px"><b>'+esc(me.name||'Usuário MF')+'</b><small style="display:block;color:#777">'+esc(me.email||'')+'</small></div></div></div>'+
       '<div class="card"><div class="title"><b>ALTERAR SENHA</b><span class="badge g">ACESSO PROTEGIDO</span></div>'+
-        '<div class="securityNote">O cadastro público da loja fica fechado depois do primeiro usuário. Sua senha é armazenada com hash e não aparece no painel.</div>'+
+        '<div class="securityNote">Cada e-mail possui uma conta própria. Clientes, estoque, OS, orçamentos, vendas e documentos ficam isolados por usuário. Sua senha é armazenada com hash e não aparece no painel.</div>'+
         '<form id="passwordForm" style="margin-top:12px">'+
           '<div class="field"><label>Senha atual</label><div class="passWrap"><input id="currentPassword" name="current_password" class="input" type="password" autocomplete="current-password" required><button class="btn passToggle" type="button" onclick="togglePass(\'currentPassword\',this)">Mostrar</button></div></div>'+
           '<div class="field"><label>Nova senha</label><div class="passWrap"><input id="newPassword" name="new_password" class="input" type="password" minlength="8" autocomplete="new-password" required><button class="btn passToggle" type="button" onclick="togglePass(\'newPassword\',this)">Mostrar</button></div></div>'+
