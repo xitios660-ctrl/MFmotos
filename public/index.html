@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#070707">
+<meta name="theme-color" content="#070707">\n<link rel="preload" href="/Roda.mp4" as="video" type="video/mp4">
 <title>MF Moto Peças • Gestão</title>
 <style>
 :root{--red:#ef1016;--bg:#070707;--panel:#111;--panel2:#171717;--line:#292929;--text:#f6f6f6;--muted:#929292;--gold:#ffd24d;--green:#34d17c}
@@ -306,24 +306,64 @@ body:after{
 .startRideBtn.is-igniting .startRideCore{background:#ff1820;box-shadow:0 0 24px rgba(255,24,32,.8),0 0 52px rgba(255,24,32,.35)}
 
 .rideTransition{
-  position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0;
+  position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0;overflow:hidden;
   background:
-    radial-gradient(circle at 50% 50%,rgba(255,24,32,.16),transparent 19%),
-    repeating-linear-gradient(90deg,transparent 0 42px,rgba(255,255,255,.018) 43px),
-    #030303;
-  display:grid;place-items:center;transition:opacity .18s ease;
+    radial-gradient(circle at 50% 48%,rgba(255,24,32,.12),transparent 32%),
+    linear-gradient(180deg,#020202,#000);
+  display:grid;place-items:center;
+  transition:opacity .18s ease;
 }
 .rideTransition.on{opacity:1}
-.rideTransition:before{
-  content:"";width:min(54vw,480px);aspect-ratio:1;border-radius:50%;
-  border:1px solid rgba(255,24,32,.28);box-shadow:0 0 0 32px rgba(255,24,32,.03),0 0 0 74px rgba(255,24,32,.018),0 0 70px rgba(255,24,32,.22);
-  animation:rideTransitionRing .62s cubic-bezier(.2,.8,.2,1) both;
+.rideTransitionVideo{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:contain;object-position:center;
+  opacity:0;transform:scale(1.035);
+  filter:contrast(1.06) saturate(1.08);
+  transition:opacity .2s ease,transform 2.9s cubic-bezier(.16,.8,.2,1);
+  background:#000;
 }
-.rideTransition:after{
-  content:"ATENDIMENTO // ONLINE";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  font-size:10px;letter-spacing:3px;font-weight:900;color:#fff;text-shadow:0 0 18px #ff1820;
+.rideTransition.on .rideTransitionVideo{opacity:1;transform:scale(1)}
+.rideTransitionShade{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.26),transparent 18%,transparent 78%,rgba(0,0,0,.55)),
+    radial-gradient(circle at center,transparent 45%,rgba(0,0,0,.36) 100%);
 }
+.rideTransitionShade:before{
+  content:"";position:absolute;inset:0;opacity:.15;
+  background:repeating-linear-gradient(180deg,transparent 0 4px,rgba(255,255,255,.035) 5px);
+  animation:rideVideoScan 2.4s linear infinite;
+}
+.rideTransitionBrand{
+  position:absolute;z-index:3;left:50%;bottom:max(24px,env(safe-area-inset-bottom));
+  transform:translateX(-50%);width:min(540px,88vw);display:flex;align-items:center;justify-content:center;gap:12px;
+  color:#fff;text-align:center;text-shadow:0 0 18px rgba(255,24,32,.65);
+  opacity:0;animation:rideBrandIn .45s .22s ease forwards;
+}
+.rideTransitionBrand i{
+  width:7px;height:7px;border-radius:50%;background:#ff252c;
+  box-shadow:0 0 16px #ff1820,0 0 0 5px rgba(255,24,32,.08);
+  animation:startRideLive 1s ease-in-out infinite;
+}
+.rideTransitionBrand b{font-size:10px;letter-spacing:2.7px}
+.rideTransitionBrand span{font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.55)}
+.rideTransitionFallback{
+  position:absolute;z-index:1;width:min(58vw,430px);aspect-ratio:1;border-radius:50%;
+  border:1px solid rgba(255,24,32,.24);
+  box-shadow:0 0 0 28px rgba(255,24,32,.025),0 0 0 65px rgba(255,24,32,.014),0 0 70px rgba(255,24,32,.2);
+  opacity:0;
+}
+.rideTransition.video-failed .rideTransitionVideo{display:none}
+.rideTransition.video-failed .rideTransitionFallback{opacity:1;animation:rideTransitionRing .62s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rideVideoScan{from{transform:translateY(-8px)}to{transform:translateY(8px)}}
+@keyframes rideBrandIn{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
 
+@media(max-width:760px){
+  .rideTransitionVideo{object-fit:cover}
+  .rideTransitionBrand{bottom:max(18px,env(safe-area-inset-bottom));flex-direction:column;gap:4px}
+  .rideTransitionBrand b{font-size:9px;letter-spacing:2.2px}
+  .rideTransitionBrand span{font-size:7px}
+}
 @keyframes startRideSweep{0%,35%{background-position:0 0,-120% 0}70%,100%{background-position:0 0,140% 0}}
 @keyframes startRideRail{0%,100%{top:-45%}50%{top:105%}}
 @keyframes startRideRotor{to{transform:rotate(360deg)}}
@@ -570,14 +610,37 @@ function bindStartRide(){
     if(reduce){go('atendimento');return}
     resetTilt();b.classList.add('is-igniting');
     var t=qs('#startRideTitle'),s=qs('#startRideSub');
-    if(t)t.textContent='INICIANDO…';if(s)s.textContent='SINCRONIZANDO MÓDULOS';
-    var fx=document.createElement('div');fx.className='rideTransition';document.body.appendChild(fx);
-    requestAnimationFrame(function(){fx.classList.add('on')});
-    setTimeout(async function(){
+    if(t)t.textContent='INICIANDO…';if(s)s.textContent='SINCRONIZANDO MF RIDE CONTROL';
+
+    var fx=document.createElement('div');
+    fx.className='rideTransition';
+    fx.innerHTML='<video class="rideTransitionVideo" src="/Roda.mp4" muted playsinline preload="auto"></video><div class="rideTransitionFallback"></div><div class="rideTransitionShade"></div><div class="rideTransitionBrand"><i></i><div><b>MF MOTO PEÇAS</b><span>ATENDIMENTO // ONLINE</span></div></div>';
+    document.body.appendChild(fx);
+    var v=fx.querySelector('.rideTransitionVideo'),done=false,timer=null;
+
+    async function finishRide(){
+      if(done)return;done=true;
+      if(timer)clearTimeout(timer);
       await go('atendimento');
       fx.classList.remove('on');
-      setTimeout(function(){fx.remove()},180);
-    },620);
+      setTimeout(function(){fx.remove()},220);
+    }
+    function fallbackRide(){
+      fx.classList.add('video-failed');
+      timer=setTimeout(finishRide,760);
+    }
+
+    requestAnimationFrame(function(){
+      fx.classList.add('on');
+      try{
+        v.currentTime=0;
+        var play=v.play();
+        if(play&&play.catch)play.catch(fallbackRide);
+      }catch(e){fallbackRide()}
+    });
+    v.onended=finishRide;
+    v.onerror=fallbackRide;
+    timer=setTimeout(finishRide,3200);
   };
 }
 async function overview(){
