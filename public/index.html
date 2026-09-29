@@ -694,11 +694,90 @@ button.uiMotion:disabled{opacity:.4!important;filter:saturate(.25)!important;box
 }
 @media(hover:none){
   button.uiMotion:not(.startRideBtn){transform:none!important}
-  button.uiMotion:hover .mfBtnEdge{animation:none}
 }
 @media(prefers-reduced-motion:reduce){
   button.uiMotion:not(.startRideBtn),.mfBtnEdge,.mfBtnEnergy{transition:none!important;animation:none!important;transform:none!important}
 }
+
+/* Idle motion visível em desktop E celular */
+button.uiMotion:not(.startRideBtn) .mfBtnEdge{
+  opacity:.34;
+  animation:mfEdgeOrbitIdle 5.8s linear infinite;
+  will-change:transform,opacity;
+}
+button.uiMotion:not(.startRideBtn) .mfBtnEnergy{
+  animation:mfEnergyIdle 2.9s ease-in-out infinite;
+  will-change:transform,opacity;
+}
+button.uiMotion.red:not(.startRideBtn) .mfBtnEdge{
+  opacity:.62;
+  animation-duration:3.6s;
+}
+button.uiMotion.red:not(.startRideBtn) .mfBtnEnergy{
+  animation-duration:2.15s;
+}
+button.uiMotion.danger:not(.startRideBtn) .mfBtnEnergy{
+  background:linear-gradient(90deg,transparent,#7d1116 35%,#ff4a50 50%,#7d1116 65%,transparent);
+}
+.nav button.uiMotion .mfBtnEdge,
+.mobile button.uiMotion .mfBtnEdge,
+.tabs button.uiMotion .mfBtnEdge{
+  opacity:.22;
+  animation-duration:7.2s;
+}
+.nav button.uiMotion.on .mfBtnEnergy,
+.mobile button.uiMotion.on .mfBtnEnergy,
+.tabs button.uiMotion.on .mfBtnEnergy{
+  transform:scaleX(.72);
+  opacity:.55;
+}
+.quickLink.uiMotion .mfBtnEdge{
+  opacity:.30;
+  animation-duration:6.4s;
+}
+button.uiMotion:not(.startRideBtn)::after{
+  animation:mfSheenIdle 4.6s ease-in-out infinite;
+}
+button.uiMotion.red:not(.startRideBtn)::after{
+  animation-duration:3.25s;
+}
+@keyframes mfEdgeOrbitIdle{
+  0%{transform:rotate(0deg);opacity:.22}
+  45%{opacity:.42}
+  50%{opacity:.58}
+  55%{opacity:.42}
+  100%{transform:rotate(360deg);opacity:.22}
+}
+@keyframes mfEnergyIdle{
+  0%,100%{transform:scaleX(.08);opacity:.12}
+  50%{transform:scaleX(.42);opacity:.38}
+}
+@keyframes mfSheenIdle{
+  0%,62%{opacity:0;transform:rotate(18deg) translateX(-180%)}
+  70%{opacity:.10}
+  83%{opacity:.42}
+  94%,100%{opacity:0;transform:rotate(18deg) translateX(610%)}
+}
+/* clique mais evidente no toque */
+button.uiMotion.is-charged:not(.startRideBtn){
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.16),
+    0 0 0 1px rgba(255,24,32,.10),
+    0 0 28px rgba(255,24,32,.16),
+    0 8px 18px rgba(0,0,0,.28)!important;
+}
+button.uiMotion.is-charged:not(.startRideBtn) .mfBtnEnergy{
+  animation:none!important;
+  transform:scaleX(1)!important;
+  opacity:1!important;
+  box-shadow:0 0 14px rgba(255,24,32,.75);
+}
+@media(hover:none){
+  button.uiMotion:not(.startRideBtn) .mfBtnEdge{animation:mfEdgeOrbitIdle 5.2s linear infinite!important}
+  button.uiMotion:not(.startRideBtn) .mfBtnEnergy{animation:mfEnergyIdle 2.5s ease-in-out infinite!important}
+  button.uiMotion:not(.startRideBtn)::after{animation:mfSheenIdle 4s ease-in-out infinite!important}
+}
+
 /* ===== END MF COCKPIT BUTTONS V3 ===== */
 </style>
 </head>
