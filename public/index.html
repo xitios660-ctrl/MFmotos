@@ -516,205 +516,164 @@ button.uiMotion:disabled{
   button.uiMotion:not(.startRideBtn){transform:none!important}
   button.uiMotion:not(.startRideBtn)::after,.uiMotionBurst{animation:none!important;transition:none!important}
 }
-/* ===== MF CINEMATIC BUTTON SYSTEM V4 ===== */
+/* ===== MF CINEMATIC BUTTON SYSTEM V5 / PERFORMANCE ===== */
 button.uiMotion:not(.startRideBtn){
-  --bx:50%;--by:50%;--btx:0px;--bty:0px;--brx:0deg;--bry:0deg;
+  --bx:50%;--by:50%;--btx:0px;--bty:0px;
   -webkit-tap-highlight-color:transparent;touch-action:manipulation;
-  position:relative;isolation:isolate;overflow:hidden;transform-style:preserve-3d;
-  min-height:46px;padding:11px 48px 11px 16px;border-radius:15px!important;
-  border:1px solid rgba(255,255,255,.13)!important;color:#f8f8fa;
-  background:
-    radial-gradient(circle at var(--bx) var(--by),rgba(255,255,255,.12),transparent 27%),
-    linear-gradient(180deg,#1b1b20 0%,#111115 50%,#08080b 100%)!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.10),inset 0 -1px 0 rgba(0,0,0,.92),0 9px 20px rgba(0,0,0,.32);
-  font-weight:900;letter-spacing:.18px;text-shadow:0 1px 1px rgba(0,0,0,.55);
-  transform:perspective(620px) rotateX(var(--brx)) rotateY(var(--bry)) translate3d(var(--btx),var(--bty),0);
-  transition:transform .16s cubic-bezier(.2,.85,.2,1),box-shadow .22s,border-color .22s,filter .22s;
-  will-change:transform;
+  position:relative;isolation:isolate;overflow:hidden;
+  min-height:45px;padding:10px 43px 10px 15px;border-radius:14px!important;
+  border:1px solid rgba(255,255,255,.13)!important;color:#f7f7f9;
+  background:radial-gradient(circle at var(--bx) var(--by),rgba(255,255,255,.105),transparent 30%),linear-gradient(180deg,#19191e,#101014 55%,#08080b)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),inset 0 -1px 0 rgba(0,0,0,.9),0 7px 16px rgba(0,0,0,.28);
+  font-weight:900;letter-spacing:.16px;text-shadow:0 1px 1px rgba(0,0,0,.5);
+  transform:translate3d(var(--btx),var(--bty),0);
+  transition:transform .15s cubic-bezier(.2,.85,.2,1),border-color .18s,box-shadow .18s;
 }
 button.uiMotion:not(.startRideBtn)::before{
-  content:""!important;position:absolute!important;z-index:-2!important;pointer-events:none!important;
-  inset:1px!important;border-radius:13px!important;
-  background:
-    linear-gradient(180deg,rgba(255,255,255,.11),transparent 38%),
-    repeating-linear-gradient(90deg,transparent 0 18px,rgba(255,255,255,.012) 19px)!important;
-  opacity:.78!important;
+  content:"";position:absolute;inset:1px;z-index:-1;pointer-events:none;border-radius:12px;
+  background:linear-gradient(180deg,rgba(255,255,255,.09),transparent 38%);
 }
-button.uiMotion:not(.startRideBtn)::after{
-  content:""!important;position:absolute!important;z-index:1!important;pointer-events:none!important;
-  left:-42%!important;top:-85%!important;width:30%!important;height:275%!important;border-radius:45%!important;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.34),transparent)!important;
-  opacity:.0!important;transform:rotate(18deg) translateX(-180%)!important;
-  animation:mfCinemaSheen 3.8s ease-in-out infinite!important;
+button.uiMotion:not(.startRideBtn):active,
+button.uiMotion.ui-press:not(.startRideBtn){
+  transform:translate3d(var(--btx),calc(var(--bty) + 1px),0) scale(.965)!important;
 }
-button.uiMotion:not(.startRideBtn):hover,
-button.uiMotion:not(.startRideBtn):focus-visible{
-  outline:none;border-color:rgba(255,63,70,.58)!important;filter:saturate(1.08);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 16px 36px rgba(0,0,0,.40),0 0 26px rgba(255,24,32,.10)!important;
+button.uiMotion.red:not(.startRideBtn){
+  border-color:rgba(255,91,97,.62)!important;
+  background:radial-gradient(circle at var(--bx) var(--by),rgba(255,255,255,.19),transparent 28%),linear-gradient(145deg,#ff252d,#d20911 48%,#820409)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.23),inset 0 -2px 0 rgba(70,0,4,.6),0 9px 21px rgba(210,7,16,.24)!important;
 }
-button.uiMotion.ui-press:not(.startRideBtn),
-button.uiMotion:not(.startRideBtn):active{
-  --brx:0deg!important;--bry:0deg!important;
-  transform:perspective(620px) translate3d(var(--btx),calc(var(--bty) + 2px),0) scale(.955)!important;
-  box-shadow:inset 0 3px 12px rgba(0,0,0,.64),0 3px 8px rgba(0,0,0,.3)!important;
+button.uiMotion.danger:not(.startRideBtn){
+  color:#ff9a9f!important;border-color:rgba(180,43,50,.5)!important;
+  background:linear-gradient(180deg,#2a0c10,#15080a 72%,#090607)!important;
 }
+button.uiMotion:disabled{opacity:.4!important;box-shadow:none!important}
 
-/* HUD orbitando em cada botão */
-.mfBtnEdge{
-  position:absolute;inset:-1px;z-index:4;border-radius:inherit;pointer-events:none;
-  background:conic-gradient(from 0deg,transparent 0 50%,rgba(255,255,255,.05) 58%,rgba(255,24,32,.72) 68%,rgba(255,255,255,.20) 72%,transparent 80% 100%);
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor;mask-composite:exclude;padding:1px;
-  opacity:.52;animation:mfEdgeOrbitCinema 3.4s linear infinite;
-  filter:drop-shadow(0 0 4px rgba(255,24,32,.28));
+/* Uma única peça móvel por botão. Muito mais leve que V4. */
+.mfBtnGlyph{
+  position:absolute;right:11px;top:50%;z-index:4;
+  width:24px;height:24px;transform:translateY(-50%);
+  display:grid;place-items:center;border-radius:8px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(0,0,0,.22);color:#ff4a50;
+  font-size:13px;font-weight:950;line-height:1;pointer-events:none;
 }
-.mfBtnEnergy{
-  position:absolute;z-index:3;pointer-events:none;left:13px;right:45px;bottom:5px;height:2px;border-radius:10px;
-  background:linear-gradient(90deg,transparent,#8d0d13 18%,#ff2028 42%,#fff 50%,#ff2028 58%,#8d0d13 82%,transparent);
-  transform-origin:center;animation:mfEnergyCinema 2.25s ease-in-out infinite;
-  box-shadow:0 0 8px rgba(255,24,32,.28);
-}
-.mfBtnRotor{
-  position:absolute;right:10px;top:50%;z-index:5;width:27px;height:27px;transform:translateY(-50%);
-  border-radius:50%;pointer-events:none;
-}
-.mfBtnRotor:before{
-  content:"";position:absolute;inset:0;border-radius:50%;
-  background:conic-gradient(from 0deg,transparent 0 12%,#ff3138 12% 20%,transparent 20% 42%,rgba(255,255,255,.34) 42% 45%,transparent 45% 67%,#741016 67% 78%,transparent 78%);
-  -webkit-mask:radial-gradient(circle,transparent 54%,#000 57%);
-  mask:radial-gradient(circle,transparent 54%,#000 57%);
-  filter:drop-shadow(0 0 4px rgba(255,24,32,.62));
-  animation:mfRotorSpin 2.2s linear infinite;
-}
-.mfBtnRotor:after{
-  content:"";position:absolute;inset:6px;border-radius:50%;border:1px dashed rgba(255,255,255,.16);
-  animation:mfRotorSpin 4.2s linear infinite reverse;
-}
-.mfBtnRotor i{
-  position:absolute;left:50%;top:50%;width:5px;height:5px;transform:translate(-50%,-50%);
-  border-radius:50%;background:#ff252c;box-shadow:0 0 9px #ff1820,0 0 0 3px rgba(255,24,32,.07);
-  animation:mfCorePulse 1.25s ease-in-out infinite;
-}
-.mfBtnScanner{
-  position:absolute;z-index:2;pointer-events:none;top:3px;bottom:3px;width:34px;left:-38px;
-  background:linear-gradient(90deg,transparent,rgba(255,43,50,.06),rgba(255,255,255,.13),rgba(255,43,50,.06),transparent);
-  filter:blur(.2px);animation:mfScannerTravel 3.1s cubic-bezier(.4,0,.2,1) infinite;
-}
-.mfBtnCorners{
-  position:absolute;z-index:4;pointer-events:none;inset:5px;border-radius:10px;opacity:.45;
-  background:
-    linear-gradient(#ff3239,#ff3239) left top/7px 1px no-repeat,
-    linear-gradient(#ff3239,#ff3239) left top/1px 7px no-repeat,
-    linear-gradient(#ff3239,#ff3239) right bottom/7px 1px no-repeat,
-    linear-gradient(#ff3239,#ff3239) right bottom/1px 7px no-repeat;
-  animation:mfCornersBreathe 2.1s ease-in-out infinite;
+.mfBtnFx{
+  position:absolute;z-index:2;pointer-events:none;opacity:0;
 }
 .mfBtnPulse{
-  position:absolute;z-index:8;pointer-events:none;width:8px;height:8px;border-radius:50%;
-  background:#fff;box-shadow:0 0 10px #fff,0 0 22px #ff1820;
-  transform:translate(-50%,-50%) scale(.25);opacity:0;animation:mfPulseOut .52s ease-out forwards;
+  position:absolute;z-index:7;pointer-events:none;width:7px;height:7px;border-radius:50%;
+  background:#fff;transform:translate(-50%,-50%) scale(.25);
+  animation:mfTapPulse .44s ease-out forwards;
 }
 
-/* Vermelhos ganham modo turbo */
-button.uiMotion.red:not(.startRideBtn),
-button.uiMotion[type="submit"].red:not(.startRideBtn){
-  border-color:rgba(255,108,113,.66)!important;
-  background:
-    radial-gradient(circle at var(--bx) var(--by),rgba(255,255,255,.24),transparent 25%),
-    linear-gradient(145deg,#ff2931 0%,#d50810 46%,#860409 100%)!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),inset 0 -2px 0 rgba(70,0,4,.65),0 11px 26px rgba(215,7,16,.29),0 0 22px rgba(255,24,32,.08)!important;
-  animation:mfRedBreath 2.7s ease-in-out infinite;
+/* IA: estrela neural respirando */
+button.mf-ai .mfBtnGlyph{color:#ffd4ff;border-color:rgba(232,110,255,.24);background:rgba(92,12,108,.18)}
+button.mf-ai.mfInView .mfBtnGlyph{animation:mfAiPulse 1.9s ease-in-out infinite}
+button.mf-ai .mfBtnFx{
+  right:7px;top:50%;width:32px;height:32px;border-radius:50%;
+  border:1px solid rgba(232,110,255,.16);transform:translateY(-50%) scale(.7);
 }
-button.uiMotion.red:not(.startRideBtn) .mfBtnRotor:before{animation-duration:1.35s}
-button.uiMotion.red:not(.startRideBtn) .mfBtnEnergy{animation-duration:1.55s}
-button.uiMotion.red:not(.startRideBtn) .mfBtnEdge{animation-duration:2.2s;opacity:.78}
+button.mf-ai.mfInView .mfBtnFx{opacity:.8;animation:mfAiOrbit 3.2s linear infinite}
 
-/* perigo = alerta */
-button.uiMotion.danger:not(.startRideBtn){
-  border-color:rgba(191,45,52,.58)!important;color:#ff9da1!important;
-  background:radial-gradient(circle at var(--bx) var(--by),rgba(255,70,78,.12),transparent 29%),linear-gradient(180deg,#2c0c10,#16080a 72%,#090607)!important;
+/* Consulta/scan: scanner horizontal */
+button.mf-scan{padding-right:16px!important}
+button.mf-scan .mfBtnGlyph{display:none}
+button.mf-scan .mfBtnFx{
+  top:3px;bottom:3px;left:-22px;width:18px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.24),transparent);
 }
-button.uiMotion.danger:not(.startRideBtn) .mfBtnRotor i{background:#ff555b}
-button.uiMotion.danger:not(.startRideBtn) .mfBtnCorners{animation-duration:1.15s}
+button.mf-scan.mfInView .mfBtnFx{opacity:.6;animation:mfScan 2.55s ease-in-out infinite}
 
-/* compactos continuam cinematográficos sem esmagar texto */
-button.uiMotion.mfCompact:not(.startRideBtn){
-  padding:9px 14px!important;min-width:42px;
+/* Salvar/confirmar: barra de carga na base */
+button.mf-commit .mfBtnGlyph{color:#fff}
+button.mf-commit .mfBtnFx{
+  left:10px;right:42px;bottom:4px;height:2px;border-radius:5px;
+  background:linear-gradient(90deg,transparent,#ff222a,#fff,#ff222a,transparent);
+  transform:scaleX(.12);transform-origin:left;
 }
-button.uiMotion.mfCompact .mfBtnRotor{display:none}
-button.uiMotion.mfCompact .mfBtnEnergy{right:11px;left:11px}
-button.uiMotion.mfCompact .mfBtnScanner{animation-duration:2.55s}
-button.uiMotion.mfCompact .mfBtnCorners{inset:4px}
+button.mf-commit.mfInView .mfBtnFx{opacity:.72;animation:mfCommitCharge 2.25s ease-in-out infinite}
 
-/* navegação */
-.nav button.uiMotion{
-  padding:11px 40px 11px 13px!important;transform:none!important;
-  background:linear-gradient(90deg,#111115,#09090c)!important;
+/* Editar: traço técnico inclinando */
+button.mf-edit .mfBtnGlyph{color:#ffd166;border-color:rgba(255,209,102,.25);background:rgba(91,67,8,.16)}
+button.mf-edit.mfInView .mfBtnGlyph{animation:mfEditTick 1.8s ease-in-out infinite}
+
+/* Excluir: alerta curto e diferente */
+button.mf-delete .mfBtnGlyph{color:#ff7379;border-color:rgba(255,62,69,.28);background:rgba(104,8,13,.22)}
+button.mf-delete.mfInView .mfBtnGlyph{animation:mfDangerBeat 1.55s steps(2,end) infinite}
+
+/* Imprimir: “papel” descendo */
+button.mf-print .mfBtnGlyph{color:#e9eef6;border-color:rgba(220,230,245,.19)}
+button.mf-print.mfInView .mfBtnGlyph{animation:mfPrintFeed 1.85s ease-in-out infinite}
+
+/* Avançar: seta corre, sem glow pesado */
+button.mf-next .mfBtnGlyph{color:#ff6369}
+button.mf-next.mfInView .mfBtnGlyph{animation:mfArrowRun 1.55s ease-in-out infinite}
+
+/* Adicionar: + abre e fecha */
+button.mf-add .mfBtnGlyph{color:#ff666c}
+button.mf-add.mfInView .mfBtnGlyph{animation:mfAddPulse 1.9s ease-in-out infinite}
+
+/* Histórico/navegação auxiliar: radar discreto */
+button.mf-browse .mfBtnGlyph{color:#c6c8ce}
+button.mf-browse.mfInView .mfBtnGlyph{animation:mfBrowseTick 2.5s ease-in-out infinite}
+
+/* Utilitários ficam leves para não travar */
+button.mf-utility{padding-right:15px!important}
+button.mf-utility .mfBtnGlyph,button.mf-utility .mfBtnFx{display:none}
+
+/* menus têm identidade própria, sem rotor */
+.nav button.uiMotion,.mobile button.uiMotion,.tabs button.uiMotion{transform:none!important;padding-right:15px!important}
+.nav button.uiMotion .mfBtnGlyph,.mobile button.uiMotion .mfBtnGlyph,.tabs button.uiMotion .mfBtnGlyph{display:none}
+.nav button.uiMotion .mfBtnFx,.mobile button.uiMotion .mfBtnFx,.tabs button.uiMotion .mfBtnFx{
+  display:block;opacity:.25;height:2px;left:10px;right:10px;bottom:4px;background:#ff222a;transform:scaleX(.1)
 }
-.nav button.uiMotion:hover{transform:translateX(4px)!important}
-.nav button.uiMotion.on{
-  color:#fff!important;border-color:rgba(255,55,62,.40)!important;
-  background:linear-gradient(90deg,rgba(255,24,32,.26),rgba(255,24,32,.045) 70%,#09090c)!important;
-  box-shadow:inset 3px 0 0 #ff1820,0 9px 22px rgba(0,0,0,.24),0 0 20px rgba(255,24,32,.07)!important;
+.nav button.uiMotion.on .mfBtnFx,.mobile button.uiMotion.on .mfBtnFx,.tabs button.uiMotion.on .mfBtnFx{opacity:.8;transform:scaleX(.7)}
+.nav button.uiMotion.on{background:linear-gradient(90deg,rgba(255,24,32,.22),rgba(255,24,32,.035) 70%,#09090c)!important;box-shadow:inset 3px 0 0 #ff1820!important}
+.mobile button.uiMotion.on,.tabs button.uiMotion.on{background:linear-gradient(180deg,#320d11,#17080a)!important;box-shadow:inset 0 -2px 0 #ff1820!important}
+
+/* atalhos: card magnético com seta, não mini-HUD igual aos demais */
+.quickLink.uiMotion{padding:12px!important;transform:none!important}
+.quickLink.uiMotion .mfBtnGlyph{display:none}
+.quickLink.uiMotion .mfBtnFx{
+  display:block;opacity:.18;width:42px;height:42px;right:-19px;bottom:-20px;border-radius:50%;
+  border:1px solid #ff3339;
 }
-.nav button.uiMotion .mfBtnRotor{width:23px;height:23px;right:10px}
-.nav button.uiMotion .mfBtnEnergy{right:38px}
+.quickLink.uiMotion.mfInView .mfBtnFx{animation:mfQuickRing 3.6s ease-in-out infinite}
 
-/* tabs/mobile */
-.tabs button.uiMotion,.mobile button.uiMotion{transform:none!important}
-.tabs button.uiMotion{padding-right:38px!important}
-.mobile button.uiMotion{padding:8px 10px!important}
-.mobile button.uiMotion .mfBtnRotor{display:none}
-.mobile button.uiMotion .mfBtnEnergy{left:8px;right:8px}
-.mobile button.uiMotion .mfBtnCorners{inset:3px}
-.mobile button.uiMotion.on,.tabs button.uiMotion.on{
-  color:#fff!important;border-color:rgba(255,41,48,.36)!important;
-  background:linear-gradient(180deg,#340e11,#18080a)!important;
-  box-shadow:inset 0 -2px 0 #ff1820,0 0 18px rgba(255,24,32,.08)!important;
-}
+/* compactos */
+button.mfCompact{padding:9px 12px!important}
+button.mfCompact .mfBtnGlyph,button.mfCompact .mfBtnFx{display:none}
 
-/* quick cards */
-.quickLink.uiMotion{
-  min-height:96px!important;padding:12px 46px 12px 12px!important;border-radius:16px!important;
-  background:radial-gradient(circle at var(--bx) var(--by),rgba(255,255,255,.09),transparent 30%),linear-gradient(145deg,#151519,#08080b)!important;
-}
+/* hover/touch feedback */
+button.uiMotion:not(.startRideBtn):hover{border-color:rgba(255,66,72,.5)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.11),0 11px 24px rgba(0,0,0,.32)!important}
+button.uiMotion.is-charged:not(.startRideBtn){border-color:rgba(255,78,84,.68)!important}
 
-/* specials */
-.modalHead button.uiMotion{width:42px;height:42px;padding:0!important;display:grid;place-items:center;font-size:20px}
-.modalHead button.uiMotion .mfBtnRotor{display:none}
-.passToggle.uiMotion{min-width:88px}
-button.uiMotion:disabled{opacity:.4!important;filter:saturate(.25)!important;box-shadow:none!important;animation:none!important}
-button.uiMotion:disabled .mfBtnEdge,
-button.uiMotion:disabled .mfBtnEnergy,
-button.uiMotion:disabled .mfBtnRotor:before,
-button.uiMotion:disabled .mfBtnRotor:after,
-button.uiMotion:disabled .mfBtnScanner,
-button.uiMotion:disabled .mfBtnCorners{animation-play-state:paused!important}
+/* Performance: animação pausada fora da tela */
+button.uiMotion:not(.mfInView) .mfBtnGlyph,
+button.uiMotion:not(.mfInView) .mfBtnFx{animation-play-state:paused!important}
 
-@keyframes mfEdgeOrbitCinema{to{transform:rotate(360deg)}}
-@keyframes mfRotorSpin{to{transform:rotate(360deg)}}
-@keyframes mfCorePulse{0%,100%{opacity:.48;transform:translate(-50%,-50%) scale(.78)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.18)}}
-@keyframes mfEnergyCinema{0%,100%{transform:scaleX(.12);opacity:.18}50%{transform:scaleX(.82);opacity:.72}}
-@keyframes mfScannerTravel{0%,18%{left:-38px;opacity:0}28%{opacity:.5}72%{opacity:.32}86%,100%{left:calc(100% + 8px);opacity:0}}
-@keyframes mfCornersBreathe{0%,100%{opacity:.24;filter:drop-shadow(0 0 0 rgba(255,24,32,0))}50%{opacity:.82;filter:drop-shadow(0 0 4px rgba(255,24,32,.55))}}
-@keyframes mfCinemaSheen{0%,56%{opacity:0;transform:rotate(18deg) translateX(-180%)}66%{opacity:.14}80%{opacity:.50}94%,100%{opacity:0;transform:rotate(18deg) translateX(620%)}}
-@keyframes mfRedBreath{0%,100%{filter:saturate(1);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 11px 26px rgba(215,7,16,.23),0 0 12px rgba(255,24,32,.04)}50%{filter:saturate(1.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.30),0 13px 30px rgba(215,7,16,.32),0 0 26px rgba(255,24,32,.12)}}
-@keyframes mfPulseOut{0%{opacity:1;transform:translate(-50%,-50%) scale(.25);box-shadow:0 0 0 0 rgba(255,24,32,.3),0 0 20px #ff1820}100%{opacity:0;transform:translate(-50%,-50%) scale(1.8);box-shadow:0 0 0 27px rgba(255,24,32,0),0 0 4px rgba(255,24,32,0)}}
+@keyframes mfAiPulse{0%,100%{transform:translateY(-50%) scale(.88);opacity:.72}50%{transform:translateY(-50%) scale(1.08);opacity:1}}
+@keyframes mfAiOrbit{to{transform:translateY(-50%) rotate(360deg) scale(.92)}}
+@keyframes mfScan{0%,18%{left:-22px;opacity:0}35%{opacity:.7}78%{opacity:.35}92%,100%{left:calc(100% + 5px);opacity:0}}
+@keyframes mfCommitCharge{0%,100%{transform:scaleX(.12);opacity:.22}55%{transform:scaleX(.92);opacity:.86}}
+@keyframes mfEditTick{0%,100%{transform:translateY(-50%) rotate(-8deg)}50%{transform:translateY(-50%) rotate(11deg)}}
+@keyframes mfDangerBeat{0%,100%{opacity:.55}50%{opacity:1}}
+@keyframes mfPrintFeed{0%,100%{transform:translateY(-55%)}50%{transform:translateY(-39%)}}
+@keyframes mfArrowRun{0%,100%{transform:translate(-3px,-50%)}50%{transform:translate(3px,-50%)}}
+@keyframes mfAddPulse{0%,100%{transform:translateY(-50%) rotate(0deg) scale(.92)}50%{transform:translateY(-50%) rotate(90deg) scale(1.06)}}
+@keyframes mfBrowseTick{0%,100%{opacity:.48;transform:translateY(-50%) scale(.92)}50%{opacity:1;transform:translateY(-50%) scale(1.04)}}
+@keyframes mfQuickRing{0%,100%{transform:scale(.86);opacity:.12}50%{transform:scale(1.15);opacity:.28}}
+@keyframes mfTapPulse{0%{opacity:1;box-shadow:0 0 0 0 rgba(255,24,32,.25)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.7);box-shadow:0 0 0 18px rgba(255,24,32,0)}}
 
 @media(max-width:760px){
-  button.uiMotion:not(.startRideBtn){transform:none!important;min-height:46px}
-  button.uiMotion:not(.startRideBtn) .mfBtnEdge{animation-duration:3.2s}
-  button.uiMotion:not(.startRideBtn) .mfBtnRotor:before{animation-duration:1.9s}
-  button.uiMotion:not(.startRideBtn) .mfBtnScanner{animation-duration:2.7s}
-  .table td button.uiMotion{min-height:40px}
-}
-@media(hover:none){
-  button.uiMotion:not(.startRideBtn){transform:none!important}
+  button.uiMotion:not(.startRideBtn){transform:none!important;min-height:44px}
+  button.mf-ai.mfInView .mfBtnFx{animation-duration:4s}
+  button.mf-scan.mfInView .mfBtnFx{animation-duration:3s}
 }
 @media(prefers-reduced-motion:reduce){
-  button.uiMotion:not(.startRideBtn),.mfBtnEdge,.mfBtnEnergy,.mfBtnRotor:before,.mfBtnRotor:after,.mfBtnRotor i,.mfBtnScanner,.mfBtnCorners{animation:none!important;transition:none!important;transform:none!important}
+  button.uiMotion,.mfBtnGlyph,.mfBtnFx{animation:none!important;transition:none!important}
 }
-/* ===== END MF CINEMATIC BUTTON SYSTEM V4 ===== */
+/* ===== END MF CINEMATIC BUTTON SYSTEM V5 ===== */
 </style>
 </head>
 <body>
@@ -754,56 +713,67 @@ var authMode='login';function authModeSet(m){authMode=m;qs('#tabLogin').classLis
 qs('#tabLogin').onclick=function(){authModeSet('login')};qs('#tabRegister').onclick=function(){authModeSet('register')};
 qs('#authForm').onsubmit=async function(e){e.preventDefault();try{var body={name:qs('#authName').value,email:qs('#authEmail').value,password:qs('#authPass').value};var d=await api('/auth/'+(authMode==='login'?'login':'register'),{method:'POST',body:JSON.stringify(body)});S.token=d.token;localStorage.mf_token=S.token;await boot()}catch(x){qs('#authError').textContent=x.message}};
 
+var mfMotionVisibility=window.IntersectionObserver?new IntersectionObserver(function(entries){
+  entries.forEach(function(e){e.target.classList.toggle('mfInView',e.isIntersecting)});
+},{rootMargin:'80px'}):null;
+
+function mfButtonType(b,label){
+  var l=String(label||'').toLowerCase();
+  if(b.classList.contains('startRideBtn'))return 'hero';
+  if(b.closest('.nav')||b.closest('.mobile')||b.closest('.tabs')||b.classList.contains('quickLink'))return 'browse';
+  if(/ia|intelig/.test(l))return 'ai';
+  if(/consultar|escanear/.test(l))return 'scan';
+  if(/imprimir|80 ?mm|impressora/.test(l))return 'print';
+  if(/excluir/.test(l))return 'delete';
+  if(/editar/.test(l))return 'edit';
+  if(/avançar/.test(l))return 'next';
+  if(/salvar|confirmar|cadastrar|criar os|entrar na central|atualizar senha|emitir/.test(l))return 'commit';
+  if(/^\+|novo cliente|nova nota|novo atendimento|adicionar/.test(l))return 'add';
+  if(/histórico|ver todas|ver orçamento|acompanhar|gerenciar/.test(l))return 'browse';
+  if(/fechar|sair|encerrar|limpar|mostrar/.test(l))return 'utility';
+  return 'browse';
+}
+function mfButtonGlyph(type){
+  return {ai:'✦',scan:'⌁',commit:'✓',edit:'✎',delete:'!',print:'▤',next:'›',add:'+',browse:'◎',utility:'·'}[type]||'◎';
+}
 function bindMotionButtons(root){
   root=root||document;
   root.querySelectorAll('button').forEach(function(b){
     if(b.dataset.motionBound)return;
     b.dataset.motionBound='1';b.classList.add('uiMotion');
 
-    if(!b.classList.contains('startRideBtn')){
-      var label=(b.textContent||'').trim();
-      if(label.length<=3||b.classList.contains('passToggle')||b.closest('.modalHead'))b.classList.add('mfCompact');
+    var label=(b.textContent||'').replace(/\s+/g,' ').trim();
+    var type=mfButtonType(b,label);
+    b.classList.add('mf-'+type);
+    if(label.length<=3||b.classList.contains('passToggle')||b.closest('.modalHead'))b.classList.add('mfCompact');
 
-      var edge=document.createElement('i');edge.className='mfBtnEdge';edge.setAttribute('aria-hidden','true');
-      var energy=document.createElement('i');energy.className='mfBtnEnergy';energy.setAttribute('aria-hidden','true');
-      var rotor=document.createElement('span');rotor.className='mfBtnRotor';rotor.setAttribute('aria-hidden','true');rotor.innerHTML='<i></i>';
-      var scan=document.createElement('i');scan.className='mfBtnScanner';scan.setAttribute('aria-hidden','true');
-      var corners=document.createElement('i');corners.className='mfBtnCorners';corners.setAttribute('aria-hidden','true');
-      b.appendChild(edge);b.appendChild(energy);b.appendChild(rotor);b.appendChild(scan);b.appendChild(corners);
+    if(!b.classList.contains('startRideBtn')){
+      var glyph=document.createElement('span');glyph.className='mfBtnGlyph';glyph.setAttribute('aria-hidden','true');glyph.textContent=mfButtonGlyph(type);
+      var fx=document.createElement('i');fx.className='mfBtnFx';fx.setAttribute('aria-hidden','true');
+      b.appendChild(glyph);b.appendChild(fx);
+      if(mfMotionVisibility)mfMotionVisibility.observe(b);else b.classList.add('mfInView');
     }
 
     b.addEventListener('pointermove',function(e){
       if(b.classList.contains('startRideBtn'))return;
-      if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
       var r=b.getBoundingClientRect(),x=(e.clientX-r.left)/Math.max(1,r.width),y=(e.clientY-r.top)/Math.max(1,r.height);
       b.style.setProperty('--bx',(x*100).toFixed(1)+'%');b.style.setProperty('--by',(y*100).toFixed(1)+'%');
-      b.style.setProperty('--btx',((x-.5)*2.4).toFixed(2)+'px');b.style.setProperty('--bty',((y-.5)*1.8).toFixed(2)+'px');
-      if(!b.closest('.nav')&&!b.closest('.mobile')&&!b.closest('.tabs')){
-        b.style.setProperty('--bry',((x-.5)*6.2).toFixed(2)+'deg');
-        b.style.setProperty('--brx',((.5-y)*4.8).toFixed(2)+'deg');
+      if(window.matchMedia&&window.matchMedia('(hover:hover)').matches){
+        b.style.setProperty('--btx',((x-.5)*1.8).toFixed(2)+'px');b.style.setProperty('--bty',((y-.5)*1.2).toFixed(2)+'px');
       }
     });
-
     b.addEventListener('pointerleave',function(){
-      b.style.setProperty('--bx','50%');b.style.setProperty('--by','50%');
-      b.style.setProperty('--btx','0px');b.style.setProperty('--bty','0px');
-      b.style.setProperty('--brx','0deg');b.style.setProperty('--bry','0deg');
-      b.classList.remove('ui-press');
+      b.style.setProperty('--bx','50%');b.style.setProperty('--by','50%');b.style.setProperty('--btx','0px');b.style.setProperty('--bty','0px');b.classList.remove('ui-press');
     });
-
     b.addEventListener('pointerdown',function(e){
       b.classList.add('ui-press','is-charged');
-      if(!b.classList.contains('startRideBtn')&&(!window.matchMedia||!window.matchMedia('(prefers-reduced-motion: reduce)').matches)){
+      if(!b.classList.contains('startRideBtn')){
         var r=b.getBoundingClientRect(),p=document.createElement('i');
         p.className='mfBtnPulse';p.style.left=(e.clientX-r.left)+'px';p.style.top=(e.clientY-r.top)+'px';
-        b.appendChild(p);setTimeout(function(){p.remove()},560);
-        var rotor=b.querySelector('.mfBtnRotor');if(rotor){rotor.animate([{transform:'translateY(-50%) scale(1)'},{transform:'translateY(-50%) scale(1.22)'},{transform:'translateY(-50%) scale(1)'}],{duration:300,easing:'cubic-bezier(.2,.8,.2,1)'})}
+        b.appendChild(p);setTimeout(function(){p.remove()},460);
       }
     });
-
-    ['pointerup','pointercancel'].forEach(function(ev){
-      b.addEventListener(ev,function(){b.classList.remove('ui-press');setTimeout(function(){b.classList.remove('is-charged')},220)});
-    });
+    ['pointerup','pointercancel'].forEach(function(ev){b.addEventListener(ev,function(){b.classList.remove('ui-press');setTimeout(function(){b.classList.remove('is-charged')},150)})});
   });
 }
 var motionObserver=new MutationObserver(function(ms){
@@ -1297,7 +1267,7 @@ function print80(type,data){
   if(!w)return toast('Permita pop-ups para imprimir.',true);
   var out=[];
   out.push('<!doctype html><html><head><meta charset="utf-8"><title>MF Moto Peças</title><style>');
-  out.push('@page{size:80mm auto;margin:3mm}*{box-sizing:border-box}body{width:74mm;margin:0 auto;color:#000;background:#fff;font:12px/1.35 Arial,sans-serif}.center{text-align:center}.brand{font-size:20px;font-weight:900}.sub{font-size:10px}.dash{border-top:1px dashed #000;margin:8px 0}.line{display:flex;justify-content:space-between;gap:8px}.item{margin:7px 0}.total{font-size:17px;font-weight:900}.muted{font-size:10px}.printBtn{display:block;margin:12px 0;padding:12px;width:100%;border:1px solid #ff646a;border-radius:12px;background:linear-gradient(145deg,#ff232b,#a8070d);color:#fff;font-weight:900;letter-spacing:.4px;box-shadow:0 8px 22px rgba(200,8,16,.22),inset 0 1px 0 rgba(255,255,255,.22);cursor:pointer}@media print{.printBtn{display:none}body{width:74mm}}');
+  out.push('@page{size:80mm auto;margin:3mm}*{box-sizing:border-box}body{width:74mm;margin:0 auto;color:#000;background:#fff;font:12px/1.35 Arial,sans-serif}.center{text-align:center}.brand{font-size:20px;font-weight:900}.sub{font-size:10px}.dash{border-top:1px dashed #000;margin:8px 0}.line{display:flex;justify-content:space-between;gap:8px}.item{margin:7px 0}.total{font-size:17px;font-weight:900}.muted{font-size:10px}.printBtn{display:block;margin:12px 0;padding:12px;width:100%;border:1px solid #ff646a;border-radius:12px;background:linear-gradient(145deg,#ff232b,#a8070d);color:#fff;font-weight:900;letter-spacing:.4px;box-shadow:0 8px 18px rgba(200,8,16,.18);cursor:pointer;position:relative;overflow:hidden}@media print{.printBtn{display:none}body{width:74mm}}');
   out.push('</style></head><body>');
   out.push('<div class="center brand">MF MOTO PEÇAS</div>');
   out.push('<div class="center sub">MAIS QUE PEÇAS, É PAIXÃO SOBRE DUAS RODAS.</div>');
