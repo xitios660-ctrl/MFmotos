@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#070707">\n<link rel="preload" href="/Roda.mp4" as="video" type="video/mp4">
+<meta name="theme-color" content="#070707">\n<link rel="preload" href="/Roda.mp4?v=4" as="video" type="video/mp4">
 <title>MF Moto Peças • Gestão</title>
 <style>
 :root{--red:#ef1016;--bg:#070707;--panel:#111;--panel2:#171717;--line:#292929;--text:#f6f6f6;--muted:#929292;--gold:#ffd24d;--green:#34d17c}
@@ -614,7 +614,7 @@ function bindStartRide(){
 
     var fx=document.createElement('div');
     fx.className='rideTransition';
-    fx.innerHTML='<video class="rideTransitionVideo" src="/Roda.mp4" muted playsinline preload="auto"></video><div class="rideTransitionFallback"></div><div class="rideTransitionShade"></div><div class="rideTransitionBrand"><i></i><div><b>MF MOTO PEÇAS</b><span>ATENDIMENTO // ONLINE</span></div></div>';
+    fx.innerHTML='<video class="rideTransitionVideo" src="/Roda.mp4?v=4" muted playsinline preload="auto"></video><div class="rideTransitionFallback"></div><div class="rideTransitionShade"></div><div class="rideTransitionBrand"><i></i><div><b>MF MOTO PEÇAS</b><span>ATENDIMENTO // ONLINE</span></div></div>';
     document.body.appendChild(fx);
     var v=fx.querySelector('.rideTransitionVideo'),done=false,timer=null;
 
@@ -640,7 +640,7 @@ function bindStartRide(){
     });
     v.onended=finishRide;
     v.onerror=fallbackRide;
-    timer=setTimeout(finishRide,3200);
+    timer=setTimeout(finishRide,3400);
   };
 }
 async function overview(){
@@ -1093,7 +1093,7 @@ function print80(type,data){
   if(data.payment_method)out.push('<div>Pagamento: '+esc(String(data.payment_method).toUpperCase())+'</div>');
   out.push('<div class="dash"></div><div class="center muted">Documento gerado pelo MF Moto Peças</div>');
   out.push('<button class="printBtn" onclick="window.print()">IMPRIMIR 80 MM</button>');
-  out.push('</body></html>');
+  out.push('<video id="rideVideoPreloader" src="/Roda.mp4?v=4" muted playsinline preload="auto" style="position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;left:-10px;bottom:-10px"></video>\n</body></html>');
   w.document.open();w.document.write(out.join(''));w.document.close();
 }
 
@@ -1127,7 +1127,7 @@ async function security(){
 async function fiscal(){S.fiscal=await api('/fiscal');S.sales=await api('/sales');qs('#content').innerHTML=hero('FISCAL','Rascunhos e emissão via provedor autorizado.','<button class="btn red" onclick="openFiscal()">+ Nova nota</button>')+'<div class="warn"><b>Emissão correta:</b> sem credenciais de provedor fiscal/SEFAZ, o documento permanece em rascunho. Só aparece como emitido após autorização real.</div><div class="tableWrap"><table class="table"><thead><tr><th>Tipo</th><th>Cliente</th><th>Total</th><th>Status</th><th>Chave/ref.</th><th></th></tr></thead><tbody>'+(S.fiscal.map(function(f){return '<tr><td><b>'+esc(f.type)+'</b></td><td>'+esc(f.client_name||'Consumidor')+'</td><td>'+brl(f.total)+'</td><td>'+badge(f.status)+'</td><td><small>'+esc(f.access_key||f.provider_ref||'-')+'</small></td><td>'+(f.status==='rascunho'?'<button class="btn" onclick="issueFiscal(\''+f.id+'\')">Emitir</button>':'')+'</td></tr>'}).join('')||'<tr><td colspan="6" class="empty">Nenhum documento.</td></tr>')+'</tbody></table></div>'}
 function openFiscal(){modal('Novo documento fiscal','<form id="fiscalForm" class="form"><div class="field"><label>Venda</label><select name="sale_id" id="fiscalSale"><option value="">Avulsa</option>'+S.sales.map(function(s){return '<option value="'+s.id+'">'+dt(s.created_at)+' · '+brl(s.total)+'</option>'}).join('')+'</select></div><div class="field"><label>Tipo</label><select name="type"><option>NFC-e</option><option>NF-e</option><option>NFS-e</option></select></div><div class="field"><label>Cliente</label><input id="fiscalClient" class="input" name="client_name"></div><div class="field"><label>CPF/CNPJ</label><input class="input" name="client_document"></div><div class="field span"><label>Total</label><input id="fiscalTotal" class="input" type="number" step=".01" name="total" required></div><textarea id="fiscalItems" class="hide" name="items">[]</textarea><button class="btn red span">Salvar rascunho</button></form>');qs('#fiscalSale').onchange=function(e){var s=S.sales.find(function(x){return x.id===e.target.value});if(s){qs('#fiscalClient').value=s.client_name||'';qs('#fiscalTotal').value=s.total;qs('#fiscalItems').value=JSON.stringify(s.items||[])}};qs('#fiscalForm').onsubmit=async function(e){e.preventDefault();var d=Object.fromEntries(new FormData(e.target));d.items=JSON.parse(d.items||'[]');try{await api('/fiscal',{method:'POST',body:JSON.stringify(d)});closeModal();toast('Rascunho fiscal criado.');fiscal()}catch(x){toast(x.message,true)}}}
 async function issueFiscal(id){try{await api('/fiscal/'+id+'/issue',{method:'POST'});toast('Documento autorizado.');fiscal()}catch(e){toast(e.message,true)}}
-bindMotionButtons(document);if(S.token)boot();else{showApp(false);loadRegistrationStatus()}
+bindMotionButtons(document);var rv=qs('#rideVideoPreloader');if(rv){try{rv.load()}catch(e){}}if(S.token)boot();else{showApp(false);loadRegistrationStatus()}
 </script>
 </body>
 </html>
