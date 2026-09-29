@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#070707">\n<link rel="preload" href="/Roda.mp4?v=4" as="video" type="video/mp4">
+<meta name="theme-color" content="#070707">\n<meta name="mf-ui-version" content="7.0">\n<link rel="preload" href="/Roda.mp4?v=7" as="video" type="video/mp4">
 <title>MF Moto Peças • Gestão</title>
 <style>
 :root{--red:#ef1016;--bg:#070707;--panel:#111;--panel2:#171717;--line:#292929;--text:#f6f6f6;--muted:#929292;--gold:#ffd24d;--green:#34d17c}
@@ -790,6 +790,217 @@ button.mf-browse.mf-fire .mfBtnFx{opacity:.5;animation:mfBrowseRing .42s ease-ou
   .startRideHud:before{animation-duration:6s!important}
   .startRideHud:after{animation-duration:10s!important}
 }
+
+/* ===== MF CINEMA V7 / OBVIOUS REDESIGN ===== */
+body{
+  background:
+    linear-gradient(115deg,rgba(255,255,255,.014) 0 1px,transparent 1px 44px),
+    linear-gradient(65deg,rgba(255,24,32,.018) 0 1px,transparent 1px 58px),
+    radial-gradient(circle at 82% 4%,rgba(255,27,35,.16),transparent 28%),
+    #050506!important;
+}
+.side{
+  width:252px!important;
+  background:linear-gradient(180deg,#0e0f12,#060608)!important;
+  border-right:1px solid #292b31!important;
+}
+.side .brand{
+  padding:8px 8px 15px!important;
+  border-bottom:1px solid #24262b!important;
+}
+.nav{gap:7px!important}
+.nav button{
+  min-height:48px!important;
+  border-radius:8px 15px 15px 8px!important;
+  border-left:2px solid transparent!important;
+}
+.nav button.on{
+  border-left-color:#ff242c!important;
+  background:linear-gradient(90deg,rgba(255,32,40,.24),rgba(255,32,40,.035) 64%,transparent)!important;
+}
+.main{background:linear-gradient(180deg,rgba(255,255,255,.008),transparent 180px)}
+.top{
+  height:68px!important;
+  background:#08090cF2!important;
+  border-bottom:1px solid #292b31!important;
+}
+.top:before{
+  content:"MF CINEMA // V7";font-size:8px;font-weight:900;letter-spacing:2.2px;color:#ff4c53;
+  position:absolute;right:22px;bottom:5px;opacity:.72;
+}
+.content{padding:26px 28px!important}
+
+/* big angular headers */
+.hero{
+  min-height:150px!important;
+  padding:25px 26px!important;
+  border-radius:8px 26px 8px 26px!important;
+  border:1px solid #30323a!important;
+  border-left:3px solid #ff222a!important;
+  background:
+    linear-gradient(126deg,rgba(255,255,255,.055),transparent 21%),
+    linear-gradient(108deg,#17191f 0%,#0c0d11 58%,#08090c 100%)!important;
+  clip-path:polygon(0 0,96% 0,100% 28%,100% 100%,4% 100%,0 72%)!important;
+}
+.hero:before{
+  content:"";position:absolute!important;right:28px!important;top:24px!important;
+  width:120px!important;height:50px!important;border:0!important;border-radius:0!important;
+  background:
+    repeating-linear-gradient(90deg,rgba(255,38,46,.5) 0 2px,transparent 2px 8px)!important;
+  opacity:.16!important;box-shadow:none!important;
+}
+.hero h1{font-size:46px!important;letter-spacing:-2.8px!important}
+.hero .muted{max-width:620px}
+.eyebrow:after{content:" / SYSTEM READY";color:#656771;font-weight:800;letter-spacing:1.2px}
+
+/* dashboard cockpit becomes a real command deck */
+.cockpit{
+  min-height:250px!important;
+  grid-template-columns:minmax(0,1.5fr) minmax(220px,.5fr)!important;
+  border-radius:24px 8px 24px 8px!important;
+  border:1px solid #333640!important;
+  border-right:3px solid #ff222a!important;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.055),transparent 22%),
+    radial-gradient(circle at 82% 50%,rgba(255,30,38,.14),transparent 24%),
+    linear-gradient(115deg,#181a20,#0b0c10 68%)!important;
+  clip-path:polygon(0 0,97% 0,100% 16%,100% 100%,3% 100%,0 84%)!important;
+}
+.cockpitCopy{padding:8px 8px 8px 4px}
+.cockpitCopy .kicker{color:#ff5d63!important}
+.cockpitCopy h2{font-size:39px!important;letter-spacing:-2px!important}
+.gaugeWrap{
+  border-left:1px solid rgba(255,255,255,.07);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.015));
+}
+.gauge{
+  width:176px!important;height:176px!important;
+  border:1px solid rgba(255,255,255,.08);
+}
+.gaugeInner{border:1px solid #3a3d46!important}
+.gaugeInner:before{
+  content:"MF";font-size:9px;letter-spacing:3px;color:#ff454c;margin-bottom:4px;font-weight:1000;
+}
+
+/* telemetry stat cards are visibly different */
+.stats{gap:10px!important}
+.stat{
+  min-height:128px!important;
+  border-radius:17px 5px 17px 5px!important;
+  border-left:2px solid #3a3c43!important;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.045),transparent 28%),
+    linear-gradient(155deg,#15171c,#0a0b0e)!important;
+  clip-path:polygon(0 0,92% 0,100% 18%,100% 100%,8% 100%,0 82%)!important;
+}
+.stat:nth-child(1){border-left-color:#ff252d!important}
+.stat:nth-child(2){border-left-color:#ff8a33!important}
+.stat:nth-child(3){border-left-color:#55a8ff!important}
+.stat:nth-child(4){border-left-color:#72db9d!important}
+.stat:nth-child(5){border-left-color:#bd72ff!important}
+.stat:nth-child(6){border-left-color:#ff4c53!important}
+.stat small{letter-spacing:1.4px!important}
+.stat b{font-size:31px!important}
+
+/* shortcuts now look like separate bike modules */
+.quickDeck{
+  border-radius:6px 22px 6px 22px!important;
+  border:1px solid #30323a!important;
+  border-top:2px solid #ff242c!important;
+  background:linear-gradient(150deg,#14161b,#090a0d)!important;
+}
+.quickLinks{gap:10px!important}
+.quickLink{
+  min-height:112px!important;
+  border-radius:16px 5px 16px 5px!important;
+  border:1px solid #30323a!important;
+  background:linear-gradient(145deg,#181a20,#0b0c10)!important;
+}
+.quickLink:nth-child(1){border-bottom:2px solid #bc65ff!important}
+.quickLink:nth-child(2){border-bottom:2px solid #ff784d!important}
+.quickLink:nth-child(3){border-bottom:2px solid #4aa7ff!important}
+.quickLink:nth-child(4){border-bottom:2px solid #65d996!important}
+.quickLink:nth-child(5){border-bottom:2px solid #ff3c45!important}
+.quickIcon{font-size:20px!important}
+.quickCount{font-size:24px!important;font-weight:1000!important}
+
+/* cards and tables are workshop modules */
+.card{
+  border-radius:16px 5px 16px 5px!important;
+  border:1px solid #2d3037!important;
+}
+.title{
+  border-bottom:1px solid #24272d;
+  padding-bottom:10px;
+}
+.title>b{letter-spacing:.8px}
+.tableWrap{border-radius:14px 5px 14px 5px!important}
+.table th{letter-spacing:1.35px!important}
+
+/* Strong visual differentiation for action families */
+button.uiMotion.mf-ai:not(.startRideBtn){
+  color:#f7eaff!important;border-color:#9b4ac2!important;
+  background:linear-gradient(135deg,#471654,#24102b 62%,#100c14)!important;
+}
+button.uiMotion.mf-scan:not(.startRideBtn){
+  color:#e4f6ff!important;border-color:#276b92!important;
+  background:linear-gradient(135deg,#103249,#0c1d29 62%,#091017)!important;
+}
+button.uiMotion.mf-commit:not(.startRideBtn){
+  color:#fff!important;border-color:#ff5960!important;
+  background:linear-gradient(135deg,#f31d25,#ad080f 62%,#69050a)!important;
+}
+button.uiMotion.mf-edit:not(.startRideBtn){
+  color:#ffe7a8!important;border-color:#7f641e!important;
+  background:linear-gradient(135deg,#30250d,#17130b)!important;
+}
+button.uiMotion.mf-delete:not(.startRideBtn){
+  color:#ff9ba0!important;border-color:#7d1a20!important;
+  background:linear-gradient(135deg,#330b0f,#16080a)!important;
+}
+button.uiMotion.mf-print:not(.startRideBtn){
+  color:#edf5ff!important;border-color:#516579!important;
+  background:linear-gradient(135deg,#25303a,#11171d)!important;
+}
+button.uiMotion.mf-next:not(.startRideBtn){
+  border-color:#41444d!important;
+  background:linear-gradient(135deg,#22242a,#101115)!important;
+}
+button.uiMotion.mf-add:not(.startRideBtn){
+  color:#ffafb3!important;border-color:#8b2b30!important;
+  background:linear-gradient(135deg,#2b1114,#110b0d)!important;
+}
+button.uiMotion.mf-browse:not(.startRideBtn){
+  color:#d4d7df!important;border-color:#41434a!important;
+  background:linear-gradient(135deg,#1b1d22,#0d0e11)!important;
+}
+
+/* mobile is a compact bike cluster */
+@media(max-width:760px){
+  .content{padding:12px 10px 82px!important}
+  .hero{
+    min-height:auto!important;padding:18px 16px!important;
+    clip-path:none!important;border-radius:17px 7px 17px 7px!important;
+  }
+  .hero h1{font-size:34px!important}
+  .cockpit{
+    grid-template-columns:1fr!important;clip-path:none!important;
+    border-radius:20px 7px 20px 7px!important;padding:15px!important;
+  }
+  .gaugeWrap{border-left:0!important;border-top:1px solid rgba(255,255,255,.07)}
+  .gauge{width:142px!important;height:142px!important}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .stat{min-height:110px!important;clip-path:none!important;border-radius:14px 5px 14px 5px!important}
+  .stat b{font-size:25px!important}
+  .quickLink{min-height:98px!important}
+  .mobile{
+    border-radius:16px 5px 16px 5px!important;
+    border-top:1px solid #353840!important;
+    box-shadow:0 8px 24px rgba(0,0,0,.28)!important;
+  }
+  .top:before{display:none}
+}
+/* ===== END MF CINEMA V7 ===== */
 </style>
 </head>
 <body>
@@ -923,7 +1134,7 @@ function bindStartRide(){
 
     var fx=document.createElement('div');
     fx.className='rideTransition';
-    fx.innerHTML='<video class="rideTransitionVideo" src="/Roda.mp4?v=4" muted playsinline preload="auto"></video><div class="rideTransitionFallback"></div><div class="rideTransitionShade"></div><div class="rideTransitionBrand"><i></i><div><b>MF MOTO PEÇAS</b><span>ATENDIMENTO // ONLINE</span></div></div>';
+    fx.innerHTML='<video class="rideTransitionVideo" src="/Roda.mp4?v=7" muted playsinline preload="auto"></video><div class="rideTransitionFallback"></div><div class="rideTransitionShade"></div><div class="rideTransitionBrand"><i></i><div><b>MF MOTO PEÇAS</b><span>ATENDIMENTO // ONLINE</span></div></div>';
     document.body.appendChild(fx);
     var v=fx.querySelector('.rideTransitionVideo'),done=false,timer=null;
 
@@ -1402,7 +1613,7 @@ function print80(type,data){
   if(data.payment_method)out.push('<div>Pagamento: '+esc(String(data.payment_method).toUpperCase())+'</div>');
   out.push('<div class="dash"></div><div class="center muted">Documento gerado pelo MF Moto Peças</div>');
   out.push('<button class="printBtn" onclick="window.print()">IMPRIMIR 80 MM</button>');
-  out.push('<video id="rideVideoPreloader" src="/Roda.mp4?v=4" muted playsinline preload="auto" style="position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;left:-10px;bottom:-10px"></video>\n</body></html>');
+  out.push('<video id="rideVideoPreloader" src="/Roda.mp4?v=7" muted playsinline preload="auto" style="position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;left:-10px;bottom:-10px"></video>\n</body></html>');
   w.document.open();w.document.write(out.join(''));w.document.close();
 }
 
