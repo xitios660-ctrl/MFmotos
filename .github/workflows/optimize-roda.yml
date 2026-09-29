@@ -1,0 +1,26 @@
+name: Optimize MF transition video
+on:
+  push:
+    paths:
+      - '.github/workflows/optimize-roda.yml'
+permissions:
+  contents: write
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download original source
+        run: |
+          curl -fL 'https://d2jqrm6oza8nb6.cloudfront.net/datasets/128006d3-bb95-4b2a-8a8b-f482bb531eb2.mp4?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiZDFiYzM1ODU1ZTZiNjBiNSIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MDc3MjYxM30.n86EDGRJ-KMCKSTQsL1jfhx6l7e-OoCx9xibF6I1zB4' -o /tmp/Roda-original.mp4
+      - name: Optimize for mobile web
+        run: |
+          ffmpeg -y -i /tmp/Roda-original.mp4 -t 3.2 -an -vf "fps=24" -c:v libx264 -profile:v main -level 3.1 -preset slow -crf 22 -movflags +faststart -pix_fmt yuv420p public/Roda.mp4
+          test $(wc -c < public/Roda.mp4) -gt 300000
+      - name: Commit optimized asset
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/Roda.mp4
+          git commit -m 'asset: corrige vídeo MF completo e otimizado'
+          git push
