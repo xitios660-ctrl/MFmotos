@@ -17,9 +17,11 @@ O orçamento assistido funciona em modo `local` sem custo de API. Se `GROQ_API_K
 
 O sistema nunca marca uma nota como emitida sem autorização do provedor fiscal configurado.
 
-## Atalhos de navegação
+## Navegação lateral expansível
 
-O visual MF Cinema V7 foi mantido. Os atalhos da antiga barra inferior ficam no menu de três pontos no cabeçalho, com as mesmas áreas da navegação lateral. O menu fecha ao escolher uma área, clicar fora ou pressionar Escape. Tab e Enter permitem navegar pelo teclado.
+A navegação segue a referência fornecida: uma barra compacta de ícones que se expande para mostrar os nomes das áreas, identidade da MF Moto Peças e busca de atalhos. O estilo específico está em `public/sidebar.css`; o restante da interface mantém o visual MF Cinema V7.
+
+Os três pontos no cabeçalho e a seta na lateral alternam os estados. Em telas pequenas, o painel aberto aparece sobre o conteúdo e fecha ao selecionar uma área, tocar fora ou pressionar Escape. Ctrl/Cmd+K abre a busca. O painel aceita teclado e respeita movimento reduzido.
 
 ### Verificação sem banco
 

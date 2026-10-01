@@ -1004,20 +1004,8 @@ button.uiMotion.mf-browse:not(.startRideBtn){
 }
 /* ===== END MF CINEMA V7 ===== */
 
-/* Navigation shortcuts live in the top overflow menu instead of a bottom bar. */
-.shortcutsDropdown{position:relative;flex:0 0 auto}
-.shortcutsToggle{display:grid;place-items:center;width:44px;height:44px;list-style:none;cursor:pointer;border:1px solid #353840;border-radius:11px;background:linear-gradient(145deg,#1b1d22,#0d0e11);color:#fff;font-size:22px;line-height:1;user-select:none}
-.shortcutsToggle::-webkit-details-marker{display:none}
-.shortcutsToggle::marker{content:""}
-.shortcutsToggle:hover,.shortcutsDropdown[open] .shortcutsToggle{border-color:#a82a32;background:#250e12}
-.shortcutsToggle:focus-visible,.shortcutsMenu button:focus-visible{outline:2px solid #ff7278;outline-offset:3px}
-.shortcutsMenu{position:absolute;right:0;top:calc(100% + 10px);z-index:80;display:grid;gap:5px;width:min(260px,calc(100vw - 24px));max-height:calc(100svh - 90px);overflow-y:auto;padding:10px;border:1px solid #353840;border-radius:15px;background:#0e0f13;box-shadow:0 18px 55px #0009}
-.shortcutsMenu button.uiMotion{width:100%;min-height:44px;padding:11px 14px!important;border:1px solid transparent;text-align:left;background:#15161b!important;color:#bbb;font-size:12px;border-radius:9px}
-.shortcutsMenu button.uiMotion.on{color:#fff;border-color:#6d1d25;background:linear-gradient(90deg,#3b1017,#171014)!important;box-shadow:inset 3px 0 0 #ff242c}
-.shortcutsMenu button.uiMotion .mfBtnGlyph,.shortcutsMenu button.uiMotion .mfBtnFx{display:none!important}
-@media(max-width:760px){.content{padding-bottom:24px!important}.top .actions{flex-wrap:nowrap;gap:6px}.top .actions>.btn{padding:8px 10px!important;min-height:40px}.top .actions>.btn .mfBtnGlyph,.top .actions>.btn .mfBtnFx{display:none!important}.shortcutsToggle{width:40px;height:40px}.top>span{min-width:0;font-size:11px}.systemStatus{display:none}}
-@media(max-width:380px){.top{padding:0 8px!important;gap:5px}.top .actions>.btn{font-size:10px;padding:8px!important}.top>span{font-size:10px}}
 </style>
+<link rel="stylesheet" href="/sidebar.css?v=1">
 </head>
 <body>
 <section id="login" class="login">
@@ -1036,8 +1024,16 @@ button.uiMotion.mf-browse:not(.startRideBtn){
 </div>
 </section>
 <div id="app" class="app hide">
-<aside class="side"><div class="brand"><div class="mf">MF</div><div><b>MF MOTO PEÇAS</b><small>GESTÃO</small></div></div><nav id="nav" class="nav"></nav></aside>
-<main class="main"><header class="top"><span>MF / <b id="crumb">VISÃO GERAL</b><span class="systemStatus"><i class="liveDot"></i>Sistema online</span></span><div class="actions"><button class="btn red" onclick="go('atendimento')">+ Atendimento</button><button class="btn" onclick="logout()">Sair</button><details id="shortcutsDropdown" class="shortcutsDropdown"><summary id="shortcutsToggle" class="shortcutsToggle" aria-label="Abrir atalhos" aria-controls="mobileNav" aria-expanded="false"><span aria-hidden="true">⋯</span></summary><nav id="mobileNav" class="shortcutsMenu" aria-label="Atalhos de navegação"></nav></details></div></header><div id="content" class="content"></div></main>
+<aside id="workspaceSide" class="side workspaceSide" aria-label="Navegação principal">
+<div class="workspaceBrand"><svg class="workspaceLogo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 4h15l-2 4H3zM7 10h11l-2 4H5zM9 16h7l-2 4H7z"/></svg><span class="workspaceTitle">MF <small>Moto Peças</small></span></div>
+<button id="sideCollapse" class="sideCollapse" type="button" aria-label="Expandir navegação" aria-controls="workspaceSide" aria-expanded="false"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m8 5 5 5-5 5"/></svg></button>
+<div class="workspaceProfile"><div class="workspaceAvatar" aria-hidden="true">MF</div><div class="workspaceProfileCopy"><b>MF Moto Peças</b><small>Central de operações</small></div></div>
+<div class="workspaceSearch"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="5"/><path d="m12 12 4 4"/></svg><input id="sidebarSearch" type="search" placeholder="Buscar atalhos" aria-label="Buscar atalhos" autocomplete="off"><kbd aria-hidden="true">⌘ K</kbd></div>
+<nav id="nav" class="nav" aria-label="Áreas do sistema"></nav><div id="sideNoResults" class="sideNoResults hide" role="status">Nenhum atalho encontrado.</div>
+<div class="workspaceFooter"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 6-4 4 4 4m8-8 4 4-4 4m-3-11-2 14"/></svg><span>MF / Ride Control</span></div>
+</aside>
+<div id="sidebarBackdrop" class="sidebarBackdrop" aria-hidden="true"></div>
+<main class="main"><header class="top"><span>MF / <b id="crumb">VISÃO GERAL</b><span class="systemStatus"><i class="liveDot"></i>Sistema online</span></span><div class="actions"><button class="btn red" onclick="go('atendimento')">+ Atendimento</button><button class="btn" onclick="logout()">Sair</button><button id="sidebarToggle" class="sidebarToggle" type="button" aria-label="Expandir navegação" aria-controls="workspaceSide" aria-expanded="false"><span aria-hidden="true">⋯</span></button></div></header><div id="content" class="content"></div></main>
 
 </div>
 <div id="modal" class="modal hide"></div><div id="toast" class="toast hide"></div>
@@ -1049,7 +1045,7 @@ function brl(n){return Number(n||0).toLocaleString('pt-BR',{style:'currency',cur
 function toast(t,err){var x=qs('#toast');x.textContent=t;x.style.borderColor=err?'#6b1e22':'#285b3e';x.classList.remove('hide');setTimeout(function(){x.classList.add('hide')},3000)}
 async function api(url,opt){opt=opt||{};var h=Object.assign({'content-type':'application/json'},opt.headers||{});if(S.token)h.authorization='Bearer '+S.token;var r=await fetch('/api'+url,Object.assign({},opt,{headers:h})),d={};try{d=await r.json()}catch(e){}if(!r.ok){if(r.status===401&&S.token)logout();throw Error(d.error||'Erro na operação')}return d}
 function showApp(ok){qs('#login').classList.toggle('hide',ok);qs('#app').classList.toggle('hide',!ok)}
-function logout(){localStorage.removeItem('mf_token');S.token='';showApp(false);loadRegistrationStatus()}
+function logout(){setSidebarExpanded(false);localStorage.removeItem('mf_token');S.token='';showApp(false);loadRegistrationStatus()}
 function togglePass(id,b){var i=qs('#'+id);if(!i)return;i.type=i.type==='password'?'text':'password';if(b)b.textContent=i.type==='password'?'Mostrar':'Ocultar'}
 async function loadRegistrationStatus(){try{var d=await api('/auth/registration-status');qs('#tabRegister').classList.toggle('hide',!d.open);if(!d.open&&authMode==='register')authModeSet('login')}catch(e){qs('#tabRegister').classList.add('hide')}}
 var authMode='login';function authModeSet(m){authMode=m;qs('#tabLogin').classList.toggle('on',m==='login');qs('#tabRegister').classList.toggle('on',m==='register');qs('#nameField').classList.toggle('hide',m==='login');qs('#authSubmit').textContent=m==='login'?'ENTRAR NA CENTRAL':'CRIAR ACESSO'}
@@ -1123,12 +1119,43 @@ var motionObserver=new MutationObserver(function(ms){
   ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===1){if(n.matches&&n.matches('button'))bindMotionButtons(n.parentNode||document);else if(n.querySelectorAll)bindMotionButtons(n)}})});
 });
 motionObserver.observe(document.documentElement,{childList:true,subtree:true});
-function navs(){var a=NAV.map(function(n){return '<button data-page="'+n[0]+'" class="'+(S.page===n[0]?'on':'')+'"'+(S.page===n[0]?' aria-current="page"':'')+'>'+n[1]+' '+n[2]+'</button>'}).join('');qs('#nav').innerHTML=a;qs('#mobileNav').innerHTML=a;document.querySelectorAll('[data-page]').forEach(function(b){b.onclick=function(){if(b.closest('.shortcutsMenu')){qs('#shortcutsDropdown').open=false;qs('#shortcutsToggle').focus()}go(b.dataset.page)}});bindMotionButtons(document)}
-var shortcutsDropdown=qs('#shortcutsDropdown'),shortcutsToggle=qs('#shortcutsToggle');
-shortcutsDropdown.addEventListener('toggle',function(){shortcutsToggle.setAttribute('aria-expanded',String(shortcutsDropdown.open))});
-document.addEventListener('pointerdown',function(e){if(shortcutsDropdown.open&&!shortcutsDropdown.contains(e.target))shortcutsDropdown.open=false});
-document.addEventListener('keydown',function(e){if(e.key==='Escape'&&shortcutsDropdown.open){e.preventDefault();shortcutsDropdown.open=false;shortcutsToggle.focus()}});
-shortcutsDropdown.addEventListener('focusout',function(){setTimeout(function(){if(!shortcutsDropdown.contains(document.activeElement))shortcutsDropdown.open=false},0)});
+var sidebarExpanded=false,sidebarMobile=window.matchMedia('(max-width:760px)');
+function sideIcon(page){
+  var paths={overview:'<rect x="3" y="3" width="6" height="6" rx="1"/><rect x="13" y="3" width="6" height="6" rx="1"/><rect x="3" y="13" width="6" height="6" rx="1"/><rect x="13" y="13" width="6" height="6" rx="1"/>',atendimento:'<path d="M14 3a5 5 0 0 0-6 6L3 14a3 3 0 0 0 4 4l5-5a5 5 0 0 0 6-6l-4 4-3-3z"/>',orders:'<rect x="4" y="5" width="14" height="15" rx="2"/><path d="M8 5V3h6v2M8 10h6M8 14h6"/>',budgets:'<path d="M6 3h10v17l-3-2-2 2-2-2-3 2zM9 8h4M9 12h4"/>',inventory:'<path d="m3 7 8-4 8 4v10l-8 4-8-4zM3 7l8 4 8-4M11 11v10M7 5l8 4"/>',clients:'<circle cx="11" cy="7" r="3"/><path d="M5 20v-3a6 6 0 0 1 12 0v3"/>',fiscal:'<path d="M6 3h8l4 4v14H6zM14 3v5h4M9 12h6M9 16h6"/>',security:'<path d="m11 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6zM7 12l3 3 5-6"/>'};
+  return '<svg viewBox="0 0 22 24" aria-hidden="true">'+(paths[page]||paths.overview)+'</svg>';
+}
+function filterSidebar(){
+  var query=qs('#sidebarSearch').value.trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase(),shown=0;
+  document.querySelectorAll('#nav [data-page]').forEach(function(b){var label=b.getAttribute('aria-label').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase(),match=!query||label.includes(query);b.classList.toggle('hide',!match);if(match)shown++});
+  qs('#sideNoResults').classList.toggle('hide',shown>0);
+}
+function navs(){
+  qs('#nav').innerHTML=NAV.map(function(n){return '<button type="button" data-page="'+n[0]+'" aria-label="'+esc(n[2])+'" title="'+esc(n[2])+'" class="'+(S.page===n[0]?'on':'')+'"'+(S.page===n[0]?' aria-current="page"':'')+'><span class="sideNavIcon">'+sideIcon(n[0])+'</span><span class="sideNavLabel">'+esc(n[2])+'</span></button>'}).join('');
+  document.querySelectorAll('#nav [data-page]').forEach(function(b){b.onclick=function(){if(sidebarMobile.matches&&sidebarExpanded)setSidebarExpanded(false);go(b.dataset.page)}});
+  filterSidebar();bindMotionButtons(document);
+}
+function setSidebarExpanded(expanded){
+  sidebarExpanded=!!expanded;qs('#app').classList.toggle('sidebar-expanded',sidebarExpanded);
+  ['sidebarToggle','sideCollapse'].forEach(function(id){var b=qs('#'+id);b.setAttribute('aria-expanded',String(sidebarExpanded));b.setAttribute('aria-label',sidebarExpanded?'Recolher navegação':'Expandir navegação')});
+  qs('.main').inert=sidebarMobile.matches&&sidebarExpanded;document.body.classList.toggle('sidebar-open',sidebarMobile.matches&&sidebarExpanded);
+  if(!sidebarExpanded){qs('#sidebarSearch').value='';filterSidebar();if(qs('#workspaceSide').contains(document.activeElement)&&document.activeElement!==qs('#sideCollapse'))qs('#sidebarToggle').focus()}
+}
+function initSidebar(){
+  qs('#sidebarToggle').onclick=qs('#sideCollapse').onclick=function(){setSidebarExpanded(!sidebarExpanded);if(sidebarMobile.matches&&sidebarExpanded)qs('#sideCollapse').focus()};
+  qs('#sidebarBackdrop').onclick=function(){setSidebarExpanded(false);qs('#sidebarToggle').focus()};
+  qs('#sidebarSearch').oninput=filterSidebar;
+  sidebarMobile.addEventListener('change',function(){setSidebarExpanded(false)});
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&sidebarExpanded){e.preventDefault();setSidebarExpanded(false);qs('#sidebarToggle').focus();return}
+    if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'&&!qs('#app').classList.contains('hide')&&qs('#modal').classList.contains('hide')){e.preventDefault();setSidebarExpanded(true);qs('#sidebarSearch').focus();return}
+    if(e.key==='Tab'&&sidebarMobile.matches&&sidebarExpanded){
+      var items=Array.from(qs('#workspaceSide').querySelectorAll('button,input')).filter(function(el){return !el.disabled&&el.getClientRects().length}),first=items[0],last=items[items.length-1];
+      if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+    }
+  });
+  setSidebarExpanded(false);
+}
+
 async function boot(){showApp(true);navs();await go('overview')}async function go(p){S.page=p;navs();var n=NAV.find(function(x){return x[0]===p});qs('#crumb').textContent=(n?n[2]:p).toUpperCase();var fn={overview:overview,atendimento:pos,pos:pos,inventory:inventory,orders:orders,budgets:budgets,clients:clients,fiscal:fiscal,security:security}[p];if(fn)try{await fn();var box=qs('#content');box.classList.remove('page-enter');void box.offsetWidth;box.classList.add('page-enter');bindMotionButtons(document)}catch(e){toast(e.message,true)}}
 function hero(t,s,a){return '<div class="hero"><div><div class="eyebrow">MF / RIDE CONTROL</div><h1>'+t+'</h1><div class="muted">'+s+'</div></div><div class="actions">'+(a||'')+'</div></div>'}
 function badge(s){var c=s==='concluido'||s==='emitida'?'g':s==='pendente'||s==='rascunho'?'y':'r';return '<span class="badge '+c+'">'+esc(String(s||'-').replaceAll('_',' '))+'</span>'}
@@ -1668,7 +1695,7 @@ async function security(){
 async function fiscal(){S.fiscal=await api('/fiscal');S.sales=await api('/sales');qs('#content').innerHTML=hero('FISCAL','Rascunhos e emissão via provedor autorizado.','<button class="btn red" onclick="openFiscal()">+ Nova nota</button>')+'<div class="warn"><b>Emissão correta:</b> sem credenciais de provedor fiscal/SEFAZ, o documento permanece em rascunho. Só aparece como emitido após autorização real.</div><div class="tableWrap"><table class="table"><thead><tr><th>Tipo</th><th>Cliente</th><th>Total</th><th>Status</th><th>Chave/ref.</th><th></th></tr></thead><tbody>'+(S.fiscal.map(function(f){return '<tr><td><b>'+esc(f.type)+'</b></td><td>'+esc(f.client_name||'Consumidor')+'</td><td>'+brl(f.total)+'</td><td>'+badge(f.status)+'</td><td><small>'+esc(f.access_key||f.provider_ref||'-')+'</small></td><td>'+(f.status==='rascunho'?'<button class="btn" onclick="issueFiscal(\''+f.id+'\')">Emitir</button>':'')+'</td></tr>'}).join('')||'<tr><td colspan="6" class="empty">Nenhum documento.</td></tr>')+'</tbody></table></div>'}
 function openFiscal(){modal('Novo documento fiscal','<form id="fiscalForm" class="form"><div class="field"><label>Venda</label><select name="sale_id" id="fiscalSale"><option value="">Avulsa</option>'+S.sales.map(function(s){return '<option value="'+s.id+'">'+dt(s.created_at)+' · '+brl(s.total)+'</option>'}).join('')+'</select></div><div class="field"><label>Tipo</label><select name="type"><option>NFC-e</option><option>NF-e</option><option>NFS-e</option></select></div><div class="field"><label>Cliente</label><input id="fiscalClient" class="input" name="client_name"></div><div class="field"><label>CPF/CNPJ</label><input class="input" name="client_document"></div><div class="field span"><label>Total</label><input id="fiscalTotal" class="input" type="number" step=".01" name="total" required></div><textarea id="fiscalItems" class="hide" name="items">[]</textarea><button class="btn red span">Salvar rascunho</button></form>');qs('#fiscalSale').onchange=function(e){var s=S.sales.find(function(x){return x.id===e.target.value});if(s){qs('#fiscalClient').value=s.client_name||'';qs('#fiscalTotal').value=s.total;qs('#fiscalItems').value=JSON.stringify(s.items||[])}};qs('#fiscalForm').onsubmit=async function(e){e.preventDefault();var d=Object.fromEntries(new FormData(e.target));d.items=JSON.parse(d.items||'[]');try{await api('/fiscal',{method:'POST',body:JSON.stringify(d)});closeModal();toast('Rascunho fiscal criado.');fiscal()}catch(x){toast(x.message,true)}}}
 async function issueFiscal(id){try{await api('/fiscal/'+id+'/issue',{method:'POST'});toast('Documento autorizado.');fiscal()}catch(e){toast(e.message,true)}}
-bindMotionButtons(document);var rv=qs('#rideVideoPreloader');if(rv){try{rv.load()}catch(e){}}if(S.token)boot();else{showApp(false);loadRegistrationStatus()}
+initSidebar();bindMotionButtons(document);var rv=qs('#rideVideoPreloader');if(rv){try{rv.load()}catch(e){}}if(S.token)boot();else{showApp(false);loadRegistrationStatus()}
 </script>
 </body>
 </html>
