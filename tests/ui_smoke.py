@@ -61,10 +61,17 @@ with sync_playwright() as p:
   page.evaluate('setSidebarExpanded(false)');page.wait_for_timeout(400)
   assert page.locator('#workspaceSide').bounding_box()['width']<85
   assert page.locator('#sidebarSearch').is_hidden()
+  assert page.locator('#nav').is_hidden()
+  assert page.locator('.workspaceProfile').is_hidden()
+  assert page.locator('.workspaceFooter').is_hidden()
+  assert page.locator('#workspaceSide').bounding_box()['height']<120
   page.evaluate('scrollTo(0,0)')
   page.screenshot(path=str(ARTIFACTS/('rail-'+str(width)+'.png')))
   page.locator('#sideCollapse').click();page.wait_for_timeout(400)
   assert page.locator('#sidebarSearch').is_visible()
+  assert page.locator('#nav button:visible').count()==7
+  assert page.locator('.workspaceProfile').is_visible()
+  assert page.locator('.workspaceFooter').is_visible()
   assert page.locator('#workspaceSide').bounding_box()['width']>240
   page.screenshot(path=str(ARTIFACTS/('expanded-'+str(width)+'.png')))
   page.locator('#sidebarSearch').fill('orcamento')

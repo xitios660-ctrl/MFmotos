@@ -24,3 +24,12 @@ body.sidebar-open{overflow:hidden}
 @media(max-width:760px){.workspaceSide button.sideCollapse.uiMotion{right:-12px;top:34px;width:24px;min-height:33px;height:33px}.cockpitCopy h2{font-size:clamp(24px,6vw,34px)!important}.hero .eyebrow::after{display:none!important}.sidebar-expanded .sidebarBackdrop{display:block;position:fixed;inset:0;background:#020203b3;z-index:55}}
 /* Keep the authenticated workspace hidden until sign-in completes. */
 .app.hide{display:none!important}
+/* Collapsed navigation is only the logo and its expand button. */
+.app:not(.sidebar-expanded) .workspaceSide{height:106px!important;gap:0}
+.app:not(.sidebar-expanded) .workspaceSide .workspaceProfile,
+.app:not(.sidebar-expanded) .workspaceSide .nav,
+.app:not(.sidebar-expanded) .workspaceSide .workspaceFooter,
+.app:not(.sidebar-expanded) .workspaceSide .sideNoResults{display:none!important}
+.app:not(.sidebar-expanded) .workspaceSide::after{display:none}
+.app:not(.sidebar-expanded) .workspaceLogo{width:28px;height:28px;flex-basis:28px}
+@media(max-width:760px){.app:not(.sidebar-expanded) .workspaceSide{height:92px!important}}
