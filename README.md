@@ -26,3 +26,9 @@ A seta na lateral alterna os estados; o cabeçalho não tem um segundo botão pa
 ### Verificação sem banco
 
 Com Playwright instalado (`python -m pip install playwright` e `python -m playwright install chromium`), sirva os arquivos com `python -m http.server 4173 --directory public` e execute `python tests/ui_smoke.py` em outro terminal. As chamadas de API são simuladas; o teste não cria registros reais.
+
+## Login cinematográfico
+
+A entrada usa o vídeo de roda de moto `public/Roda.mp4`, um quadro estático de fallback e estilos limitados ao login em `public/login-cinema.css`. `public/login-motion.js` controla pausa, aceleração ao segurar o botão, reflexos e preferência de movimento reduzido. O vídeo pausa quando a aba fica oculta e depois do login. A interface autentica sem atraso artificial e bloqueia envios repetidos durante a conexão.
+
+A Visão Geral foi retirada da navegação. Ao entrar, o sistema abre diretamente em Atendimento. O workspace permanece oculto até o login.

@@ -1005,24 +1005,31 @@ button.uiMotion.mf-browse:not(.startRideBtn){
 /* ===== END MF CINEMA V7 ===== */
 
 </style>
-<link rel="stylesheet" href="/sidebar.css?v=2">
+<link rel="stylesheet" href="/sidebar.css?v=3">
+<link rel="stylesheet" href="/login-cinema.css?v=1">
 </head>
 <body>
-<section id="login" class="login">
+<section id="login" class="login" aria-label="Acesso à central MF Moto Peças">
+<aside class="loginCinema" aria-label="MF Ride Control">
+<div class="cinemaBrand"><div class="mf">MF</div><div><b>MF MOTO PEÇAS</b><small>RIDE CONTROL / CENTRAL DE OPERAÇÕES</small></div></div><span class="cinemaIndex">EST. MF / 01</span>
+<div class="cinemaStage" aria-hidden="true"><img src="/login-wheel-poster.jpg" alt="" width="512" height="910"><video id="cinemaVideo" src="/Roda.mp4" poster="/login-wheel-poster.jpg" muted loop playsinline preload="metadata" tabindex="-1"></video></div>
+<div class="cinemaCopy"><div class="cinemaEyebrow">FEITO PARA QUEM VIVE DUAS RODAS</div><h2>Sua oficina.<br>Em <em>alta rotação.</em></h2><p>Precisão no atendimento. Controle em cada peça.<br>A sua operação começa aqui.</p><div class="cinemaCapabilities"><span>OFICINA</span><i></i><span>ESTOQUE</span><i></i><span>VENDAS</span><i></i><span>FISCAL</span></div></div>
+<div><div class="cinemaConsole"><div class="cinemaRpm"><div class="rpmBars" aria-hidden="true"><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i><i style="--i:6"></i><i style="--i:7"></i><i style="--i:8"></i></div><small>RIDE / READY</small></div><div class="cinemaControls"><button id="cinemaThrottle" type="button" aria-pressed="false">Segure para acelerar ⇗</button><button id="cinemaMotionToggle" class="cinemaMotionToggle" type="button" aria-label="Pausar animação da moto" aria-pressed="false"></button></div></div><div class="cinemaFoot"><span>PAIXÃO POR MOTOS. PRECISÃO NA GESTÃO.</span><span>MF // RIDE CONTROL</span></div></div>
+</aside>
 <div class="loginCard">
-<div class="brand"><div class="mf">MF</div><div><b>MF MOTO PEÇAS</b><small>CENTRAL DE OPERAÇÕES</small></div></div>
-<h1>A LOJA ACELERA.<br><span class="redtxt">VOCÊ CONTROLA.</span></h1>
-<p class="muted">Vendas, peças e motos organizadas em uma operação só.</p>
-<div class="tabs"><button id="tabLogin" class="on">Entrar</button><button id="tabRegister">Criar acesso</button></div>
+<div class="loginAccessTag"><span>ACESSO À CENTRAL</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="17" r="4"/><circle cx="19" cy="17" r="4"/><path d="m6 17 5-8 8 8M8 9h6l-3 8H6m7-12h4l2 12"/></svg></div>
+<h1 class="loginTitle">Assuma<br>o controle.</h1><p class="loginIntro">Entre na central da sua oficina.<br>Tudo pronto para o próximo atendimento.</p>
+<div class="tabs"><button id="tabLogin" class="on" type="button">Entrar</button><button id="tabRegister" type="button">Criar acesso</button></div>
 <form id="authForm">
-<div id="nameField" class="field hide"><label>Nome</label><input id="authName" class="input"></div>
-<div class="field"><label>E-mail</label><input id="authEmail" class="input" type="email" required></div>
-<div class="field"><label>Senha</label><div class="passWrap"><input id="authPass" class="input" type="password" minlength="8" autocomplete="current-password" required><button class="btn passToggle" type="button" onclick="togglePass('authPass',this)">Mostrar</button></div></div>
-<button id="authSubmit" class="btn red full">ENTRAR NA CENTRAL</button>
-<div id="authError" class="redtxt"></div>
-</form>
+<div id="nameField" class="field hide"><label for="authName">Seu nome</label><input id="authName" class="input" autocomplete="name" placeholder="Como você se chama?"></div>
+<div class="field"><label for="authEmail">E-mail</label><input id="authEmail" class="input" type="email" autocomplete="username" placeholder="voce@exemplo.com" required></div>
+<div class="field"><label for="authPass">Senha</label><div class="passWrap"><input id="authPass" class="input" type="password" minlength="8" autocomplete="current-password" placeholder="Sua senha de acesso" required><button class="btn passToggle" type="button" onclick="togglePass('authPass',this)">Mostrar</button></div></div>
+<button id="authSubmit" class="btn red full" type="submit"><span id="authSubmitLabel">ENTRAR NA CENTRAL</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></button>
+<div id="authError" class="redtxt" role="alert" aria-live="polite"></div>
+</form><div class="loginReady"><i aria-hidden="true"></i>Pronto para mais um dia na oficina.</div><div class="loginSecurity"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="5" y="9" width="10" height="8" rx="2"/><path d="M7 9V6a3 3 0 0 1 6 0v3"/></svg><span>Seu acesso. Sua operação.</span></div>
 </div>
 </section>
+<script src="/login-motion.js?v=1"></script>
 <div id="app" class="app hide">
 <aside id="workspaceSide" class="side workspaceSide" aria-label="Navegação principal">
 <div class="workspaceBrand"><svg class="workspaceLogo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 4h15l-2 4H3zM7 10h11l-2 4H5zM9 16h7l-2 4H7z"/></svg><span class="workspaceTitle">MF <small>Moto Peças</small></span></div>
@@ -1033,24 +1040,30 @@ button.uiMotion.mf-browse:not(.startRideBtn){
 <div class="workspaceFooter"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 6-4 4 4 4m8-8 4 4-4 4m-3-11-2 14"/></svg><span>MF / Ride Control</span></div>
 </aside>
 <div id="sidebarBackdrop" class="sidebarBackdrop" aria-hidden="true"></div>
-<main class="main"><header class="top"><span>MF / <b id="crumb">VISÃO GERAL</b><span class="systemStatus"><i class="liveDot"></i>Sistema online</span></span><div class="actions"><button class="btn red" onclick="go('atendimento')">+ Atendimento</button><button class="btn" onclick="logout()">Sair</button></div></header><div id="content" class="content"></div></main>
+<main class="main"><header class="top"><span>MF / <b id="crumb">ATENDIMENTO</b><span class="systemStatus"><i class="liveDot"></i>Sistema online</span></span><div class="actions"><button class="btn red" onclick="go('atendimento')">+ Atendimento</button><button class="btn" onclick="logout()">Sair</button></div></header><div id="content" class="content"></div></main>
 
 </div>
 <div id="modal" class="modal hide"></div><div id="toast" class="toast hide"></div>
 <script>
-var NAV=[['overview','⌁','Visão geral'],['atendimento','⚙','Atendimento'],['orders','◉','Ordens'],['budgets','◇','Orçamentos'],['inventory','▦','Estoque'],['clients','♙','Clientes'],['fiscal','§','Fiscal'],['security','⌾','Segurança']];
-var S={token:localStorage.mf_token||'',page:'overview',clients:[],inventory:[],orders:[],budgets:[],sales:[],fiscal:[],cart:[],chat:[],aiDraft:null,attDraft:null,lastAttendance:null};
+var NAV=[['atendimento','⚙','Atendimento'],['orders','◉','Ordens'],['budgets','◇','Orçamentos'],['inventory','▦','Estoque'],['clients','♙','Clientes'],['fiscal','§','Fiscal'],['security','⌾','Segurança']];
+var S={token:localStorage.mf_token||'',page:'atendimento',clients:[],inventory:[],orders:[],budgets:[],sales:[],fiscal:[],cart:[],chat:[],aiDraft:null,attDraft:null,lastAttendance:null};
 function qs(s){return document.querySelector(s)}function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
 function brl(n){return Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}function dt(d){return d?new Date(d).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'}):'-'}
 function toast(t,err){var x=qs('#toast');x.textContent=t;x.style.borderColor=err?'#6b1e22':'#285b3e';x.classList.remove('hide');setTimeout(function(){x.classList.add('hide')},3000)}
 async function api(url,opt){opt=opt||{};var h=Object.assign({'content-type':'application/json'},opt.headers||{});if(S.token)h.authorization='Bearer '+S.token;var r=await fetch('/api'+url,Object.assign({},opt,{headers:h})),d={};try{d=await r.json()}catch(e){}if(!r.ok){if(r.status===401&&S.token)logout();throw Error(d.error||'Erro na operação')}return d}
-function showApp(ok){qs('#login').classList.toggle('hide',ok);qs('#app').classList.toggle('hide',!ok)}
+function showApp(ok){window.setLoginMotionActive(!ok);if(ok)window.scrollTo(0,0);qs('#login').classList.toggle('hide',ok);qs('#app').classList.toggle('hide',!ok)}
 function logout(){setSidebarExpanded(false);localStorage.removeItem('mf_token');S.token='';showApp(false);loadRegistrationStatus()}
 function togglePass(id,b){var i=qs('#'+id);if(!i)return;i.type=i.type==='password'?'text':'password';if(b)b.textContent=i.type==='password'?'Mostrar':'Ocultar'}
 async function loadRegistrationStatus(){try{var d=await api('/auth/registration-status');qs('#tabRegister').classList.toggle('hide',!d.open);if(!d.open&&authMode==='register')authModeSet('login')}catch(e){qs('#tabRegister').classList.add('hide')}}
-var authMode='login';function authModeSet(m){authMode=m;qs('#tabLogin').classList.toggle('on',m==='login');qs('#tabRegister').classList.toggle('on',m==='register');qs('#nameField').classList.toggle('hide',m==='login');qs('#authSubmit').textContent=m==='login'?'ENTRAR NA CENTRAL':'CRIAR ACESSO'}
+var authMode='login';function authModeSet(m){authMode=m;qs('#tabLogin').classList.toggle('on',m==='login');qs('#tabRegister').classList.toggle('on',m==='register');qs('#nameField').classList.toggle('hide',m==='login');qs('#authSubmitLabel').textContent=m==='login'?'ENTRAR NA CENTRAL':'CRIAR ACESSO';qs('#authName').required=m==='register';qs('#authPass').autocomplete=m==='login'?'current-password':'new-password';qs('#authError').textContent=''}
 qs('#tabLogin').onclick=function(){authModeSet('login')};qs('#tabRegister').onclick=function(){authModeSet('register')};
-qs('#authForm').onsubmit=async function(e){e.preventDefault();try{var body={name:qs('#authName').value,email:qs('#authEmail').value,password:qs('#authPass').value};var d=await api('/auth/'+(authMode==='login'?'login':'register'),{method:'POST',body:JSON.stringify(body)});S.token=d.token;localStorage.mf_token=S.token;await boot()}catch(x){qs('#authError').textContent=x.message}};
+qs('#authForm').onsubmit=async function(e){
+  e.preventDefault();var button=qs('#authSubmit');if(button.disabled)return;
+  button.disabled=true;button.setAttribute('aria-busy','true');qs('#authSubmitLabel').textContent='CONECTANDO…';qs('#authError').textContent='';qs('#tabLogin').disabled=qs('#tabRegister').disabled=true;
+  try{var body={name:qs('#authName').value,email:qs('#authEmail').value,password:qs('#authPass').value};var d=await api('/auth/'+(authMode==='login'?'login':'register'),{method:'POST',body:JSON.stringify(body)});S.token=d.token;localStorage.mf_token=S.token;await boot()}
+  catch(x){qs('#authError').textContent=x.message}
+  finally{button.disabled=false;button.removeAttribute('aria-busy');qs('#tabLogin').disabled=qs('#tabRegister').disabled=false;qs('#authSubmitLabel').textContent=authMode==='login'?'ENTRAR NA CENTRAL':'CRIAR ACESSO'}
+};
 
 function mfButtonType(b,label){
   var l=String(label||'').toLowerCase();
@@ -1121,8 +1134,8 @@ var motionObserver=new MutationObserver(function(ms){
 motionObserver.observe(document.documentElement,{childList:true,subtree:true});
 var sidebarExpanded=false,sidebarMobile=window.matchMedia('(max-width:760px)');
 function sideIcon(page){
-  var paths={overview:'<rect x="3" y="3" width="6" height="6" rx="1"/><rect x="13" y="3" width="6" height="6" rx="1"/><rect x="3" y="13" width="6" height="6" rx="1"/><rect x="13" y="13" width="6" height="6" rx="1"/>',atendimento:'<path d="M14 3a5 5 0 0 0-6 6L3 14a3 3 0 0 0 4 4l5-5a5 5 0 0 0 6-6l-4 4-3-3z"/>',orders:'<rect x="4" y="5" width="14" height="15" rx="2"/><path d="M8 5V3h6v2M8 10h6M8 14h6"/>',budgets:'<path d="M6 3h10v17l-3-2-2 2-2-2-3 2zM9 8h4M9 12h4"/>',inventory:'<path d="m3 7 8-4 8 4v10l-8 4-8-4zM3 7l8 4 8-4M11 11v10M7 5l8 4"/>',clients:'<circle cx="11" cy="7" r="3"/><path d="M5 20v-3a6 6 0 0 1 12 0v3"/>',fiscal:'<path d="M6 3h8l4 4v14H6zM14 3v5h4M9 12h6M9 16h6"/>',security:'<path d="m11 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6zM7 12l3 3 5-6"/>'};
-  return '<svg viewBox="0 0 22 24" aria-hidden="true">'+(paths[page]||paths.overview)+'</svg>';
+  var paths={atendimento:'<path d="M14 3a5 5 0 0 0-6 6L3 14a3 3 0 0 0 4 4l5-5a5 5 0 0 0 6-6l-4 4-3-3z"/>',orders:'<rect x="4" y="5" width="14" height="15" rx="2"/><path d="M8 5V3h6v2M8 10h6M8 14h6"/>',budgets:'<path d="M6 3h10v17l-3-2-2 2-2-2-3 2zM9 8h4M9 12h4"/>',inventory:'<path d="m3 7 8-4 8 4v10l-8 4-8-4zM3 7l8 4 8-4M11 11v10M7 5l8 4"/>',clients:'<circle cx="11" cy="7" r="3"/><path d="M5 20v-3a6 6 0 0 1 12 0v3"/>',fiscal:'<path d="M6 3h8l4 4v14H6zM14 3v5h4M9 12h6M9 16h6"/>',security:'<path d="m11 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6zM7 12l3 3 5-6"/>'};
+  return '<svg viewBox="0 0 22 24" aria-hidden="true">'+(paths[page]||paths.atendimento)+'</svg>';
 }
 function filterSidebar(){
   var query=qs('#sidebarSearch').value.trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase(),shown=0;
@@ -1156,85 +1169,12 @@ function initSidebar(){
   setSidebarExpanded(false);
 }
 
-async function boot(){showApp(true);navs();await go('overview')}async function go(p){S.page=p;navs();var n=NAV.find(function(x){return x[0]===p});qs('#crumb').textContent=(n?n[2]:p).toUpperCase();var fn={overview:overview,atendimento:pos,pos:pos,inventory:inventory,orders:orders,budgets:budgets,clients:clients,fiscal:fiscal,security:security}[p];if(fn)try{await fn();var box=qs('#content');box.classList.remove('page-enter');void box.offsetWidth;box.classList.add('page-enter');bindMotionButtons(document)}catch(e){toast(e.message,true)}}
+async function boot(){showApp(true);navs();await go('atendimento')}async function go(p){S.page=p;navs();var n=NAV.find(function(x){return x[0]===p});qs('#crumb').textContent=(n?n[2]:p).toUpperCase();var fn={atendimento:pos,pos:pos,inventory:inventory,orders:orders,budgets:budgets,clients:clients,fiscal:fiscal,security:security}[p];if(fn)try{await fn();var box=qs('#content');box.classList.remove('page-enter');void box.offsetWidth;box.classList.add('page-enter');bindMotionButtons(document)}catch(e){toast(e.message,true)}}
 function hero(t,s,a){return '<div class="hero"><div><div class="eyebrow">MF / RIDE CONTROL</div><h1>'+t+'</h1><div class="muted">'+s+'</div></div><div class="actions">'+(a||'')+'</div></div>'}
 function badge(s){var c=s==='concluido'||s==='emitida'?'g':s==='pendente'||s==='rascunho'?'y':'r';return '<span class="badge '+c+'">'+esc(String(s||'-').replaceAll('_',' '))+'</span>'}
 function modal(title,html){qs('#modal').innerHTML='<div class="modalCard"><div class="modalHead"><b>'+esc(title)+'</b><button class="btn" onclick="closeModal()">×</button></div><div class="modalBody">'+html+'</div></div>';qs('#modal').classList.remove('hide');bindMotionButtons(qs('#modal'))}function closeModal(){qs('#modal').classList.add('hide');qs('#modal').innerHTML=''}
 async function del(url,back){if(!confirm('Excluir este registro?'))return;try{await api(url,{method:'DELETE'});toast('Excluído.');back()}catch(e){toast(e.message,true)}}
 
-function bindStartRide(){
-  var b=qs('#startRideBtn');if(!b)return;
-  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function resetTilt(){b.style.setProperty('--rx','0deg');b.style.setProperty('--ry','0deg');b.style.setProperty('--mx','50%');b.style.setProperty('--my','50%')}
-  b.onpointermove=function(e){
-    if(reduce||b.classList.contains('is-igniting'))return;
-    var r=b.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
-    b.style.setProperty('--mx',(x*100).toFixed(1)+'%');b.style.setProperty('--my',(y*100).toFixed(1)+'%');
-    b.style.setProperty('--ry',((x-.5)*9).toFixed(2)+'deg');b.style.setProperty('--rx',((.5-y)*7).toFixed(2)+'deg');
-  };
-  b.onpointerleave=resetTilt;
-  b.onclick=function(){
-    if(b.classList.contains('is-igniting'))return;
-    if(reduce){go('atendimento');return}
-    resetTilt();b.classList.add('is-igniting');
-    var t=qs('#startRideTitle'),s=qs('#startRideSub');
-    if(t)t.textContent='INICIANDO…';if(s)s.textContent='SINCRONIZANDO MF RIDE CONTROL';
-
-    var fx=document.createElement('div');
-    fx.className='rideTransition';
-    fx.innerHTML='<video class="rideTransitionVideo" src="/Roda.mp4?v=7" muted playsinline preload="auto"></video><div class="rideTransitionFallback"></div><div class="rideTransitionShade"></div><div class="rideTransitionBrand"><i></i><div><b>MF MOTO PEÇAS</b><span>ATENDIMENTO // ONLINE</span></div></div>';
-    document.body.appendChild(fx);
-    var v=fx.querySelector('.rideTransitionVideo'),done=false,timer=null;
-
-    async function finishRide(){
-      if(done)return;done=true;
-      if(timer)clearTimeout(timer);
-      await go('atendimento');
-      fx.classList.remove('on');
-      setTimeout(function(){fx.remove()},220);
-    }
-    function fallbackRide(){
-      fx.classList.add('video-failed');
-      timer=setTimeout(finishRide,760);
-    }
-
-    requestAnimationFrame(function(){
-      fx.classList.add('on');
-      try{
-        v.currentTime=0;
-        var play=v.play();
-        if(play&&play.catch)play.catch(fallbackRide);
-      }catch(e){fallbackRide()}
-    });
-    v.onended=finishRide;
-    v.onerror=fallbackRide;
-    timer=setTimeout(finishRide,3400);
-  };
-}
-async function overview(){
-  var d=await api('/dashboard'),o=await api('/orders');
-  var open=Math.max(0,+d.open_orders||0),gauge=Math.min(92,Math.max(18,28+open*9));
-  var stats=[['VENDAS HOJE',brl(d.today_sales),'↗'],['OS ABERTAS',d.open_orders,'⚙'],['PRODUTOS',d.inventory,'▦'],['CLIENTES',d.clients,'●'],['ORÇAMENTOS',d.budgets,'◇'],['ESTOQUE BAIXO',d.low_stock,'!']];
-  var quick=[
-    {page:'budgets',icon:'◇',label:'Orçamentos',count:d.budgets,meta:'Consultar e editar',cls:''},
-    {page:'orders',icon:'◉',label:'Ordens',count:d.open_orders,meta:'OS abertas',cls:''},
-    {page:'inventory',icon:'▦',label:'Estoque',count:d.inventory,meta:d.low_stock?d.low_stock+' em alerta':'Tudo sob controle',cls:d.low_stock?'quickAlert':''},
-    {page:'clients',icon:'♙',label:'Clientes',count:d.clients,meta:'Base cadastrada',cls:''},
-    {page:'fiscal',icon:'§',label:'Fiscal',count:'NF',meta:'Notas e documentos',cls:'quickFiscal'}
-  ];
-  var quickHtml=quick.map(function(x){
-    return '<button class="quickLink '+x.cls+'" data-overview-go="'+x.page+'"><div class="quickTop"><span class="quickIcon">'+x.icon+'</span><span class="quickArrow">›</span></div><div><b>'+x.label+'</b><small class="quickCount">'+x.count+'</small><small>'+x.meta+'</small></div></button>';
-  }).join('');
-  var mainAction='<button class="btn red" data-overview-go="atendimento">+ Iniciar atendimento</button>';
-  var cockpit='<section class="cockpit"><div class="cockpitCopy"><div class="kicker">MF MOTO PEÇAS // OPERAÇÃO AO VIVO</div><h2>CONTROLE TOTAL.<br><span class="redtxt">RITMO DE PISTA.</span></h2><p>Vendas, oficina, peças e clientes em um único painel. Tudo que precisa de atenção aparece primeiro.</p><div class="startRideWrap"><button class="startRideBtn" id="startRideBtn" type="button" aria-label="Iniciar atendimento"><span class="startRideRail"></span><span class="startRideText"><span class="startRideLabel"><i class="startRideLive"></i><strong id="startRideTitle">INICIAR ATENDIMENTO</strong></span><small id="startRideSub">Cliente · Moto · IA · Orçamento · OS · Venda</small></span><span class="startRideHud"><span class="startRideTicks"></span><span class="startRideCore"><span>›</span></span></span><span class="startRideCode">MF//IGN-01</span><span class="startRideProgress"><i></i></span><span class="startRideParticles"><i></i><i></i><i></i><i></i><i></i><i></i></span></button></div></div><div class="gaugeWrap"><div class="gauge" style="background:conic-gradient(var(--red) 0 '+gauge+'%,#2a2a2f '+gauge+'% 82%,#151518 82% 100%)"><div class="gaugeInner"><strong>'+d.open_orders+'</strong><span>OS ABERTAS</span></div></div></div></section>';
-  var shortcuts='<section class="quickDeck"><div class="quickHead"><div><b>ATALHOS RÁPIDOS</b><small style="display:block">Acesso direto às áreas que você mais usa</small></div><small>toque para abrir</small></div><div class="quickLinks">'+quickHtml+'</div></section>';
-  var statHtml='<div class="grid stats">'+stats.map(function(x){return '<div class="card stat"><small>'+x[0]+'</small><b>'+x[1]+'</b><span style="position:absolute;right:14px;top:12px;color:#4d4d55;font-size:16px">'+x[2]+'</span></div>'}).join('')+'</div>';
-  var recent=o.slice(0,6).map(function(x){return '<div class="row"><div><b>'+esc(x.client_name||x.plate)+'</b><small>'+esc([x.brand,x.model,x.plate].filter(Boolean).join(' · '))+'</small></div>'+badge(x.status)+'</div>'}).join('')||'<div class="empty">Nenhuma moto na oficina ainda.</div>';
-  var lower='<div class="grid two" style="margin-top:12px"><div class="card"><div class="title"><b>ORDENS RECENTES</b><button class="btn" data-overview-go="orders">Ver todas</button></div><div class="list">'+recent+'</div></div><div class="card"><div class="title"><b>ATALHOS DE BOX</b><span class="badge r">RIDE CONTROL</span></div><div class="list"><button class="btn" data-overview-go="atendimento">Novo atendimento →</button><button class="btn" data-overview-go="budgets">Ver orçamentos →</button><button class="btn" data-overview-go="orders">Acompanhar OS →</button><button class="btn" data-overview-go="inventory">Gerenciar estoque →</button></div></div></div>';
-  qs('#content').innerHTML=hero('VISÃO GERAL','Cockpit operacional da MF Moto Peças.',mainAction)+cockpit+shortcuts+statHtml+lower;
-  document.querySelectorAll('[data-overview-go]').forEach(function(b){b.onclick=function(){go(b.dataset.overviewGo)}});
-  bindStartRide();
-}
 async function clients(){S.clients=await api('/clients');qs('#content').innerHTML=hero('CLIENTES','Cadastro e histórico da oficina.','<button class="btn red" onclick="openClient()">+ Novo cliente</button>')+'<div class="toolbar"><input id="clientSearch" class="input" placeholder="Buscar cliente"></div><div class="tableWrap"><table class="table"><thead><tr><th>Nome</th><th>Telefone</th><th>E-mail</th><th>CPF/CNPJ</th><th></th></tr></thead><tbody id="clientRows"></tbody></table></div>';function paint(v){qs('#clientRows').innerHTML=(v.map(function(c){return '<tr><td><b>'+esc(c.name)+'</b></td><td>'+esc(c.phone)+'</td><td>'+esc(c.email)+'</td><td>'+esc(c.cpf_cnpj)+'</td><td><button class="btn danger" onclick="del(\'/clients/'+c.id+'\',clients)">Excluir</button></td></tr>'}).join('')||'<tr><td colspan="5" class="empty">Nenhum cliente.</td></tr>')}paint(S.clients);qs('#clientSearch').oninput=function(e){var x=e.target.value.toLowerCase();paint(S.clients.filter(function(c){return JSON.stringify(c).toLowerCase().includes(x)}))}}
 function openClient(){modal('Novo cliente','<form id="clientForm" class="form"><div class="field"><label>Nome</label><input name="name" class="input" required></div><div class="field"><label>Telefone</label><input name="phone" class="input"></div><div class="field"><label>E-mail</label><input name="email" type="email" class="input"></div><div class="field"><label>CPF/CNPJ</label><input name="cpf_cnpj" class="input"></div><button class="btn red span">Salvar cliente</button></form>');qs('#clientForm').onsubmit=async function(e){e.preventDefault();try{await api('/clients',{method:'POST',body:JSON.stringify(Object.fromEntries(new FormData(e.target)))});closeModal();toast('Cliente salvo.');clients()}catch(x){toast(x.message,true)}}}
 async function inventory(){S.inventory=await api('/inventory');qs('#content').innerHTML=hero('ESTOQUE','Peças, quantidades, preços e compatibilidade.','<button class="btn red" onclick="openItem()">+ Cadastrar peça</button>')+'<div class="toolbar"><input id="invSearch" class="input" placeholder="Buscar peça, SKU ou modelo"></div><div class="tableWrap"><table class="table"><thead><tr><th>Produto</th><th>Compatível</th><th>Qtd.</th><th>Custo</th><th>Venda</th><th></th></tr></thead><tbody id="invRows"></tbody></table></div>';function paint(v){qs('#invRows').innerHTML=(v.map(function(x){return '<tr><td><b>'+esc(x.name)+'</b><br><small>'+esc(x.sku||x.category||'')+'</small></td><td>'+esc((x.moto_models||[]).join(', '))+'</td><td class="'+(x.is_low_stock?'redtxt':'')+'"><b>'+x.quantity+'</b> / mín '+x.min_quantity+'</td><td>'+brl(x.cost)+'</td><td class="gold money">'+brl(x.price)+'</td><td><button class="btn danger" onclick="del(\'/inventory/'+x.id+'\',inventory)">Excluir</button></td></tr>'}).join('')||'<tr><td colspan="6" class="empty">Nenhum item cadastrado.</td></tr>')}paint(S.inventory);qs('#invSearch').oninput=function(e){var x=e.target.value.toLowerCase();paint(S.inventory.filter(function(i){return JSON.stringify(i).toLowerCase().includes(x)}))}}

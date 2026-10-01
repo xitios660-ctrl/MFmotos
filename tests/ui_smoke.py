@@ -27,10 +27,34 @@ with sync_playwright() as p:
  page.on('pageerror',lambda e:errors.append(str(e)))
  page.route('**/api/**',mock)
  page.goto(BASE_URL,wait_until='networkidle')
+ page.wait_for_timeout(1200)
+ assert page.locator('#app').is_hidden()
+ page.screenshot(path=str(ARTIFACTS/'cinema-login-desktop.png'))
+ for w in [390,320]:
+  page.set_viewport_size({'width':w,'height':844})
+  page.screenshot(path=str(ARTIFACTS/('cinema-login-'+str(w)+'.png')),full_page=True)
+  assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
+ page.set_viewport_size({'width':1440,'height':1000})
+ page.locator('#cinemaMotionToggle').click()
+ assert page.locator('#cinemaVideo').evaluate('(el)=>el.paused')
+ page.locator('#cinemaMotionToggle').click()
+ page.locator('#cinemaThrottle').focus();page.keyboard.down('Space')
+ assert page.locator('#login').evaluate('(el)=>el.classList.contains("login-revving")')
+ page.keyboard.up('Space')
+ assert page.locator('#cinemaThrottle').get_attribute('aria-pressed')=='false'
+ page.locator('#tabRegister').click();assert page.locator('#authName').is_visible()
+ page.locator('#tabLogin').click();assert not page.locator('#authName').is_visible()
+ page.emulate_media(reduced_motion='reduce')
+ page.wait_for_function("document.querySelector('#cinemaVideo').paused")
+ assert page.locator('#cinemaThrottle').is_disabled()
+ page.emulate_media(reduced_motion='no-preference')
  page.locator('#authEmail').fill('ana@example.com');page.locator('#authPass').fill('test-password')
- page.locator('#authSubmit').click();page.locator('.cockpit').wait_for();page.wait_for_timeout(700)
+ page.locator('#authSubmit').click();page.locator('#content .hero').wait_for();page.wait_for_timeout(700)
  assert page.locator('#mobileNav,.mobile,.loginStory').count()==0
- assert page.locator('#nav button').count()==8
+ assert page.locator('#cinemaVideo').evaluate('(el)=>el.paused')
+ assert page.locator('#nav button').count()==7
+ assert page.locator('[data-page="overview"]').count()==0
+ assert page.locator('#crumb').inner_text()=='ATENDIMENTO'
  assert page.locator('#sidebarToggle').count()==0
  for width in [1440,390,320,768]:
   page.set_viewport_size({'width':width,'height':844});page.wait_for_timeout(400)
@@ -58,7 +82,7 @@ with sync_playwright() as p:
    assert page.locator('#nav button').last.evaluate('(el)=>el===document.activeElement')
    page.locator('#sidebarBackdrop').click(position={'x':width-5,'y':700})
    assert page.locator('#sideCollapse').get_attribute('aria-expanded')=='false'
-  for tab in ['inventory','clients','orders','budgets','fiscal','security','atendimento','overview']:
+  for tab in ['inventory','clients','orders','budgets','fiscal','security','atendimento']:
    page.locator('#sideCollapse').click();page.wait_for_timeout(350)
    page.locator('#nav [data-page="'+tab+'"]').click();page.wait_for_timeout(400)
    assert page.locator('#nav [data-page="'+tab+'"]').get_attribute('aria-current')=='page'
@@ -71,5 +95,5 @@ with sync_playwright() as p:
  assert page.locator('#workspaceSide').evaluate('(el)=>getComputedStyle(el).transitionDuration')=='0s'
  page.keyboard.press('Escape')
  assert not errors,errors
- print('PASS: eight icon shortcuts, collapse/expand, responsive rail/drawer, search with accent normalization, keyboard shortcut, mobile focus and backdrop, all modules at 320/390/768/1440 px, reduced motion; no browser errors. APIs mocked.')
+ print('PASS: seven shortcuts, no overview, collapse/expand, responsive rail/drawer, search with accent normalization, keyboard shortcut, mobile focus and backdrop, all modules at 320/390/768/1440 px, reduced motion; no browser errors. APIs mocked.')
  browser.close()

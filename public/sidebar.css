@@ -22,3 +22,5 @@
 .workspaceSide button.sideCollapse.uiMotion{position:absolute!important;right:-15px;top:38px;width:29px;min-height:37px;height:37px;padding:0!important;border-radius:0 9px 9px 0!important;background:#19191e!important;border:1px solid #37373f!important;box-shadow:none!important;transform:none!important}
 body.sidebar-open{overflow:hidden}
 @media(max-width:760px){.workspaceSide button.sideCollapse.uiMotion{right:-12px;top:34px;width:24px;min-height:33px;height:33px}.cockpitCopy h2{font-size:clamp(24px,6vw,34px)!important}.hero .eyebrow::after{display:none!important}.sidebar-expanded .sidebarBackdrop{display:block;position:fixed;inset:0;background:#020203b3;z-index:55}}
+/* Keep the authenticated workspace hidden until sign-in completes. */
+.app.hide{display:none!important}
