@@ -1,0 +1,30 @@
+/* Clear, comfortable controls and accessible dialogs across the workspace. */
+body.modal-open{overflow:hidden}
+#app .field{gap:8px;margin:14px 0}
+#app .field label{color:#bcb2be;letter-spacing:.7px;font-size:11px}
+#app :is(input,select,textarea):focus-visible{outline:2px solid #ff8797;outline-offset:3px;border-color:#ff5268}
+#app button:focus-visible,.modalCard :is(button,input,select,textarea,a):focus-visible{outline:2px solid #ff8797;outline-offset:3px}
+.modalCard:focus{outline:none}
+.modalCard{max-height:calc(100svh - 32px);scrollbar-width:thin;scrollbar-color:#5a3342 #101010;overscroll-behavior:contain}
+.modalHead{position:sticky;top:0;z-index:3;background:#141016ed;backdrop-filter:blur(14px);min-height:64px}
+.modalHead>b{font-size:16px;line-height:1.35;padding-right:12px}
+.modalHead .btn{flex:0 0 44px;min-height:44px;font-size:22px;padding:0!important}
+.modalBody{padding:22px}
+.modalBody .field{gap:8px;margin:14px 0}
+.modalBody .field label{color:#bcb2be;font-size:11px;letter-spacing:.7px}
+.modalBody .input,.modalBody select,.modalBody textarea{min-height:46px}
+#toast{max-width:min(440px,calc(100vw - 32px));line-height:1.6;box-shadow:0 16px 45px #0008;overflow-wrap:anywhere}
+#toast[role="alert"]{background:linear-gradient(120deg,#30121b,#181015);color:#ffd1d8}
+#toast[role="status"]{background:linear-gradient(120deg,#12241e,#101915);color:#d1f5e3}
+@media(max-width:760px){
+  .modal{padding:10px}
+  .modalCard{width:100%;max-height:calc(100svh - 20px);border-radius:18px}
+  .modalHead{padding:12px 16px}
+  .modalBody{padding:16px}
+  .modalBody .form{grid-template-columns:minmax(0,1fr)}
+  #app .content :is(input,select,textarea),.modalBody :is(input,select,textarea){font-size:16px}
+  #app .content .input,.modalBody .input{min-height:48px}
+  #app .content .actions{gap:8px}
+  #toast{right:16px;bottom:max(16px,env(safe-area-inset-bottom));padding:14px 16px}
+}
+@media(prefers-reduced-motion:reduce){.modalCard{scroll-behavior:auto}}

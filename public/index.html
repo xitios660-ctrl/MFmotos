@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#070707">
-<meta name="mf-ui-version" content="8.0">
+<meta name="mf-ui-version" content="8.1">
 <link rel="preload" href="/Roda.mp4?v=7" as="video" type="video/mp4">
 <title>MF Moto Peças • Gestão</title>
 <style>
@@ -1006,6 +1006,7 @@ button.uiMotion.mf-browse:not(.startRideBtn){
 
 </style>
 <link rel="stylesheet" href="/sidebar.css?v=4">
+<link rel="stylesheet" href="/workspace-polish.css?v=1">
 <link rel="stylesheet" href="/login-cinema.css?v=2">
 </head>
 <body>
@@ -1043,13 +1044,19 @@ button.uiMotion.mf-browse:not(.startRideBtn){
 <main class="main"><header class="top"><span>MF / <b id="crumb">ATENDIMENTO</b><span class="systemStatus"><i class="liveDot"></i>Sistema online</span></span><div class="actions"><button class="btn red" onclick="go('atendimento')">+ Atendimento</button><button class="btn" onclick="logout()">Sair</button></div></header><div id="content" class="content"></div></main>
 
 </div>
-<div id="modal" class="modal hide"></div><div id="toast" class="toast hide"></div>
+<div id="modal" class="modal hide"></div><div id="toast" class="toast hide" role="status" aria-live="polite" aria-atomic="true"></div>
 <script>
 var NAV=[['inicio','⌂','Início'],['atendimento','⚙','Atendimento'],['orders','◉','Ordens'],['budgets','◇','Orçamentos'],['inventory','▦','Estoque'],['clients','♙','Clientes'],['fiscal','§','Fiscal'],['security','⌾','Segurança']];
 var S={token:localStorage.mf_token||'',page:'inicio',clients:[],inventory:[],orders:[],budgets:[],sales:[],fiscal:[],cart:[],chat:[],aiDraft:null,attDraft:null,lastAttendance:null};
 function qs(s){return document.querySelector(s)}function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
 function brl(n){return Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}function dt(d){return d?new Date(d).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'}):'-'}
-function toast(t,err){var x=qs('#toast');x.textContent=t;x.style.borderColor=err?'#6b1e22':'#285b3e';x.classList.remove('hide');setTimeout(function(){x.classList.add('hide')},3000)}
+var toastTimer=0;
+function toast(t,err){
+  var x=qs('#toast');clearTimeout(toastTimer);
+  x.setAttribute('role',err?'alert':'status');x.setAttribute('aria-live',err?'assertive':'polite');
+  x.textContent=t;x.style.borderColor=err?'#6b1e22':'#285b3e';x.classList.remove('hide');
+  toastTimer=setTimeout(function(){x.classList.add('hide')},err?6500:4500);
+}
 async function api(url,opt){opt=opt||{};var h=Object.assign({'content-type':'application/json'},opt.headers||{});if(S.token)h.authorization='Bearer '+S.token;var r=await fetch('/api'+url,Object.assign({},opt,{headers:h})),d={};try{d=await r.json()}catch(e){}if(!r.ok){if(r.status===401&&S.token)logout();throw Error(d.error||'Erro na operação')}return d}
 function showApp(ok){window.setLoginMotionActive(!ok);if(ok)window.scrollTo(0,0);qs('#login').classList.toggle('hide',ok);qs('#app').classList.toggle('hide',!ok)}
 function logout(){setSidebarExpanded(false);localStorage.removeItem('mf_token');S.token='';showApp(false);loadRegistrationStatus()}
@@ -1084,8 +1091,18 @@ function mfButtonType(b,label){
 function mfButtonGlyph(type){
   return {ai:'✦',scan:'⌁',commit:'✓',edit:'✎',delete:'!',print:'▤',next:'›',add:'+',browse:'◎',utility:'·'}[type]||'◎';
 }
+var mfFieldSequence=0;
+function enhanceFormLabels(root){
+  root.querySelectorAll('.field').forEach(function(field){
+    var label=field.querySelector('label'),control=field.querySelector('input:not([type="hidden"]),select,textarea');
+    if(!label||!control||label.hasAttribute('for')||label.contains(control))return;
+    if(!control.id)control.id='mfField'+(++mfFieldSequence);
+    label.htmlFor=control.id;
+  });
+}
 function bindMotionButtons(root){
   root=root||document;
+  enhanceFormLabels(root);
   root.querySelectorAll('button').forEach(function(b){
     if(b.dataset.motionBound)return;
     b.dataset.motionBound='1';b.classList.add('uiMotion');
@@ -1180,7 +1197,36 @@ async function home(){
 
 function hero(t,s,a){return '<div class="hero"><div><div class="eyebrow">MF / RIDE CONTROL</div><h1>'+t+'</h1><div class="muted">'+s+'</div></div><div class="actions">'+(a||'')+'</div></div>'}
 function badge(s){var c=s==='concluido'||s==='emitida'?'g':s==='pendente'||s==='rascunho'?'y':'r';return '<span class="badge '+c+'">'+esc(String(s||'-').replaceAll('_',' '))+'</span>'}
-function modal(title,html){qs('#modal').innerHTML='<div class="modalCard"><div class="modalHead"><b>'+esc(title)+'</b><button class="btn" onclick="closeModal()">×</button></div><div class="modalBody">'+html+'</div></div>';qs('#modal').classList.remove('hide');bindMotionButtons(qs('#modal'))}function closeModal(){qs('#modal').classList.add('hide');qs('#modal').innerHTML=''}
+var modalReturnFocus=null,modalAppInert=false,modalLoginInert=false;
+function modal(title,html){
+  var box=qs('#modal'),opening=box.classList.contains('hide');
+  if(opening){modalReturnFocus=document.activeElement;modalAppInert=qs('#app').inert;modalLoginInert=qs('#login').inert}
+  box.innerHTML='<div class="modalCard" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1"><div class="modalHead"><b id="modalTitle">'+esc(title)+'</b><button class="btn" type="button" aria-label="Fechar janela" onclick="closeModal()">×</button></div><div class="modalBody">'+html+'</div></div>';
+  box.classList.remove('hide');document.body.classList.add('modal-open');
+  qs('#app').inert=true;qs('#login').inert=true;bindMotionButtons(box);
+  var first=Array.from(box.querySelectorAll('.modalBody input,.modalBody select,.modalBody textarea,.modalBody button')).find(function(el){return !el.disabled&&el.getClientRects().length});
+  (first||box.querySelector('.modalCard')).focus();
+}
+function closeModal(){
+  var box=qs('#modal');if(box.classList.contains('hide'))return;
+  box.classList.add('hide');box.innerHTML='';document.body.classList.remove('modal-open');
+  qs('#app').inert=modalAppInert;qs('#login').inert=modalLoginInert;
+  var target=modalReturnFocus;modalReturnFocus=null;
+  if(target&&target.isConnected&&!target.disabled&&!target.closest('[inert],.hide'))target.focus();
+  else if(!qs('#app').classList.contains('hide'))qs('#sideCollapse').focus();
+}
+document.addEventListener('keydown',function(e){
+  var box=qs('#modal');if(box.classList.contains('hide'))return;
+  if(e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();closeModal();return}
+  if(e.key!=='Tab')return;
+  e.stopImmediatePropagation();
+  var controls=Array.from(box.querySelectorAll('button,input,select,textarea,a[href],[tabindex]')).filter(function(el){return !el.disabled&&el.tabIndex>=0&&el.getClientRects().length});
+  var first=controls[0],last=controls[controls.length-1];
+  if(!first){e.preventDefault();box.querySelector('.modalCard').focus();return}
+  if(e.shiftKey&&(document.activeElement===first||!controls.includes(document.activeElement))){e.preventDefault();last.focus()}
+  else if(!e.shiftKey&&(document.activeElement===last||!controls.includes(document.activeElement))){e.preventDefault();first.focus()}
+});
+
 async function del(url,back){if(!confirm('Excluir este registro?'))return;try{await api(url,{method:'DELETE'});toast('Excluído.');back()}catch(e){toast(e.message,true)}}
 
 async function clients(){S.clients=await api('/clients');qs('#content').innerHTML=hero('CLIENTES','Cadastro e histórico da oficina.','<button class="btn red" onclick="openClient()">+ Novo cliente</button>')+'<div class="toolbar"><input id="clientSearch" class="input" placeholder="Buscar cliente"></div><div class="tableWrap"><table class="table"><thead><tr><th>Nome</th><th>Telefone</th><th>E-mail</th><th>CPF/CNPJ</th><th></th></tr></thead><tbody id="clientRows"></tbody></table></div>';function paint(v){qs('#clientRows').innerHTML=(v.map(function(c){return '<tr><td><b>'+esc(c.name)+'</b></td><td>'+esc(c.phone)+'</td><td>'+esc(c.email)+'</td><td>'+esc(c.cpf_cnpj)+'</td><td><button class="btn danger" onclick="del(\'/clients/'+c.id+'\',clients)">Excluir</button></td></tr>'}).join('')||'<tr><td colspan="5" class="empty">Nenhum cliente.</td></tr>')}paint(S.clients);qs('#clientSearch').oninput=function(e){var x=e.target.value.toLowerCase();paint(S.clients.filter(function(c){return JSON.stringify(c).toLowerCase().includes(x)}))}}

@@ -52,9 +52,15 @@ with sync_playwright() as p:
  page.locator('#authSubmit').click();page.locator('#content .hero').wait_for();page.wait_for_timeout(700)
  assert page.locator('#mobileNav,.mobile,.loginStory').count()==0
  assert page.locator('#cinemaVideo').evaluate('(el)=>el.paused')
- assert page.locator('#nav button').count()==7
+ assert page.locator('#nav button').count()==8
  assert page.locator('[data-page="overview"]').count()==0
+ assert page.locator('#crumb').inner_text()=='INÍCIO'
+ assert page.locator('#startAttendance').is_visible()
+ page.locator('#startAttendance').click()
+ page.locator('#attClientName').wait_for()
  assert page.locator('#crumb').inner_text()=='ATENDIMENTO'
+ page.evaluate("go('inicio')")
+ page.locator('#startAttendance').wait_for()
  assert page.locator('#sidebarToggle').count()==0
  for width in [1440,390,320,768]:
   page.set_viewport_size({'width':width,'height':844});page.wait_for_timeout(400)
@@ -69,7 +75,7 @@ with sync_playwright() as p:
   page.screenshot(path=str(ARTIFACTS/('rail-'+str(width)+'.png')))
   page.locator('#sideCollapse').click();page.wait_for_timeout(400)
   assert page.locator('#sidebarSearch').is_visible()
-  assert page.locator('#nav button:visible').count()==7
+  assert page.locator('#nav button:visible').count()==8
   assert page.locator('.workspaceProfile').is_visible()
   assert page.locator('.workspaceFooter').is_visible()
   assert page.locator('#workspaceSide').bounding_box()['width']>240
@@ -97,10 +103,28 @@ with sync_playwright() as p:
    if width<=760:assert page.locator('#sideCollapse').get_attribute('aria-expanded')=='false'
    else:page.locator('#sideCollapse').click();page.wait_for_timeout(350)
    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),str(width)+' overflow in '+tab
+ # Dialog navigation uses the keyboard and does not write any real records.
+ page.evaluate("go('clients')")
+ page.locator('#content .hero h1').filter(has_text='CLIENTES').wait_for()
+ page.locator('#content .hero button').click()
+ dialog=page.get_by_role('dialog',name='Novo cliente')
+ assert dialog.is_visible()
+ name=dialog.get_by_label('Nome',exact=True)
+ assert name.evaluate('(el)=>el===document.activeElement')
+ assert page.locator('#app').evaluate('(el)=>el.inert')
+ close=dialog.get_by_role('button',name='Fechar janela')
+ close.focus();page.keyboard.press('Shift+Tab')
+ assert dialog.locator('button').last.evaluate('(el)=>el===document.activeElement')
+ page.keyboard.press('Tab')
+ assert close.evaluate('(el)=>el===document.activeElement')
+ page.keyboard.press('Escape')
+ assert page.get_by_role('dialog').count()==0
+ assert not page.locator('#app').evaluate('(el)=>el.inert')
+ assert page.locator('#content .hero button').evaluate('(el)=>el===document.activeElement')
  page.emulate_media(reduced_motion='reduce')
  page.locator('#sideCollapse').click()
  assert page.locator('#workspaceSide').evaluate('(el)=>getComputedStyle(el).transitionDuration')=='0s'
  page.keyboard.press('Escape')
  assert not errors,errors
- print('PASS: seven shortcuts, no overview, collapse/expand, responsive rail/drawer, search with accent normalization, keyboard shortcut, mobile focus and backdrop, all modules at 320/390/768/1440 px, reduced motion; no browser errors. APIs mocked.')
+ print('PASS: eight shortcuts, welcome and start attendance, accessible dialog focus/labels/escape, no overview, collapse/expand, responsive rail/drawer, search with accent normalization, keyboard shortcut, mobile focus and backdrop, all modules at 320/390/768/1440 px, reduced motion; no browser errors. APIs mocked.')
  browser.close()
