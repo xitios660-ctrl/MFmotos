@@ -23,51 +23,46 @@ def mock(route):
  route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
 with sync_playwright() as p:
  browser=p.chromium.launch(headless=True,args=['--no-sandbox'])
- page=browser.new_page(viewport={'width':1440,'height':1000},device_scale_factor=1)
+ page=browser.new_page(viewport={'width':1440,'height':1000})
  page.on('pageerror',lambda e:errors.append(str(e)))
  page.route('**/api/**',mock)
  page.goto(BASE_URL,wait_until='networkidle')
- page.screenshot(path=str(ARTIFACTS/'login-desktop.png'))
- assert 'blur' in page.locator('.loginCard').evaluate('(el)=>getComputedStyle(el).backdropFilter')
+ assert page.locator('.loginStory').count()==0
+ assert page.locator('link[href*="liquid-glass"]').count()==0
  page.locator('#authEmail').fill('ana@example.com');page.locator('#authPass').fill('test-password')
- page.locator('#authSubmit').click()
- page.locator('.cockpit').wait_for();page.wait_for_timeout(600)
- page.screenshot(path=str(ARTIFACTS/'dashboard-desktop.png'),full_page=True)
- for tab in ['inventory','clients','orders','budgets','fiscal','security','atendimento']:
-  page.locator('#nav [data-page="'+tab+'"]').click()
-  page.wait_for_timeout(150)
-  assert page.locator('#content .hero h1').count()==1
-  assert page.locator('#nav [data-page="'+tab+'"]').get_attribute('aria-current')=='page'
- page.locator('#nav [data-page="clients"]').click();page.wait_for_timeout(150)
- page.get_by_role('button',name='+ Novo cliente').click()
- assert page.get_by_role('dialog').count()==1
- page.keyboard.press('Tab');page.keyboard.press('Shift+Tab')
- assert page.locator('#modal').evaluate('(el)=>el.contains(document.activeElement)')
- page.keyboard.press('Escape')
- assert page.get_by_role('dialog').count()==0
- assert page.get_by_role('button',name='+ Novo cliente').evaluate('(el)=>el===document.activeElement')
- page.locator('#nav [data-page="overview"]').click();page.wait_for_timeout(150)
- page.locator('#startRideBtn').click()
- page.wait_for_function("S.page==='atendimento'")
- page.wait_for_timeout(1100)
- assert page.locator('.rideTransition').count()==0
- for width in [390,320,768]:
+ page.locator('#authSubmit').click();page.locator('.cockpit').wait_for();page.wait_for_timeout(700)
+ assert page.locator('.mobile').count()==0
+ assert page.locator('#mobileNav').evaluate('(el)=>el.closest("header")!==null')
+ for width in [1440,390,320]:
   page.set_viewport_size({'width':width,'height':844})
-  page.evaluate("go('overview')");page.wait_for_timeout(250)
-  assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'),str(width)+' overflow'
-  page.screenshot(path=str(ARTIFACTS/('dashboard-'+str(width)+'.png')),full_page=True)
- page.set_viewport_size({'width':390,'height':844});page.evaluate('logout()');page.wait_for_timeout(150)
- page.screenshot(path=str(ARTIFACTS/'login-mobile.png'),full_page=True)
- assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
- page.locator('#tabRegister').click();assert page.locator('#authName').is_visible()
- page.locator('#tabLogin').click();assert not page.locator('#authName').is_visible()
- page.locator('.passToggle').click();assert page.locator('#authPass').get_attribute('type')=='text'
- page.locator('.passToggle').click();assert page.locator('#authPass').get_attribute('type')=='password'
- page.emulate_media(reduced_motion='reduce')
- assert page.locator('.loginCard').evaluate('(el)=>getComputedStyle(el).animationName')=='none'
- page.evaluate("S.token='preview-token';boot()");page.wait_for_timeout(150)
- page.locator('#startRideBtn').click();page.wait_for_function("S.page==='atendimento'")
- assert page.locator('.rideTransition').count()==0
+  toggle=page.locator('#shortcutsToggle')
+  assert not page.locator('#mobileNav').is_visible()
+  toggle.click()
+  assert page.locator('#mobileNav').is_visible()
+  assert page.locator('#mobileNav button').count()==8
+  bounds=page.locator('#mobileNav').bounding_box()
+  assert bounds['x']>=0 and bounds['x']+bounds['width']<=width
+  page.screenshot(path=str(ARTIFACTS/('menu-'+str(width)+'.png')))
+  page.keyboard.press('Escape')
+  assert not page.locator('#mobileNav').is_visible()
+  assert toggle.evaluate('(el)=>el===document.activeElement')
+  page.keyboard.press('Enter')
+  page.keyboard.press('Tab')
+  assert page.locator('#mobileNav button').first.evaluate('(el)=>el===document.activeElement')
+  page.keyboard.press('Escape')
+  toggle.click();page.locator('#crumb').click()
+  assert not page.locator('#mobileNav').is_visible()
+  for tab in ['inventory','clients','orders','budgets','fiscal','security','atendimento','overview']:
+   toggle.click();page.locator('#mobileNav [data-page="'+tab+'"]').click()
+   page.wait_for_timeout(150)
+   assert page.locator('#mobileNav [data-page="'+tab+'"]').get_attribute('aria-current')=='page'
+   assert not page.locator('#mobileNav').is_visible()
+   assert page.locator('#content .hero h1').count()==1
+  page.wait_for_timeout(600)
+  page.screenshot(path=str(ARTIFACTS/('restored-'+str(width)+'.png')))
+ page.set_viewport_size({'width':1440,'height':1000})
+ page.locator('.top .actions>.btn.red').click()
+ page.wait_for_function("S.page==='atendimento'")
  assert not errors,errors
- print('PASS: login, registration tabs, password toggle, seven modules, dialog keyboard/focus, desktop/mobile layouts, transition cleanup, reduced motion; no browser errors. APIs mocked, no production writes.')
+ print('PASS: previous visual restored; no bottom bar; all eight shortcuts in header menu; desktop/390/320 px, keyboard, Escape, outside click, selection and header attendance action; no browser errors. APIs mocked.')
  browser.close()

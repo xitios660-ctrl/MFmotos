@@ -17,20 +17,10 @@ O orçamento assistido funciona em modo `local` sem custo de API. Se `GROQ_API_K
 
 O sistema nunca marca uma nota como emitida sem autorização do provedor fiscal configurado.
 
-## Interface Liquid Glass (v8)
+## Atalhos de navegação
 
-O estilo único está em `public/liquid-glass.css`. A interface mantém as operações existentes e usa vidro translúcido no login, cabeçalho, navegação e modais, reflexos que seguem o cursor e feedback ao tocar nos botões. Os efeitos respeitam `prefers-reduced-motion`, com superfícies opacas quando o navegador não suporta desfoque.
+O visual MF Cinema V7 foi mantido. Os atalhos da antiga barra inferior ficam no menu de três pontos no cabeçalho, com as mesmas áreas da navegação lateral. O menu fecha ao escolher uma área, clicar fora ou pressionar Escape. Tab e Enter permitem navegar pelo teclado.
 
-Os modais aceitam Escape, mantêm o foco dentro da janela e devolvem o foco ao botão de origem. Campos têm rótulos associados, produtos aceitam Enter/Espaço e o login informa carregamento e erros.
+### Verificação sem banco
 
-### Verificação visual sem banco
-
-Instale Playwright em um ambiente Python e seu navegador:
-
-```sh
-python -m pip install playwright
-python -m playwright install chromium
-python -m http.server 4173 --directory public
-```
-
-Em outro terminal, execute `python tests/ui_smoke.py`. O teste intercepta as chamadas de API com dados fictícios e verifica login, sete módulos, teclado, modais, larguras de 320/390/768/1440 px e movimento reduzido. As capturas ficam em `/tmp/mf-ui-smoke`; `MF_UI_URL` e `MF_UI_ARTIFACTS` permitem alterar o endereço e a pasta de saída. Essa verificação cobre a interface; integrações fiscais e operações reais de banco exigem ambiente e credenciais próprios.
+Com Playwright instalado (`python -m pip install playwright` e `python -m playwright install chromium`), sirva os arquivos com `python -m http.server 4173 --directory public` e execute `python tests/ui_smoke.py` em outro terminal. As chamadas de API são simuladas; o teste não cria registros reais.
