@@ -14,6 +14,7 @@ def mock(route):
  path=route.request.url.split('/api')[-1]
  if path=='/auth/registration-status': data={'open':True}
  elif path=='/auth/login':data={'token':'preview-token'}
+ elif path=='/fiscal/issuer':data=json.loads(Path('fiscal-issuer.json').read_text())
  elif path=='/dashboard':data=D
  elif path=='/clients':data=C
  elif path=='/inventory':data=I

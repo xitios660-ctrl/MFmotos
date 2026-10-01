@@ -32,3 +32,11 @@ Com Playwright instalado (`python -m pip install playwright` e `python -m playwr
 A entrada usa o vídeo de roda de moto `public/Roda.mp4`, um quadro estático de fallback e estilos limitados ao login em `public/login-cinema.css`. `public/login-motion.js` controla pausa, aceleração ao segurar o botão, reflexos e preferência de movimento reduzido. O vídeo pausa quando a aba fica oculta e depois do login. A interface autentica sem atraso artificial e bloqueia envios repetidos durante a conexão.
 
 A Visão Geral foi retirada da navegação. Ao entrar, o sistema abre diretamente em Atendimento. O workspace permanece oculto até o login.
+
+## Emitente fiscal
+
+Os dados cadastrais da MF Motos estão em `fiscal-issuer.json` e são retornados pelo endpoint autenticado `/api/fiscal/issuer`. A área Fiscal mostra o cadastro da empresa e o formulário mantém o emitente separado do destinatário. O certificado A1 é apenas indicado como informado pela empresa; nenhum certificado ou senha está nesse arquivo.
+
+Ao iniciar, o servidor adiciona a coluna JSONB `issuer` às notas. Novos rascunhos recebem uma cópia dos dados do emitente, definida no servidor. As notas existentes permanecem com seus dados atuais. A cópia acompanha o documento enviado ao provedor quando a emissão for solicitada pelo usuário.
+
+Verificações específicas: `node tests/fiscal_routes.js` (rotas com banco e provedor simulados) e `python tests/fiscal_smoke.py` (interface com APIs simuladas, usando o servidor estático descrito acima).

@@ -1,0 +1,21 @@
+{
+  "legal_name": "Camila Alves de Santana",
+  "trade_name": "MF Motos",
+  "cnpj": "22406461000100",
+  "state_registration": "454443891110",
+  "tax_regime": "Simples Nacional convencional",
+  "tax_regime_code": "1",
+  "address": {
+    "street": "Rua Dr. Deodato Wertheimer",
+    "number": "2351",
+    "district": "Mogi Moderno",
+    "city": "Mogi das Cruzes",
+    "state": "SP",
+    "postal_code": "08717030"
+  },
+  "activities": ["Serviços", "Peças"],
+  "document_types": ["NF-e", "NFC-e", "NFS-e"],
+  "certificate_type": "A1",
+  "certificate_status": "Informado pela empresa",
+  "accountant_name": "Cruzeiro do Sul Contabilidade"
+}
