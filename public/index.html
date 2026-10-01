@@ -3,1048 +3,69 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#070707">\n<meta name="mf-ui-version" content="7.0">\n<link rel="preload" href="/Roda.mp4?v=7" as="video" type="video/mp4">
+<meta name="theme-color" content="#090b10">
+<meta name="mf-ui-version" content="8.0">
 <title>MF Moto Peças • Gestão</title>
-<style>
-:root{--red:#ef1016;--bg:#070707;--panel:#111;--panel2:#171717;--line:#292929;--text:#f6f6f6;--muted:#929292;--gold:#ffd24d;--green:#34d17c}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at 88% 0,#300708 0,transparent 30%),var(--bg);color:var(--text);font:500 14px/1.45 Inter,system-ui,-apple-system,Segoe UI,sans-serif}
-button,input,select,textarea{font:inherit}.hide{display:none!important}.btn{border:1px solid var(--line);background:#181818;color:#fff;border-radius:11px;padding:10px 13px;font-weight:800;cursor:pointer}.btn.red{background:linear-gradient(135deg,var(--red),#a9060b);border:0}.btn.danger{color:#ff777c;background:#200b0c;border-color:#481719}.btn:active{transform:translateY(1px)}.input,select,textarea{width:100%;border:1px solid var(--line);background:#090909;color:#fff;border-radius:11px;padding:11px 12px;outline:none}.input:focus,select:focus,textarea:focus{border-color:var(--red)}textarea{min-height:82px;resize:vertical}
-.login{min-height:100vh;display:grid;place-items:center;padding:22px}.loginCard{width:min(430px,100%);background:linear-gradient(180deg,#121212,#0b0b0b);border:1px solid #292929;border-radius:26px;padding:27px;box-shadow:0 30px 100px #000}
-.brand{display:flex;align-items:center;gap:12px}.mf{font-size:31px;font-weight:1000;font-style:italic;letter-spacing:-4px;position:relative;padding:0 9px;isolation:isolate}.mf:after{content:"";position:absolute;left:0;right:0;bottom:3px;height:9px;background:var(--red);z-index:-1;transform:skewX(-25deg)}.brand b{font-size:17px;letter-spacing:.5px}.brand small{display:block;color:#858585;letter-spacing:2px;font-size:9px}.login h1{font-size:32px;line-height:.98;margin:30px 0 9px}.redtxt{color:var(--red)}.muted{color:var(--muted)}.field{display:grid;gap:6px;margin:12px 0}.field label{font-size:10px;color:#858585;text-transform:uppercase;letter-spacing:1.4px}.tabs{display:flex;padding:4px;border:1px solid var(--line);background:#090909;border-radius:12px;margin:17px 0}.tabs button{flex:1;background:none;border:0;color:#777;padding:8px;border-radius:9px}.tabs .on{background:#1d1d1d;color:#fff}.full{width:100%}
-.app{display:grid;grid-template-columns:238px 1fr;min-height:100vh}.side{height:100vh;position:sticky;top:0;border-right:1px solid #222;padding:18px 12px;background:#090909}.nav{display:grid;gap:5px;margin-top:24px}.nav button{border:1px solid transparent;background:none;color:#999;text-align:left;padding:11px;border-radius:11px;cursor:pointer}.nav button.on{color:#fff;background:#280b0d;border-color:#4d181b}.main{min-width:0}.top{height:66px;position:sticky;top:0;z-index:25;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:#090909e8;backdrop-filter:blur(15px);border-bottom:1px solid #222}.content{padding:22px;max-width:1450px;margin:auto}.hero{display:flex;justify-content:space-between;align-items:end;gap:15px;margin-bottom:18px}.hero h1{font-size:38px;line-height:.95;margin:5px 0;text-transform:uppercase}.eyebrow{font-size:10px;color:var(--red);letter-spacing:2px}.actions{display:flex;gap:8px;flex-wrap:wrap}
-.grid{display:grid;gap:12px}.stats{grid-template-columns:repeat(6,1fr)}.card{background:linear-gradient(180deg,#131313,#0d0d0d);border:1px solid #262626;border-radius:16px;padding:15px}.stat b{font-size:28px}.stat small{display:block;color:#777}.two{grid-template-columns:1.2fr .8fr}.title{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.list{display:grid;gap:7px}.row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #252525;background:#0b0b0b;padding:11px;border-radius:11px}.row small{display:block;color:#777}
-.badge{display:inline-block;font-size:10px;border:1px solid #353535;border-radius:999px;padding:4px 7px;color:#aaa;white-space:nowrap}.badge.r{color:#ff7378;border-color:#5e1b1f}.badge.g{color:#6ae8a2;border-color:#1f5439}.badge.y{color:#ffe085;border-color:#554817}.toolbar{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:12px}.toolbar .input{max-width:430px}.tableWrap{overflow:auto;border:1px solid #252525;border-radius:14px}.table{width:100%;min-width:720px;border-collapse:collapse;background:#0c0c0c}.table th,.table td{padding:11px;border-bottom:1px solid #202020;text-align:left}.table th{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#777;background:#111}.money{font-weight:900}.gold{color:var(--gold)}.green{color:var(--green)}.empty{text-align:center;color:#666;padding:28px}.warn{border:1px solid #55491f;background:#1b1709;color:#d7c776;border-radius:12px;padding:11px;margin-bottom:12px}
-.modal{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:#000c;backdrop-filter:blur(7px);padding:15px}.modalCard{width:min(720px,100%);max-height:92vh;overflow:auto;background:#101010;border:1px solid #333;border-radius:18px}.modalHead{padding:14px 16px;border-bottom:1px solid #252525;display:flex;justify-content:space-between;align-items:center}.modalBody{padding:16px}.form{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.span{grid-column:1/-1}.products{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.product{border:1px solid #292929;background:#0c0c0c;padding:12px;border-radius:12px;cursor:pointer}.product:hover{border-color:#852228}.product small{display:block;color:#777}.product .price{color:var(--gold);font-weight:900;margin-top:6px}.posgrid{display:grid;grid-template-columns:1fr .72fr;gap:14px}.cartline{display:grid;grid-template-columns:1fr 65px 32px;gap:7px;align-items:center;padding:9px 0;border-bottom:1px solid #222}.ai{border:1px solid #4b1719;background:#180708;border-radius:15px;padding:13px;margin-bottom:13px}.chat{max-height:260px;overflow:auto;display:grid;gap:7px;margin:9px 0}.bubble{white-space:pre-wrap;background:#191919;border-radius:11px;padding:9px}.bubble.me{background:#2a0d0e;margin-left:10%}.toast{position:fixed;right:18px;bottom:18px;z-index:120;background:#151515;border:1px solid #333;border-radius:11px;padding:11px 14px}.mobile{display:none}
-@media(max-width:1050px){.stats{grid-template-columns:repeat(3,1fr)}.two,.posgrid{grid-template-columns:1fr}}
-@media(max-width:760px){.app{display:block}.side{display:none}.top{height:58px;padding:0 11px}.content{padding:14px 10px 80px}.hero{align-items:flex-start;flex-direction:column}.hero h1{font-size:31px}.stats{grid-template-columns:repeat(2,1fr)}.form{grid-template-columns:1fr}.span{grid-column:auto}.products{grid-template-columns:1fr}.mobile{display:flex;position:fixed;left:7px;right:7px;bottom:7px;z-index:60;background:#111e;border:1px solid #292929;border-radius:14px;padding:5px;overflow:auto;backdrop-filter:blur(14px)}.mobile button{flex:0 0 62px;border:0;background:none;color:#777;padding:7px 2px;font-size:9px}.mobile button.on{background:#2b0d0f;color:#fff;border-radius:9px}}
-
-/* ===== MF CINEMATIC MOTORCYCLE UI ===== */
-:root{
-  --red:#ff1820;--red2:#8d050a;--redGlow:rgba(255,24,32,.22);
-  --bg:#050505;--panel:#0d0d0e;--panel2:#121214;--line:#26262a;
-  --text:#f7f7f8;--muted:#8c8c93;--gold:#ffd166;--green:#36db8b;
-  --glass:rgba(14,14,16,.78)
-}
-html{background:#050505;scroll-behavior:smooth}
-body{
-  background:
-    radial-gradient(circle at 82% -8%,rgba(255,24,32,.18),transparent 30%),
-    radial-gradient(circle at 12% 88%,rgba(255,24,32,.07),transparent 26%),
-    linear-gradient(180deg,#070708 0%,#030303 100%);
-  overflow-x:hidden;
-}
-body:before{
-  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.24;
-  background-image:
-    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
-  background-size:44px 44px;
-  mask-image:linear-gradient(to bottom,black,transparent 88%);
-}
-body:after{
-  content:"";position:fixed;width:46vw;height:46vw;right:-20vw;top:20vh;
-  border:1px solid rgba(255,24,32,.08);border-radius:50%;pointer-events:none;z-index:-1;
-  box-shadow:0 0 0 70px rgba(255,24,32,.025),0 0 0 140px rgba(255,24,32,.018);
-}
-::selection{background:var(--red);color:#fff}
-.btn{
-  position:relative;overflow:hidden;border-color:#303036;background:linear-gradient(180deg,#1a1a1d,#111114);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 9px 24px rgba(0,0,0,.14);
-  transition:.22s ease;
-}
-.btn:before{content:"";position:absolute;inset:-1px;transform:translateX(-120%) skewX(-18deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);transition:transform .5s ease}
-.btn:hover{transform:translateY(-2px);border-color:#555;box-shadow:0 12px 26px rgba(0,0,0,.24)}
-.btn:hover:before{transform:translateX(120%) skewX(-18deg)}
-.btn.red{background:linear-gradient(135deg,#ff1b23,#a8070c 72%);box-shadow:0 12px 30px rgba(239,16,22,.2),inset 0 1px 0 rgba(255,255,255,.18)}
-.btn.red:hover{box-shadow:0 16px 40px rgba(239,16,22,.32)}
-.input,select,textarea{
-  background:linear-gradient(180deg,#0a0a0c,#070708);border-color:#29292d;
-  transition:border-color .2s,box-shadow .2s,transform .2s;
-}
-.input:focus,select:focus,textarea:focus{border-color:#a91a20;box-shadow:0 0 0 3px rgba(255,24,32,.09),0 12px 24px rgba(0,0,0,.18)}
-.login{position:relative;overflow:hidden;background:radial-gradient(circle at 50% 45%,rgba(255,24,32,.09),transparent 34%)}
-.login:before,.login:after{content:"";position:absolute;border-radius:50%;pointer-events:none}
-.login:before{width:580px;height:580px;border:1px solid rgba(255,24,32,.12);box-shadow:0 0 0 55px rgba(255,24,32,.025),0 0 0 110px rgba(255,24,32,.015);animation:slowSpin 22s linear infinite}
-.login:after{width:190px;height:190px;border:1px dashed rgba(255,255,255,.09);animation:slowSpin 10s linear infinite reverse}
-.loginCard{
-  position:relative;z-index:2;background:linear-gradient(145deg,rgba(22,22,25,.94),rgba(7,7,8,.96));
-  border-color:#34343a;border-radius:28px;padding:30px;box-shadow:0 40px 120px #000,0 0 70px rgba(255,24,32,.07);
-  backdrop-filter:blur(24px);animation:loginIn .65s cubic-bezier(.2,.8,.2,1);
-}
-.loginCard:before{content:"MF // RIDE CONTROL";position:absolute;right:22px;top:16px;font-size:8px;letter-spacing:2.6px;color:#5e5e66}
-.loginCard:after{content:"";position:absolute;left:28px;right:28px;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--red),transparent);box-shadow:0 0 18px var(--red)}
-.login h1{font-size:38px;letter-spacing:-1.6px}
-.mf{font-size:34px;text-shadow:0 0 28px rgba(255,24,32,.16)}
-.mf:after{box-shadow:0 0 20px rgba(255,24,32,.28)}
-.side{
-  width:238px;background:linear-gradient(180deg,rgba(12,12,14,.96),rgba(5,5,6,.99));
-  border-right-color:#202024;backdrop-filter:blur(18px);overflow:hidden;
-}
-.side:after{content:"";position:absolute;left:0;right:0;bottom:-120px;height:320px;background:radial-gradient(circle at 20% 100%,rgba(255,24,32,.16),transparent 56%);pointer-events:none}
-.nav button{position:relative;transition:.2s ease;border-radius:13px;color:#85858d;letter-spacing:.1px}
-.nav button:hover{color:#fff;background:#151518;transform:translateX(3px)}
-.nav button.on{background:linear-gradient(90deg,rgba(255,24,32,.18),rgba(255,24,32,.035));border-color:#511216;box-shadow:inset 3px 0 0 var(--red),0 8px 26px rgba(0,0,0,.16)}
-.nav button.on:after{content:"";position:absolute;right:9px;top:50%;width:5px;height:5px;border-radius:50%;background:var(--red);box-shadow:0 0 13px var(--red);transform:translateY(-50%)}
-.top{
-  height:70px;background:rgba(7,7,9,.78);backdrop-filter:blur(22px) saturate(1.2);
-  border-bottom-color:#202024;
-}
-.top:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,24,32,.26),transparent)}
-.systemStatus{display:inline-flex;align-items:center;gap:7px;margin-left:14px;color:#777;font-size:9px;letter-spacing:1.6px;text-transform:uppercase}
-.liveDot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px rgba(54,219,139,.8);animation:pulseDot 1.8s ease-in-out infinite}
-.content{padding:26px;max-width:1510px}
-.content.page-enter>*{animation:pageIn .5s cubic-bezier(.2,.75,.2,1) both}
-.content.page-enter>*:nth-child(2){animation-delay:.04s}.content.page-enter>*:nth-child(3){animation-delay:.08s}
-.hero{
-  position:relative;padding:21px 22px;margin-bottom:16px;border:1px solid #242429;border-radius:22px;
-  background:linear-gradient(105deg,rgba(18,18,21,.94),rgba(10,10,12,.75));
-  overflow:hidden;align-items:center;box-shadow:0 18px 55px rgba(0,0,0,.25);
-}
-.hero:before{content:"";position:absolute;right:-45px;top:-105px;width:310px;height:310px;border-radius:50%;border:1px solid rgba(255,24,32,.13);box-shadow:0 0 0 34px rgba(255,24,32,.025),0 0 0 69px rgba(255,24,32,.015)}
-.hero:after{content:"";position:absolute;left:0;top:0;width:120px;height:2px;background:linear-gradient(90deg,var(--red),transparent);box-shadow:0 0 18px rgba(255,24,32,.7)}
-.hero>*,.card>*{position:relative;z-index:1}
-.hero h1{font-size:42px;letter-spacing:-2px;margin:7px 0 3px}
-.eyebrow{display:flex;align-items:center;gap:8px;font-weight:900}
-.eyebrow:before{content:"";width:24px;height:2px;background:var(--red);box-shadow:0 0 12px var(--red)}
-.card{
-  position:relative;overflow:hidden;background:linear-gradient(145deg,#111114,#0a0a0c);
-  border-color:#25252a;border-radius:18px;box-shadow:0 16px 40px rgba(0,0,0,.16);
-  transition:transform .23s ease,border-color .23s ease,box-shadow .23s ease;
-}
-.card:hover{transform:translateY(-3px);border-color:#3d3d44;box-shadow:0 20px 46px rgba(0,0,0,.27)}
-.card:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(130deg,rgba(255,255,255,.025),transparent 42%)}
-.stat{min-height:118px;display:flex;flex-direction:column;justify-content:flex-end}
-.stat:after{content:"";position:absolute;right:-38px;top:-38px;width:100px;height:100px;border-radius:50%;border:1px solid rgba(255,24,32,.08);box-shadow:0 0 0 15px rgba(255,24,32,.02)}
-.stat b{font-size:30px;letter-spacing:-1.4px}.stat small{text-transform:uppercase;letter-spacing:1.15px;font-size:9px}
-.cockpit{
-  display:grid;grid-template-columns:1.4fr .6fr;gap:14px;margin-bottom:14px;padding:20px;
-  border:1px solid #2b2b30;border-radius:22px;background:
-    radial-gradient(circle at 87% 50%,rgba(255,24,32,.15),transparent 29%),
-    linear-gradient(120deg,#141416,#09090b);
-  box-shadow:0 24px 70px rgba(0,0,0,.28);overflow:hidden;position:relative;
-}
-.cockpit:before{content:"";position:absolute;inset:auto 0 0 0;height:1px;background:linear-gradient(90deg,transparent,var(--red),transparent);opacity:.42}
-.cockpitCopy{display:flex;flex-direction:column;justify-content:center;min-height:180px}
-.cockpitCopy .kicker{font-size:9px;letter-spacing:2.8px;color:#777;text-transform:uppercase}
-.cockpitCopy h2{font-size:34px;line-height:1.02;letter-spacing:-1.5px;margin:8px 0}
-.cockpitCopy p{color:#8a8a92;max-width:620px;margin:0}
-.cockpitActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
-.gaugeWrap{display:grid;place-items:center;min-height:190px}
-.gauge{width:166px;height:166px;border-radius:50%;padding:13px;background:conic-gradient(var(--red) 0 68%,#2a2a2f 68% 82%,#151518 82% 100%);box-shadow:0 0 55px rgba(255,24,32,.13);animation:gaugeIn .9s ease both}
-.gaugeInner{width:100%;height:100%;border-radius:50%;background:radial-gradient(circle,#17171a 0,#09090b 68%);border:1px solid #33333a;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 0 32px #000}
-.gaugeInner strong{font-size:38px;line-height:1}.gaugeInner span{font-size:8px;letter-spacing:2px;color:#777;margin-top:6px}
-.tableWrap{border-color:#25252a;border-radius:17px;background:#0b0b0d;box-shadow:0 15px 40px rgba(0,0,0,.13)}
-.table{background:transparent}.table th{background:#111114;color:#777780;padding:13px 12px}.table td{padding:13px 12px;border-color:#1e1e22}
-.table tbody tr{transition:.18s ease}.table tbody tr:hover{background:#141416;box-shadow:inset 3px 0 0 rgba(255,24,32,.6)}
-.row{background:linear-gradient(180deg,#0d0d0f,#09090b);border-color:#242429;transition:.2s ease}
-.row:hover{border-color:#393940;transform:translateX(2px)}
-.badge{text-transform:uppercase;letter-spacing:.7px;font-weight:850;background:#0b0b0c}
-.badge.g{background:#07160f}.badge.y{background:#191607}.badge.r{background:#1a0809}
-.product{position:relative;overflow:hidden;border-color:#26262b;background:linear-gradient(145deg,#111114,#09090b);min-height:112px;transition:.22s ease}
-.product:after{content:"+";position:absolute;right:12px;bottom:9px;font-size:22px;color:#46464d;transition:.22s}
-.product:hover{border-color:#74151a;transform:translateY(-3px);box-shadow:0 16px 36px rgba(0,0,0,.2)}
-.product:hover:after{color:var(--red);text-shadow:0 0 14px rgba(255,24,32,.65);transform:scale(1.15)}
-.product .price{font-size:18px}
-.posgrid>.card{position:sticky;top:88px;height:max-content}
-.ai{
-  position:relative;overflow:hidden;border-color:#561418;background:
-    radial-gradient(circle at 95% 10%,rgba(255,24,32,.16),transparent 30%),
-    linear-gradient(145deg,#17090b,#0b090a);
-  border-radius:20px;padding:16px;box-shadow:0 20px 56px rgba(0,0,0,.22);
-}
-.ai:before{content:"";position:absolute;left:-30%;right:-30%;height:1px;top:0;background:linear-gradient(90deg,transparent,var(--red),transparent);animation:scanLine 3.2s ease-in-out infinite}
-.ai>b{letter-spacing:1.4px}.ai>b:before{content:"●";color:var(--red);margin-right:8px;text-shadow:0 0 12px var(--red);animation:pulseDot 1.6s infinite}
-.chat{scrollbar-width:thin;scrollbar-color:#3b1114 transparent}
-.bubble{border:1px solid #242429;background:#101012;box-shadow:0 8px 22px rgba(0,0,0,.12);animation:bubbleIn .32s ease both}
-.bubble.me{background:linear-gradient(135deg,#2b0c0f,#18090b);border-color:#4d1216}
-.warn{border-color:#5b4917;background:linear-gradient(120deg,#1d1708,#100e08);box-shadow:inset 3px 0 0 #d6aa29}
-.modal{background:rgba(0,0,0,.78);backdrop-filter:blur(12px)}
-.modalCard{background:linear-gradient(150deg,#151518,#09090b);border-color:#35353b;border-radius:22px;box-shadow:0 35px 100px #000,0 0 55px rgba(255,24,32,.06);animation:modalIn .28s cubic-bezier(.2,.8,.2,1)}
-.modalHead{background:#0e0e10;border-color:#29292e}
-.toast{border-radius:14px;background:rgba(18,18,21,.94);backdrop-filter:blur(14px);box-shadow:0 18px 45px rgba(0,0,0,.32);animation:toastIn .3s ease}
-.plateScan{position:relative;overflow:hidden;border-radius:12px}
-.plateScan.scanning:after{content:"";position:absolute;left:0;right:0;height:2px;background:var(--red);box-shadow:0 0 18px var(--red);animation:plateScanner 1s ease-in-out infinite}
-.scanResult{margin-top:8px;padding:10px 12px;border:1px solid #29292e;border-radius:11px;background:#0a0a0c}
-.mobile{background:rgba(12,12,15,.9);border-color:#303036;box-shadow:0 18px 60px rgba(0,0,0,.42);backdrop-filter:blur(22px)}
-.mobile button{transition:.2s}.mobile button.on{background:linear-gradient(180deg,#2e0d10,#19090b);box-shadow:inset 0 -2px 0 var(--red);color:#fff}
-@keyframes pageIn{from{opacity:0;transform:translateY(10px) scale(.995)}to{opacity:1;transform:none}}
-@keyframes loginIn{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
-@keyframes modalIn{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
-@keyframes bubbleIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
-@keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-@keyframes slowSpin{to{transform:rotate(360deg)}}
-@keyframes pulseDot{50%{opacity:.45;transform:scale(.78)}}
-@keyframes scanLine{0%,100%{transform:translateY(0);opacity:.25}50%{transform:translateY(330px);opacity:.8}}
-@keyframes plateScanner{0%{top:0;opacity:.25}50%{top:calc(100% - 2px);opacity:1}100%{top:0;opacity:.25}}
-@keyframes gaugeIn{from{transform:rotate(-25deg) scale(.9);opacity:0}to{transform:none;opacity:1}}
-@media(max-width:1050px){.cockpit{grid-template-columns:1fr .45fr}.gauge{width:145px;height:145px}}
-@media(max-width:760px){
-  body:after{display:none}.top{height:62px}.top .actions .btn:first-child{display:none}.systemStatus{display:none}
-  .content{padding:12px 9px 84px}.hero{padding:17px 15px;border-radius:18px}.hero h1{font-size:30px;letter-spacing:-1px}
-  .cockpit{grid-template-columns:1fr;padding:16px;border-radius:18px}.cockpitCopy{min-height:auto}.cockpitCopy h2{font-size:28px}.gaugeWrap{min-height:150px}.gauge{width:132px;height:132px}
-  .stat{min-height:98px}.stat b{font-size:24px}.card{border-radius:15px}.posgrid>.card{position:static}
-  .loginCard{padding:24px 20px}.login h1{font-size:33px}.login:before{width:420px;height:420px}
-}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
-
-
-.passWrap{display:flex;gap:7px;align-items:center}
-.passWrap .input{flex:1}
-.passToggle{flex:0 0 auto;min-width:76px}
-.securityGrid{display:grid;grid-template-columns:.8fr 1.2fr;gap:14px}
-.securityMark{display:grid;place-items:center;min-height:220px}
-.lockCore{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;border:1px solid #3a3a40;background:radial-gradient(circle,#17171a,#09090b 68%);box-shadow:0 0 0 16px rgba(255,24,32,.025),0 0 55px rgba(255,24,32,.12);font-size:44px}
-.securityNote{padding:11px 12px;border:1px solid #29292e;border-radius:12px;background:#0a0a0c;color:#85858d}
-@media(max-width:760px){.securityGrid{grid-template-columns:1fr}.securityMark{min-height:150px}.lockCore{width:118px;height:118px}}
-
-.attFields{display:grid;grid-template-columns:repeat(2,1fr);gap:0 10px}
-.attSummary{position:sticky;top:88px;height:max-content}
-.attPay{display:flex;gap:9px;align-items:center;border:1px solid #2b2b31;background:#0b0b0d;border-radius:12px;padding:11px}
-.attPay input{width:18px;height:18px;accent-color:var(--red)}
-.attManual{display:grid;grid-template-columns:1fr 110px auto;gap:7px;align-items:end}
-@media(max-width:760px){.attFields{grid-template-columns:1fr}.attSummary{position:static}.attManual{grid-template-columns:1fr 100px}.attManual .btn{grid-column:1/-1}}
-
-
-.startRideWrap{margin-top:22px;display:flex;align-items:center;perspective:900px}
-.startRideBtn{
-  --mx:50%;--my:50%;--rx:0deg;--ry:0deg;
-  position:relative;isolation:isolate;display:grid;grid-template-columns:auto 1fr 62px;align-items:center;gap:14px;
-  width:min(500px,100%);min-height:84px;padding:10px 12px 10px 14px;
-  border:1px solid rgba(255,82,88,.48);border-radius:22px;color:#fff;cursor:pointer;overflow:hidden;
-  background:
-    radial-gradient(circle at var(--mx) var(--my),rgba(255,255,255,.17),transparent 24%),
-    radial-gradient(circle at 88% 50%,rgba(255,24,32,.18),transparent 29%),
-    linear-gradient(115deg,#1b0a0c 0%,#10090b 34%,#09090b 70%,#160608 100%);
-  box-shadow:
-    0 24px 65px rgba(0,0,0,.42),
-    0 0 0 1px rgba(255,24,32,.04),
-    inset 0 1px 0 rgba(255,255,255,.11),
-    inset 0 -18px 42px rgba(255,24,32,.035);
-  transform:rotateX(var(--rx)) rotateY(var(--ry)) translateZ(0);
-  transform-style:preserve-3d;
-  transition:transform .16s ease,border-color .22s,box-shadow .22s,filter .22s;
-  will-change:transform;
-}
-.startRideBtn:before{
-  content:"";position:absolute;inset:0;pointer-events:none;z-index:-2;
-  background:
-    repeating-linear-gradient(90deg,transparent 0 27px,rgba(255,255,255,.018) 28px),
-    linear-gradient(105deg,transparent 30%,rgba(255,255,255,.05) 44%,rgba(255,24,32,.09) 50%,rgba(255,255,255,.025) 56%,transparent 70%);
-  background-size:auto,220% 100%;background-position:0 0,-120% 0;
-  animation:startRideSweep 4.4s ease-in-out infinite;
-}
-.startRideBtn:after{
-  content:"";position:absolute;inset:5px;border-radius:16px;pointer-events:none;z-index:5;
-  border:1px solid rgba(255,255,255,.055);
-  box-shadow:inset 0 0 0 1px rgba(0,0,0,.36),inset 0 0 34px rgba(255,24,32,.025);
-}
-.startRideBtn:hover{
-  border-color:rgba(255,88,94,.86);
-  box-shadow:0 30px 78px rgba(0,0,0,.5),0 0 42px rgba(255,24,32,.16),inset 0 1px 0 rgba(255,255,255,.15);
-  filter:saturate(1.08);
-}
-.startRideBtn:active{transform:rotateX(var(--rx)) rotateY(var(--ry)) scale(.985)}
-.startRideRail{
-  width:5px;height:52px;border-radius:999px;position:relative;overflow:hidden;
-  background:#2a0c0f;border:1px solid #451216;box-shadow:inset 0 0 9px #000;
-}
-.startRideRail:before{
-  content:"";position:absolute;left:0;right:0;height:40%;top:-45%;
-  background:linear-gradient(#ff7176,#ff1820);box-shadow:0 0 13px #ff1820;
-  animation:startRideRail 1.7s ease-in-out infinite;
-}
-.startRideText{display:grid;text-align:left;line-height:1;transform:translateZ(26px);min-width:0}
-.startRideLabel{display:flex;align-items:center;gap:9px}
-.startRideLabel strong{font-size:18px;letter-spacing:.45px;white-space:nowrap}
-.startRideLive{width:7px;height:7px;border-radius:50%;background:#ff2a31;box-shadow:0 0 0 4px rgba(255,24,32,.08),0 0 16px #ff1820;animation:startRideLive 1.35s ease-in-out infinite}
-.startRideText small{margin-top:8px;font-size:8px;letter-spacing:2.25px;text-transform:uppercase;color:rgba(255,255,255,.48);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.startRideHud{width:58px;height:58px;position:relative;display:grid;place-items:center;transform:translateZ(32px)}
-.startRideHud:before{
-  content:"";position:absolute;inset:0;border-radius:50%;
-  background:conic-gradient(from 30deg,transparent 0 10%,#ff232a 10% 17%,transparent 17% 35%,rgba(255,255,255,.28) 35% 37%,transparent 37% 64%,#7d1116 64% 73%,transparent 73%);
-  -webkit-mask:radial-gradient(circle,transparent 57%,#000 59%);
-  mask:radial-gradient(circle,transparent 57%,#000 59%);
-  filter:drop-shadow(0 0 7px rgba(255,24,32,.55));
-  animation:startRideRotor 3.6s linear infinite;
-}
-.startRideHud:after{
-  content:"";position:absolute;inset:7px;border-radius:50%;border:1px dashed rgba(255,255,255,.13);
-  animation:startRideRotor 7s linear infinite reverse;
-}
-.startRideCore{
-  width:37px;height:37px;border-radius:50%;display:grid;place-items:center;position:relative;z-index:2;
-  background:radial-gradient(circle at 38% 30%,#3a1518,#13090b 55%,#070708);
-  border:1px solid rgba(255,80,86,.34);
-  box-shadow:inset 0 0 16px #000,0 0 18px rgba(255,24,32,.13);
-}
-.startRideCore span{font-size:20px;transform:translateX(-1px);animation:startRideArrow 1.25s ease-in-out infinite}
-.startRideTicks{position:absolute;inset:3px;border-radius:50%;pointer-events:none}
-.startRideTicks:before,.startRideTicks:after{content:"";position:absolute;left:50%;top:-2px;width:1px;height:6px;background:#ff3d43;box-shadow:0 50px 0 rgba(255,61,67,.45)}
-.startRideTicks:after{transform:rotate(90deg);transform-origin:50% 31px}
-.startRideProgress{position:absolute;left:14px;right:14px;bottom:6px;height:2px;border-radius:2px;overflow:hidden;background:rgba(255,255,255,.055)}
-.startRideProgress i{display:block;width:100%;height:100%;transform:scaleX(.08);transform-origin:left;background:linear-gradient(90deg,#ff2027,#ff7b7f,#fff);box-shadow:0 0 12px #ff1820;animation:startRideIdleProgress 2.6s ease-in-out infinite}
-.startRideCode{
-  position:absolute;right:86px;top:9px;font:700 7px/1 monospace;letter-spacing:1.5px;color:rgba(255,255,255,.22);
-  transform:translateZ(16px)
-}
-.startRideParticles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.startRideParticles i{position:absolute;width:2px;height:2px;border-radius:50%;background:#ff5a60;opacity:0;box-shadow:0 0 8px #ff1820}
-.startRideParticles i:nth-child(1){left:72%;top:22%}.startRideParticles i:nth-child(2){left:79%;top:68%}.startRideParticles i:nth-child(3){left:62%;top:76%}.startRideParticles i:nth-child(4){left:88%;top:36%}.startRideParticles i:nth-child(5){left:55%;top:18%}.startRideParticles i:nth-child(6){left:91%;top:72%}
-.startRideBtn:hover .startRideParticles i{animation:startRideSpark 1.6s ease-out infinite}
-.startRideParticles i:nth-child(2){animation-delay:.2s!important}.startRideParticles i:nth-child(3){animation-delay:.5s!important}.startRideParticles i:nth-child(4){animation-delay:.8s!important}.startRideParticles i:nth-child(5){animation-delay:1.05s!important}.startRideParticles i:nth-child(6){animation-delay:1.3s!important}
-
-.startRideBtn.is-igniting{
-  pointer-events:none;border-color:#ff555b;
-  box-shadow:0 0 0 1px rgba(255,255,255,.1),0 0 55px rgba(255,24,32,.34),0 28px 80px #000;
-  animation:startRideLock .62s cubic-bezier(.2,.8,.2,1) both;
-}
-.startRideBtn.is-igniting .startRideHud:before{animation-duration:.45s}
-.startRideBtn.is-igniting .startRideHud:after{animation-duration:.8s}
-.startRideBtn.is-igniting .startRideLive{background:#fff;box-shadow:0 0 18px #fff,0 0 32px #ff1820}
-.startRideBtn.is-igniting .startRideProgress i{animation:none;transform:scaleX(1);transition:transform .62s cubic-bezier(.15,.8,.2,1)}
-.startRideBtn.is-igniting .startRideRail:before{height:100%;top:0;transition:.55s ease}
-.startRideBtn.is-igniting .startRideCore{background:#ff1820;box-shadow:0 0 24px rgba(255,24,32,.8),0 0 52px rgba(255,24,32,.35)}
-
-.rideTransition{
-  position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0;overflow:hidden;
-  background:
-    radial-gradient(circle at 50% 48%,rgba(255,24,32,.12),transparent 32%),
-    linear-gradient(180deg,#020202,#000);
-  display:grid;place-items:center;
-  transition:opacity .18s ease;
-}
-.rideTransition.on{opacity:1}
-.rideTransitionVideo{
-  position:absolute;inset:0;width:100%;height:100%;
-  object-fit:contain;object-position:center;
-  opacity:0;transform:scale(1.035);
-  filter:contrast(1.06) saturate(1.08);
-  transition:opacity .2s ease,transform 2.9s cubic-bezier(.16,.8,.2,1);
-  background:#000;
-}
-.rideTransition.on .rideTransitionVideo{opacity:1;transform:scale(1)}
-.rideTransitionShade{
-  position:absolute;inset:0;z-index:2;pointer-events:none;
-  background:
-    linear-gradient(180deg,rgba(0,0,0,.26),transparent 18%,transparent 78%,rgba(0,0,0,.55)),
-    radial-gradient(circle at center,transparent 45%,rgba(0,0,0,.36) 100%);
-}
-.rideTransitionShade:before{
-  content:"";position:absolute;inset:0;opacity:.15;
-  background:repeating-linear-gradient(180deg,transparent 0 4px,rgba(255,255,255,.035) 5px);
-  animation:rideVideoScan 2.4s linear infinite;
-}
-.rideTransitionBrand{
-  position:absolute;z-index:3;left:50%;bottom:max(24px,env(safe-area-inset-bottom));
-  transform:translateX(-50%);width:min(540px,88vw);display:flex;align-items:center;justify-content:center;gap:12px;
-  color:#fff;text-align:center;text-shadow:0 0 18px rgba(255,24,32,.65);
-  opacity:0;animation:rideBrandIn .45s .22s ease forwards;
-}
-.rideTransitionBrand i{
-  width:7px;height:7px;border-radius:50%;background:#ff252c;
-  box-shadow:0 0 16px #ff1820,0 0 0 5px rgba(255,24,32,.08);
-  animation:startRideLive 1s ease-in-out infinite;
-}
-.rideTransitionBrand b{font-size:10px;letter-spacing:2.7px}
-.rideTransitionBrand span{font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.55)}
-.rideTransitionFallback{
-  position:absolute;z-index:1;width:min(58vw,430px);aspect-ratio:1;border-radius:50%;
-  border:1px solid rgba(255,24,32,.24);
-  box-shadow:0 0 0 28px rgba(255,24,32,.025),0 0 0 65px rgba(255,24,32,.014),0 0 70px rgba(255,24,32,.2);
-  opacity:0;
-}
-.rideTransition.video-failed .rideTransitionVideo{display:none}
-.rideTransition.video-failed .rideTransitionFallback{opacity:1;animation:rideTransitionRing .62s cubic-bezier(.2,.8,.2,1) both}
-@keyframes rideVideoScan{from{transform:translateY(-8px)}to{transform:translateY(8px)}}
-@keyframes rideBrandIn{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
-
-@media(max-width:760px){
-  .rideTransitionVideo{object-fit:cover}
-  .rideTransitionBrand{bottom:max(18px,env(safe-area-inset-bottom));flex-direction:column;gap:4px}
-  .rideTransitionBrand b{font-size:9px;letter-spacing:2.2px}
-  .rideTransitionBrand span{font-size:7px}
-}
-@keyframes startRideSweep{0%,35%{background-position:0 0,-120% 0}70%,100%{background-position:0 0,140% 0}}
-@keyframes startRideRail{0%,100%{top:-45%}50%{top:105%}}
-@keyframes startRideRotor{to{transform:rotate(360deg)}}
-@keyframes startRideLive{0%,100%{opacity:.5;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
-@keyframes startRideArrow{0%,100%{transform:translateX(-2px)}50%{transform:translateX(3px)}}
-@keyframes startRideIdleProgress{0%,100%{transform:scaleX(.08);opacity:.45}50%{transform:scaleX(.34);opacity:1}}
-@keyframes startRideSpark{0%{opacity:0;transform:translate(0,0) scale(.5)}25%{opacity:1}100%{opacity:0;transform:translate(18px,-16px) scale(1.6)}}
-@keyframes startRideLock{0%{transform:scale(1)}35%{transform:scale(.985)}70%{transform:scale(1.015)}100%{transform:scale(1)}}
-@keyframes rideTransitionRing{from{transform:scale(.55) rotate(-18deg);opacity:0}to{transform:scale(1.15) rotate(14deg);opacity:1}}
-
-@media(max-width:760px){
-  .startRideWrap{margin-top:18px}
-  .startRideBtn{width:100%;min-height:78px;border-radius:19px;grid-template-columns:auto 1fr 56px;padding-left:12px}
-  .startRideLabel strong{font-size:15px}.startRideText small{font-size:7px;letter-spacing:1.45px}
-  .startRideHud{width:54px;height:54px}.startRideCode{display:none}
-}
-@media(prefers-reduced-motion:reduce){
-  .startRideBtn{transform:none!important}
-  .startRideBtn:before,.startRideRail:before,.startRideHud:before,.startRideHud:after,.startRideLive,.startRideCore span,.startRideProgress i,.startRideParticles i,.rideTransition:before{animation:none!important}
-}
-.quickDeck{margin:0 0 14px;padding:15px;border:1px solid #27272d;border-radius:20px;background:radial-gradient(circle at 8% 0,rgba(255,24,32,.10),transparent 28%),linear-gradient(145deg,rgba(17,17,20,.94),rgba(8,8,10,.96));box-shadow:0 18px 48px rgba(0,0,0,.22);position:relative;overflow:hidden}
-.quickDeck:before{content:"";position:absolute;left:-20%;right:-20%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,24,32,.75),transparent);animation:quickDeckScan 4.2s ease-in-out infinite}
-.quickHead{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:11px}.quickHead b{font-size:12px;letter-spacing:1.5px}.quickHead small{color:#6f6f77;font-size:9px;letter-spacing:1.3px;text-transform:uppercase}
-.quickLinks{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
-.quickLink{position:relative;overflow:hidden;min-height:92px;border:1px solid #2b2b31;border-radius:15px;background:linear-gradient(145deg,#121215,#0a0a0c);color:#fff;text-align:left;padding:12px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;transition:transform .24s cubic-bezier(.2,.8,.2,1),border-color .24s,box-shadow .24s,background .24s}
-.quickLink:before{content:"";position:absolute;inset:-35% -75%;pointer-events:none;background:linear-gradient(105deg,transparent 41%,rgba(255,255,255,.11) 49%,transparent 57%);transform:translateX(-45%);transition:transform .58s ease}
-.quickLink:after{content:"";position:absolute;width:82px;height:82px;right:-36px;bottom:-38px;border-radius:50%;border:1px solid rgba(255,24,32,.10);box-shadow:0 0 0 12px rgba(255,24,32,.018);transition:.28s ease}
-.quickLink:hover,.quickLink:focus-visible{transform:translateY(-4px);border-color:#6e171c;box-shadow:0 16px 34px rgba(0,0,0,.27),0 0 24px rgba(255,24,32,.06);background:linear-gradient(145deg,#171719,#0c0b0d)}
-.quickLink:hover:before,.quickLink:focus-visible:before{transform:translateX(48%)}.quickLink:hover:after,.quickLink:focus-visible:after{transform:scale(1.25);border-color:rgba(255,24,32,.25)}
-.quickLink:active{transform:scale(.975)}.quickTop{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.quickIcon{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:#17090b;border:1px solid #4a1216;color:#ff5257;font-size:15px;box-shadow:inset 0 0 18px rgba(255,24,32,.05)}
-.quickArrow{width:25px;height:25px;border-radius:50%;display:grid;place-items:center;color:#777;border:1px solid #303036;background:#0b0b0d;transition:.22s ease}
-.quickLink:hover .quickArrow{color:#fff;border-color:#7b1a20;transform:translateX(2px);box-shadow:0 0 14px rgba(255,24,32,.12)}
-.quickLink b{font-size:13px;position:relative;z-index:1}.quickLink small{display:block;color:#777;font-size:9px;margin-top:3px;position:relative;z-index:1}
-.quickCount{font-size:17px!important;color:#f1f1f2!important;font-weight:900;letter-spacing:-.5px}.quickAlert .quickIcon{background:#1d1607;border-color:#5a4613;color:#ffd166}.quickFiscal .quickIcon{background:#091714;border-color:#17483c;color:#58dca8}
-@keyframes quickDeckScan{0%,100%{transform:translateX(-35%);opacity:.15}50%{transform:translateX(35%);opacity:.7}}
-@media(max-width:980px){.quickLinks{grid-template-columns:repeat(3,1fr)}}@media(max-width:760px){.quickDeck{padding:13px;border-radius:17px}.quickHead{align-items:flex-start;flex-direction:column;gap:2px}.quickLinks{display:flex;overflow-x:auto;gap:8px;padding-bottom:3px;scroll-snap-type:x mandatory;scrollbar-width:none}.quickLinks::-webkit-scrollbar{display:none}.quickLink{flex:0 0 145px;min-height:90px;scroll-snap-align:start}}
-
-/* ===== UNIVERSAL MF BUTTON MOTION SYSTEM ===== */
-button.uiMotion:not(.startRideBtn){
-  --bx:50%;--by:50%;--btx:0px;--bty:0px;
-  position:relative;isolation:isolate;overflow:hidden;
-  transform:translate3d(var(--btx),var(--bty),0);
-  transition:
-    transform .17s cubic-bezier(.2,.8,.2,1),
-    box-shadow .22s ease,
-    border-color .22s ease,
-    background .22s ease,
-    color .22s ease,
-    filter .22s ease;
-  will-change:transform;
-}
-button.uiMotion:not(.startRideBtn)::before{
-  content:"";position:absolute;inset:-1px;pointer-events:none;z-index:-1;
-  background:
-    radial-gradient(circle at var(--bx) var(--by),rgba(255,255,255,.20),transparent 24%),
-    linear-gradient(105deg,transparent 32%,rgba(255,255,255,.09) 48%,transparent 64%);
-  opacity:.38;transform:none!important;transition:opacity .2s ease;
-}
-button.uiMotion:not(.startRideBtn)::after{
-  content:"";position:absolute;left:-35%;right:-35%;bottom:0;height:1px;pointer-events:none;
-  background:linear-gradient(90deg,transparent,rgba(255,24,32,.0),rgba(255,24,32,.8),rgba(255,24,32,.0),transparent);
-  transform:translateX(-55%);opacity:.2;
-  transition:transform .42s cubic-bezier(.2,.8,.2,1),opacity .2s;
-}
-button.uiMotion:not(.startRideBtn):hover{
-  transform:translate3d(var(--btx),calc(var(--bty) - 2px),0) scale(1.012);
-  border-color:#5a5a63!important;
-  box-shadow:0 13px 32px rgba(0,0,0,.28),0 0 18px rgba(255,24,32,.07),inset 0 1px 0 rgba(255,255,255,.07);
-  filter:saturate(1.05);
-}
-button.uiMotion:not(.startRideBtn):hover::before{opacity:.78}
-button.uiMotion:not(.startRideBtn):hover::after{transform:translateX(55%);opacity:.8}
-button.uiMotion:not(.startRideBtn):active,
-button.uiMotion.ui-press:not(.startRideBtn){
-  transform:translate3d(var(--btx),var(--bty),0) scale(.965)!important;
-  box-shadow:0 5px 16px rgba(0,0,0,.34),inset 0 2px 9px rgba(0,0,0,.28)!important;
-}
-button.uiMotion.red:not(.startRideBtn){
-  border:1px solid rgba(255,86,92,.58)!important;
-  background:
-    radial-gradient(circle at var(--bx) var(--by),rgba(255,255,255,.14),transparent 28%),
-    linear-gradient(135deg,#ff2028,#b4070d 72%,#6e0509);
-  box-shadow:0 13px 30px rgba(255,24,32,.20),inset 0 1px 0 rgba(255,255,255,.16);
-}
-button.uiMotion.red:not(.startRideBtn):hover{
-  border-color:rgba(255,117,122,.9)!important;
-  box-shadow:0 18px 44px rgba(255,24,32,.30),0 0 28px rgba(255,24,32,.12),inset 0 1px 0 rgba(255,255,255,.2);
-}
-button.uiMotion.danger:not(.startRideBtn){
-  border-color:#5b1c20!important;
-  background:linear-gradient(145deg,#260b0e,#13090a)!important;
-  color:#ff8d91!important;
-}
-button.uiMotion.danger:not(.startRideBtn):hover{
-  border-color:#9b292f!important;
-  color:#fff!important;
-  box-shadow:0 14px 32px rgba(140,14,22,.20),0 0 22px rgba(255,24,32,.08)!important;
-}
-button.uiMotion:disabled{
-  opacity:.48;cursor:not-allowed;filter:saturate(.35)!important;transform:none!important;
-}
-.nav button.uiMotion{
-  overflow:hidden;
-}
-.nav button.uiMotion:hover{
-  transform:translateX(5px) scale(1.01)!important;
-}
-.nav button.uiMotion::after{
-  left:auto;right:8px;bottom:auto;top:50%;width:5px;height:5px;border-radius:50%;
-  background:#ff3037;box-shadow:0 0 13px #ff1820;
-  transform:translateY(-50%) scale(.25);opacity:0;
-}
-.nav button.uiMotion:hover::after,.nav button.uiMotion.on::after{
-  transform:translateY(-50%) scale(1);opacity:1;
-}
-.tabs button.uiMotion{
-  border:1px solid transparent;
-}
-.tabs button.uiMotion:hover{
-  border-color:#33343a;box-shadow:inset 0 0 22px rgba(255,255,255,.025),0 7px 18px rgba(0,0,0,.15);
-}
-.tabs button.uiMotion.on{
-  border-color:#4b171b;background:linear-gradient(180deg,#2b0c0f,#171012);box-shadow:inset 0 -2px 0 var(--red),0 7px 20px rgba(0,0,0,.2);
-}
-.mobile button.uiMotion{
-  overflow:hidden;
-}
-.mobile button.uiMotion:hover{transform:translateY(-2px) scale(1.03)!important}
-.modalHead .btn.uiMotion{
-  border-radius:10px;min-width:38px;
-}
-.passToggle.uiMotion{
-  background:linear-gradient(180deg,#171719,#0c0c0e);
-}
-.uiMotionBurst{
-  position:absolute;pointer-events:none;z-index:8;width:8px;height:8px;border-radius:50%;
-  background:rgba(255,255,255,.82);box-shadow:0 0 16px rgba(255,24,32,.8);
-  transform:translate(-50%,-50%) scale(.3);opacity:0;
-  animation:uiMotionBurst .48s ease-out forwards;
-}
-@keyframes uiMotionBurst{
-  0%{opacity:.9;transform:translate(-50%,-50%) scale(.3);box-shadow:0 0 0 0 rgba(255,24,32,.25),0 0 16px rgba(255,24,32,.8)}
-  100%{opacity:0;transform:translate(-50%,-50%) scale(1.9);box-shadow:0 0 0 22px rgba(255,24,32,0),0 0 6px rgba(255,24,32,0)}
-}
-@media(hover:none){
-  button.uiMotion:not(.startRideBtn):hover{transform:none}
-}
-@media(prefers-reduced-motion:reduce){
-  button.uiMotion:not(.startRideBtn){transform:none!important}
-  button.uiMotion:not(.startRideBtn)::after,.uiMotionBurst{animation:none!important;transition:none!important}
-}
-/* ===== MF CINEMATIC SYSTEM V6 / DRIBBBLE INSPIRED / FAST ===== */
-/* Visual cinematográfico estático + motion somente quando há intenção. */
-:root{--mf-red:#ff2028;--mf-red2:#8c060c;--mf-ink:#070709;--mf-metal:#16171b;--mf-line:#2a2c32}
-
-/* Performance first */
-.top,.side,.mobile,.loginCard{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
-.card,.hero,.cockpit,.quickDeck,.tableWrap,.modalCard,.ai{
-  box-shadow:0 12px 30px rgba(0,0,0,.22)!important;
-}
-body:before{opacity:.12!important}
-body:after{box-shadow:0 0 0 54px rgba(255,24,32,.018),0 0 0 108px rgba(255,24,32,.012)!important}
-
-/* Cinematic shell inspired by motorcycle HMI */
-.hero{
-  border-color:#2a2c31!important;
-  background:
-    linear-gradient(115deg,rgba(255,255,255,.028),transparent 24%),
-    radial-gradient(circle at 88% 15%,rgba(255,31,40,.10),transparent 28%),
-    linear-gradient(110deg,#15161a 0%,#0b0c0f 56%,#070709 100%)!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 16px 36px rgba(0,0,0,.24)!important;
-}
-.hero:before{
-  width:260px!important;height:260px!important;right:-75px!important;top:-125px!important;
-  border-color:rgba(255,32,40,.11)!important;
-  box-shadow:0 0 0 30px rgba(255,32,40,.016),0 0 0 60px rgba(255,32,40,.01)!important;
-}
-.hero:after{width:165px!important;height:2px!important}
-.hero h1{font-weight:1000;letter-spacing:-2.2px!important}
-.eyebrow{color:#ff4850!important}
-
-.cockpit{
-  border-color:#2c2e34!important;
-  background:
-    linear-gradient(125deg,rgba(255,255,255,.025),transparent 30%),
-    radial-gradient(circle at 84% 48%,rgba(255,31,40,.12),transparent 27%),
-    linear-gradient(118deg,#15161a,#090a0d 68%)!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 18px 42px rgba(0,0,0,.26)!important;
-}
-.cockpitCopy h2{font-weight:1000}
-.gauge{box-shadow:0 0 28px rgba(255,24,32,.10)!important;animation:none!important}
-
-.card{
-  border-color:#27292e!important;
-  background:
-    linear-gradient(135deg,rgba(255,255,255,.022),transparent 38%),
-    linear-gradient(155deg,#121318,#0a0b0e)!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.025),0 10px 26px rgba(0,0,0,.19)!important;
-}
-.card:hover{transform:translateY(-2px)!important;box-shadow:0 13px 30px rgba(0,0,0,.24)!important}
-.stat:after{box-shadow:none!important}
-.stat{border-top:1px solid rgba(255,48,55,.08)!important}
-.stat b{font-weight:1000}
-
-.quickDeck{
-  background:
-    linear-gradient(135deg,rgba(255,255,255,.02),transparent 30%),
-    linear-gradient(150deg,#121318,#090a0d)!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.02),0 11px 26px rgba(0,0,0,.18)!important;
-}
-.quickDeck:before{animation:none!important;opacity:.55!important}
-.quickLink{box-shadow:none!important}
-
-.tableWrap{box-shadow:0 10px 24px rgba(0,0,0,.17)!important}
-.table tbody tr:hover{box-shadow:inset 2px 0 0 rgba(255,32,40,.58)!important}
-.row:hover{transform:none!important}
-
-.ai{
-  background:
-    linear-gradient(135deg,rgba(255,255,255,.018),transparent 32%),
-    radial-gradient(circle at 92% 12%,rgba(183,58,255,.08),transparent 28%),
-    linear-gradient(145deg,#130a10,#0a090c)!important;
-  box-shadow:0 12px 30px rgba(0,0,0,.20)!important;
-}
-.ai:before,.ai>b:before{animation:none!important}
-
-/* Base button */
-button.uiMotion:not(.startRideBtn){
-  --bx:50%;--by:50%;
-  position:relative;isolation:isolate;overflow:hidden;
-  min-height:44px;padding:10px 42px 10px 15px;
-  border-radius:13px!important;
-  border:1px solid rgba(255,255,255,.12)!important;
-  color:#f7f7f9;font-weight:900;letter-spacing:.12px;
-  background:
-    radial-gradient(circle at var(--bx) var(--by),rgba(255,255,255,.10),transparent 29%),
-    linear-gradient(180deg,#191a1f,#0e0f13)!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.075),0 5px 13px rgba(0,0,0,.23)!important;
-  transform:translateZ(0);
-  transition:transform .13s cubic-bezier(.2,.85,.2,1),border-color .16s,box-shadow .16s,background .16s;
-  will-change:auto;
-}
-button.uiMotion:not(.startRideBtn)::before{
-  content:"";position:absolute;inset:1px;pointer-events:none;border-radius:11px;
-  background:linear-gradient(180deg,rgba(255,255,255,.075),transparent 42%);
-  z-index:-1;
-}
-button.uiMotion:not(.startRideBtn)::after{display:none!important}
-button.uiMotion:not(.startRideBtn):hover{
-  transform:translateY(-1px);
-  border-color:rgba(255,65,72,.42)!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 8px 18px rgba(0,0,0,.27)!important;
-}
-button.uiMotion.ui-press:not(.startRideBtn),
-button.uiMotion:not(.startRideBtn):active{transform:scale(.968)!important}
-
-/* Different identity per action */
-button.mf-ai{
-  border-color:rgba(195,91,255,.25)!important;
-  background:linear-gradient(145deg,#2b1034,#140d1a 55%,#0b0b0f)!important;
-}
-button.mf-scan{
-  border-color:rgba(76,177,255,.22)!important;
-  background:linear-gradient(145deg,#0b1a25,#0c1117)!important;
-}
-button.mf-commit{
-  border-color:rgba(255,82,89,.48)!important;
-  background:linear-gradient(145deg,#ea171f,#a90910 56%,#65050a)!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 7px 18px rgba(180,7,15,.20)!important;
-}
-button.mf-edit{
-  border-color:rgba(255,198,82,.22)!important;
-  background:linear-gradient(145deg,#211a0c,#11100d)!important;
-}
-button.mf-delete{
-  color:#ff9da1!important;border-color:rgba(210,54,61,.34)!important;
-  background:linear-gradient(145deg,#280c10,#13080a)!important;
-}
-button.mf-print{
-  border-color:rgba(190,207,228,.18)!important;
-  background:linear-gradient(145deg,#151a20,#0c0f13)!important;
-}
-button.mf-next{background:linear-gradient(145deg,#17191e,#0c0e12)!important}
-button.mf-add{
-  border-color:rgba(255,73,80,.28)!important;
-  background:linear-gradient(145deg,#241012,#100b0d)!important;
-}
-button.mf-browse{background:linear-gradient(145deg,#17181c,#0b0c0f)!important}
-button.mf-utility{padding-right:15px!important}
-
-/* Static glyphs. The motion fires only on interaction. */
-.mfBtnGlyph{
-  position:absolute;right:10px;top:50%;z-index:3;
-  width:24px;height:24px;transform:translateY(-50%);
-  display:grid;place-items:center;border-radius:7px;
-  border:1px solid rgba(255,255,255,.10);
-  background:rgba(0,0,0,.20);color:#ff5a60;
-  font-size:13px;font-weight:950;line-height:1;pointer-events:none;
-}
-button.mf-ai .mfBtnGlyph{color:#efb3ff;border-color:rgba(220,120,255,.22)}
-button.mf-scan .mfBtnGlyph{color:#8bd1ff;border-color:rgba(90,190,255,.18)}
-button.mf-commit .mfBtnGlyph{color:#fff;border-color:rgba(255,255,255,.22)}
-button.mf-edit .mfBtnGlyph{color:#ffd166;border-color:rgba(255,209,102,.18)}
-button.mf-delete .mfBtnGlyph{color:#ff747a;border-color:rgba(255,85,92,.20)}
-button.mf-print .mfBtnGlyph{color:#dce7f4;border-color:rgba(220,231,244,.15)}
-button.mfCompact .mfBtnGlyph{display:none}
-button.mfCompact{padding-right:12px!important}
-
-/* One-shot effect layer */
-.mfBtnFx{
-  position:absolute;z-index:2;pointer-events:none;opacity:0;
-}
-button.mf-scan .mfBtnFx{
-  top:2px;bottom:2px;width:18px;left:-24px;
-  background:linear-gradient(90deg,transparent,rgba(125,211,255,.33),transparent);
-}
-button.mf-commit .mfBtnFx{
-  left:10px;right:42px;bottom:4px;height:2px;border-radius:4px;
-  background:linear-gradient(90deg,#ff222a,#fff,#ff222a);transform:scaleX(.05);transform-origin:left;
-}
-button.mf-ai .mfBtnFx{
-  right:5px;top:50%;width:34px;height:34px;border-radius:50%;
-  border:1px solid rgba(223,117,255,.25);transform:translateY(-50%) scale(.6);
-}
-button.mf-delete .mfBtnFx{
-  inset:0;border-radius:inherit;background:rgba(255,30,38,.08);
-}
-button.mf-print .mfBtnFx{
-  right:14px;top:13px;width:16px;height:3px;background:#dce7f4;border-radius:2px;
-}
-button.mf-next .mfBtnFx{
-  right:12px;top:50%;width:20px;height:1px;background:#ff535a;
-}
-button.mf-add .mfBtnFx{
-  right:9px;top:50%;width:27px;height:27px;border-radius:50%;border:1px solid rgba(255,75,82,.28);transform:translateY(-50%) scale(.7);
-}
-button.mf-edit .mfBtnFx{
-  right:9px;top:50%;width:28px;height:28px;border-radius:8px;border:1px solid rgba(255,209,102,.18);transform:translateY(-50%);
-}
-button.mf-browse .mfBtnFx{
-  right:9px;top:50%;width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.12);transform:translateY(-50%) scale(.82);
-}
-
-/* menus and quick cards are deliberately calmer */
-.nav button.uiMotion,.mobile button.uiMotion,.tabs button.uiMotion{padding-right:14px!important}
-.nav button.uiMotion .mfBtnGlyph,.nav button.uiMotion .mfBtnFx,
-.mobile button.uiMotion .mfBtnGlyph,.mobile button.uiMotion .mfBtnFx,
-.tabs button.uiMotion .mfBtnGlyph,.tabs button.uiMotion .mfBtnFx,
-.quickLink.uiMotion .mfBtnGlyph,.quickLink.uiMotion .mfBtnFx{display:none!important}
-.nav button.uiMotion.on{background:linear-gradient(90deg,rgba(255,24,32,.20),rgba(255,24,32,.025) 70%,#09090c)!important;box-shadow:inset 3px 0 0 #ff1820!important}
-.mobile button.uiMotion.on,.tabs button.uiMotion.on{background:linear-gradient(180deg,#2b0c10,#15080a)!important;box-shadow:inset 0 -2px 0 #ff1820!important}
-.quickLink.uiMotion{
-  padding:12px!important;transform:none!important;
-  background:linear-gradient(145deg,#15161a,#0a0b0e)!important;
-}
-.quickLink.uiMotion:hover{transform:translateY(-2px)!important}
-
-.mfBtnPulse{
-  position:absolute;z-index:6;pointer-events:none;width:7px;height:7px;border-radius:50%;
-  background:#fff;transform:translate(-50%,-50%) scale(.2);opacity:0;
-}
-
-/* Motion is one-shot, added with .mf-fire */
-button.mf-fire .mfBtnPulse{animation:mfTapPulseV6 .38s ease-out forwards}
-button.mf-ai.mf-fire .mfBtnGlyph{animation:mfAiFire .42s cubic-bezier(.2,.85,.2,1)}
-button.mf-ai.mf-fire .mfBtnFx{opacity:.8;animation:mfAiRingFire .52s ease-out}
-button.mf-scan.mf-fire .mfBtnFx{opacity:.75;animation:mfScanFire .48s ease-out}
-button.mf-commit.mf-fire .mfBtnFx{opacity:1;animation:mfCommitFire .46s ease-out}
-button.mf-edit.mf-fire .mfBtnGlyph{animation:mfEditFire .38s ease-out}
-button.mf-delete.mf-fire .mfBtnGlyph{animation:mfDeleteFire .42s steps(2,end)}
-button.mf-delete.mf-fire .mfBtnFx{opacity:1;animation:mfDeleteFlash .4s ease-out}
-button.mf-print.mf-fire .mfBtnGlyph{animation:mfPrintFire .46s ease-out}
-button.mf-print.mf-fire .mfBtnFx{opacity:.9;animation:mfPaperFire .46s ease-out}
-button.mf-next.mf-fire .mfBtnGlyph{animation:mfNextFire .4s ease-out}
-button.mf-next.mf-fire .mfBtnFx{opacity:.8;animation:mfNextLine .4s ease-out}
-button.mf-add.mf-fire .mfBtnGlyph{animation:mfAddFire .42s ease-out}
-button.mf-add.mf-fire .mfBtnFx{opacity:.65;animation:mfAddRing .42s ease-out}
-button.mf-browse.mf-fire .mfBtnGlyph{animation:mfBrowseFire .42s ease-out}
-button.mf-browse.mf-fire .mfBtnFx{opacity:.5;animation:mfBrowseRing .42s ease-out}
-
-@keyframes mfTapPulseV6{0%{opacity:.9;box-shadow:0 0 0 0 rgba(255,24,32,.28)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.5);box-shadow:0 0 0 16px rgba(255,24,32,0)}}
-@keyframes mfAiFire{0%{transform:translateY(-50%) scale(.85) rotate(0)}65%{transform:translateY(-50%) scale(1.18) rotate(90deg)}100%{transform:translateY(-50%) scale(1) rotate(135deg)}}
-@keyframes mfAiRingFire{0%{transform:translateY(-50%) scale(.55);opacity:.8}100%{transform:translateY(-50%) scale(1.15);opacity:0}}
-@keyframes mfScanFire{0%{left:-24px}100%{left:calc(100% + 4px);opacity:0}}
-@keyframes mfCommitFire{0%{transform:scaleX(.05)}72%{transform:scaleX(1)}100%{transform:scaleX(.15);opacity:0}}
-@keyframes mfEditFire{0%,100%{transform:translateY(-50%) rotate(0)}50%{transform:translateY(-50%) rotate(-18deg) scale(1.12)}}
-@keyframes mfDeleteFire{0%,100%{opacity:.6}50%{opacity:1}}
-@keyframes mfDeleteFlash{0%{opacity:.25}100%{opacity:0}}
-@keyframes mfPrintFire{0%{transform:translateY(-58%)}65%{transform:translateY(-30%)}100%{transform:translateY(-50%)}}
-@keyframes mfPaperFire{0%{transform:translateY(-4px);opacity:.9}100%{transform:translateY(12px);opacity:0}}
-@keyframes mfNextFire{0%{transform:translate(-4px,-50%)}65%{transform:translate(5px,-50%)}100%{transform:translate(0,-50%)}}
-@keyframes mfNextLine{0%{transform:scaleX(.1);transform-origin:left}100%{transform:scaleX(1);opacity:0}}
-@keyframes mfAddFire{0%{transform:translateY(-50%) rotate(0) scale(.9)}70%{transform:translateY(-50%) rotate(90deg) scale(1.16)}100%{transform:translateY(-50%) rotate(90deg) scale(1)}}
-@keyframes mfAddRing{0%{transform:translateY(-50%) scale(.55);opacity:.65}100%{transform:translateY(-50%) scale(1.2);opacity:0}}
-@keyframes mfBrowseFire{0%{transform:translateY(-50%) scale(.88)}55%{transform:translateY(-50%) scale(1.1)}100%{transform:translateY(-50%) scale(1)}}
-@keyframes mfBrowseRing{0%{transform:translateY(-50%) scale(.7);opacity:.5}100%{transform:translateY(-50%) scale(1.15);opacity:0}}
-
-/* one-time page entrance only */
-.content.page-enter>*{animation:mfPageReveal .34s cubic-bezier(.2,.75,.2,1) both!important}
-.content.page-enter>*:nth-child(2){animation-delay:.025s!important}
-.content.page-enter>*:nth-child(3){animation-delay:.05s!important}
-@keyframes mfPageReveal{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-
-@media(max-width:760px){
-  body:after{display:none!important}
-  .top,.mobile{background:#0a0a0deF!important}
-  .content{padding-top:12px!important}
-  .hero,.cockpit,.card,.quickDeck,.tableWrap,.ai{box-shadow:0 7px 18px rgba(0,0,0,.18)!important}
-  .card:hover,.quickLink.uiMotion:hover{transform:none!important}
-  button.uiMotion:not(.startRideBtn){transform:none!important;min-height:44px}
-  .login:before,.login:after,.liveDot{animation:none!important}
-}
-@media(prefers-reduced-motion:reduce){
-  button.uiMotion,.mfBtnGlyph,.mfBtnFx,.mfBtnPulse,.content.page-enter>*{animation:none!important;transition:none!important}
-}
-/* ===== END MF CINEMATIC SYSTEM V6 ===== */
-
-/* MF performance guard */
-.login:before,.login:after,.liveDot,.ai:before,.ai>b:before{animation:none!important}
-@media(max-width:760px){
-  .startRideParticles i{animation:none!important}
-  .startRideBtn:before{animation-duration:7s!important}
-  .startRideHud:before{animation-duration:6s!important}
-  .startRideHud:after{animation-duration:10s!important}
-}
-
-/* ===== MF CINEMA V7 / OBVIOUS REDESIGN ===== */
-body{
-  background:
-    linear-gradient(115deg,rgba(255,255,255,.014) 0 1px,transparent 1px 44px),
-    linear-gradient(65deg,rgba(255,24,32,.018) 0 1px,transparent 1px 58px),
-    radial-gradient(circle at 82% 4%,rgba(255,27,35,.16),transparent 28%),
-    #050506!important;
-}
-.side{
-  width:252px!important;
-  background:linear-gradient(180deg,#0e0f12,#060608)!important;
-  border-right:1px solid #292b31!important;
-}
-.side .brand{
-  padding:8px 8px 15px!important;
-  border-bottom:1px solid #24262b!important;
-}
-.nav{gap:7px!important}
-.nav button{
-  min-height:48px!important;
-  border-radius:8px 15px 15px 8px!important;
-  border-left:2px solid transparent!important;
-}
-.nav button.on{
-  border-left-color:#ff242c!important;
-  background:linear-gradient(90deg,rgba(255,32,40,.24),rgba(255,32,40,.035) 64%,transparent)!important;
-}
-.main{background:linear-gradient(180deg,rgba(255,255,255,.008),transparent 180px)}
-.top{
-  height:68px!important;
-  background:#08090cF2!important;
-  border-bottom:1px solid #292b31!important;
-}
-.top:before{
-  content:"MF CINEMA // V7";font-size:8px;font-weight:900;letter-spacing:2.2px;color:#ff4c53;
-  position:absolute;right:22px;bottom:5px;opacity:.72;
-}
-.content{padding:26px 28px!important}
-
-/* big angular headers */
-.hero{
-  min-height:150px!important;
-  padding:25px 26px!important;
-  border-radius:8px 26px 8px 26px!important;
-  border:1px solid #30323a!important;
-  border-left:3px solid #ff222a!important;
-  background:
-    linear-gradient(126deg,rgba(255,255,255,.055),transparent 21%),
-    linear-gradient(108deg,#17191f 0%,#0c0d11 58%,#08090c 100%)!important;
-  clip-path:polygon(0 0,96% 0,100% 28%,100% 100%,4% 100%,0 72%)!important;
-}
-.hero:before{
-  content:"";position:absolute!important;right:28px!important;top:24px!important;
-  width:120px!important;height:50px!important;border:0!important;border-radius:0!important;
-  background:
-    repeating-linear-gradient(90deg,rgba(255,38,46,.5) 0 2px,transparent 2px 8px)!important;
-  opacity:.16!important;box-shadow:none!important;
-}
-.hero h1{font-size:46px!important;letter-spacing:-2.8px!important}
-.hero .muted{max-width:620px}
-.eyebrow:after{content:" / SYSTEM READY";color:#656771;font-weight:800;letter-spacing:1.2px}
-
-/* dashboard cockpit becomes a real command deck */
-.cockpit{
-  min-height:250px!important;
-  grid-template-columns:minmax(0,1.5fr) minmax(220px,.5fr)!important;
-  border-radius:24px 8px 24px 8px!important;
-  border:1px solid #333640!important;
-  border-right:3px solid #ff222a!important;
-  background:
-    linear-gradient(135deg,rgba(255,255,255,.055),transparent 22%),
-    radial-gradient(circle at 82% 50%,rgba(255,30,38,.14),transparent 24%),
-    linear-gradient(115deg,#181a20,#0b0c10 68%)!important;
-  clip-path:polygon(0 0,97% 0,100% 16%,100% 100%,3% 100%,0 84%)!important;
-}
-.cockpitCopy{padding:8px 8px 8px 4px}
-.cockpitCopy .kicker{color:#ff5d63!important}
-.cockpitCopy h2{font-size:39px!important;letter-spacing:-2px!important}
-.gaugeWrap{
-  border-left:1px solid rgba(255,255,255,.07);
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.015));
-}
-.gauge{
-  width:176px!important;height:176px!important;
-  border:1px solid rgba(255,255,255,.08);
-}
-.gaugeInner{border:1px solid #3a3d46!important}
-.gaugeInner:before{
-  content:"MF";font-size:9px;letter-spacing:3px;color:#ff454c;margin-bottom:4px;font-weight:1000;
-}
-
-/* telemetry stat cards are visibly different */
-.stats{gap:10px!important}
-.stat{
-  min-height:128px!important;
-  border-radius:17px 5px 17px 5px!important;
-  border-left:2px solid #3a3c43!important;
-  background:
-    linear-gradient(135deg,rgba(255,255,255,.045),transparent 28%),
-    linear-gradient(155deg,#15171c,#0a0b0e)!important;
-  clip-path:polygon(0 0,92% 0,100% 18%,100% 100%,8% 100%,0 82%)!important;
-}
-.stat:nth-child(1){border-left-color:#ff252d!important}
-.stat:nth-child(2){border-left-color:#ff8a33!important}
-.stat:nth-child(3){border-left-color:#55a8ff!important}
-.stat:nth-child(4){border-left-color:#72db9d!important}
-.stat:nth-child(5){border-left-color:#bd72ff!important}
-.stat:nth-child(6){border-left-color:#ff4c53!important}
-.stat small{letter-spacing:1.4px!important}
-.stat b{font-size:31px!important}
-
-/* shortcuts now look like separate bike modules */
-.quickDeck{
-  border-radius:6px 22px 6px 22px!important;
-  border:1px solid #30323a!important;
-  border-top:2px solid #ff242c!important;
-  background:linear-gradient(150deg,#14161b,#090a0d)!important;
-}
-.quickLinks{gap:10px!important}
-.quickLink{
-  min-height:112px!important;
-  border-radius:16px 5px 16px 5px!important;
-  border:1px solid #30323a!important;
-  background:linear-gradient(145deg,#181a20,#0b0c10)!important;
-}
-.quickLink:nth-child(1){border-bottom:2px solid #bc65ff!important}
-.quickLink:nth-child(2){border-bottom:2px solid #ff784d!important}
-.quickLink:nth-child(3){border-bottom:2px solid #4aa7ff!important}
-.quickLink:nth-child(4){border-bottom:2px solid #65d996!important}
-.quickLink:nth-child(5){border-bottom:2px solid #ff3c45!important}
-.quickIcon{font-size:20px!important}
-.quickCount{font-size:24px!important;font-weight:1000!important}
-
-/* cards and tables are workshop modules */
-.card{
-  border-radius:16px 5px 16px 5px!important;
-  border:1px solid #2d3037!important;
-}
-.title{
-  border-bottom:1px solid #24272d;
-  padding-bottom:10px;
-}
-.title>b{letter-spacing:.8px}
-.tableWrap{border-radius:14px 5px 14px 5px!important}
-.table th{letter-spacing:1.35px!important}
-
-/* Strong visual differentiation for action families */
-button.uiMotion.mf-ai:not(.startRideBtn){
-  color:#f7eaff!important;border-color:#9b4ac2!important;
-  background:linear-gradient(135deg,#471654,#24102b 62%,#100c14)!important;
-}
-button.uiMotion.mf-scan:not(.startRideBtn){
-  color:#e4f6ff!important;border-color:#276b92!important;
-  background:linear-gradient(135deg,#103249,#0c1d29 62%,#091017)!important;
-}
-button.uiMotion.mf-commit:not(.startRideBtn){
-  color:#fff!important;border-color:#ff5960!important;
-  background:linear-gradient(135deg,#f31d25,#ad080f 62%,#69050a)!important;
-}
-button.uiMotion.mf-edit:not(.startRideBtn){
-  color:#ffe7a8!important;border-color:#7f641e!important;
-  background:linear-gradient(135deg,#30250d,#17130b)!important;
-}
-button.uiMotion.mf-delete:not(.startRideBtn){
-  color:#ff9ba0!important;border-color:#7d1a20!important;
-  background:linear-gradient(135deg,#330b0f,#16080a)!important;
-}
-button.uiMotion.mf-print:not(.startRideBtn){
-  color:#edf5ff!important;border-color:#516579!important;
-  background:linear-gradient(135deg,#25303a,#11171d)!important;
-}
-button.uiMotion.mf-next:not(.startRideBtn){
-  border-color:#41444d!important;
-  background:linear-gradient(135deg,#22242a,#101115)!important;
-}
-button.uiMotion.mf-add:not(.startRideBtn){
-  color:#ffafb3!important;border-color:#8b2b30!important;
-  background:linear-gradient(135deg,#2b1114,#110b0d)!important;
-}
-button.uiMotion.mf-browse:not(.startRideBtn){
-  color:#d4d7df!important;border-color:#41434a!important;
-  background:linear-gradient(135deg,#1b1d22,#0d0e11)!important;
-}
-
-/* mobile is a compact bike cluster */
-@media(max-width:760px){
-  .content{padding:12px 10px 82px!important}
-  .hero{
-    min-height:auto!important;padding:18px 16px!important;
-    clip-path:none!important;border-radius:17px 7px 17px 7px!important;
-  }
-  .hero h1{font-size:34px!important}
-  .cockpit{
-    grid-template-columns:1fr!important;clip-path:none!important;
-    border-radius:20px 7px 20px 7px!important;padding:15px!important;
-  }
-  .gaugeWrap{border-left:0!important;border-top:1px solid rgba(255,255,255,.07)}
-  .gauge{width:142px!important;height:142px!important}
-  .stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-  .stat{min-height:110px!important;clip-path:none!important;border-radius:14px 5px 14px 5px!important}
-  .stat b{font-size:25px!important}
-  .quickLink{min-height:98px!important}
-  .mobile{
-    border-radius:16px 5px 16px 5px!important;
-    border-top:1px solid #353840!important;
-    box-shadow:0 8px 24px rgba(0,0,0,.28)!important;
-  }
-  .top:before{display:none}
-}
-/* ===== END MF CINEMA V7 ===== */
-</style>
+<link rel="stylesheet" href="/liquid-glass.css?v=8">
 </head>
 <body>
-<section id="login" class="login">
+<section id="login" class="login" aria-label="Acesso à central">
+<aside class="loginStory" aria-label="MF Moto Peças">
+<div class="brand"><div class="mf">MF</div><div><b>MF MOTO PEÇAS</b><small>CENTRAL DE OPERAÇÕES</small></div></div>
+<div class="eyebrow">SUA OFICINA. EM OUTRO RITMO.</div>
+<h2>Menos limites.<br>Mais <span>controle.</span></h2>
+<p>Do primeiro atendimento à última peça. Sua operação inteira, conectada.</p>
+<div class="loginChips"><span>Oficina</span><span>Estoque</span><span>Vendas</span><span>Fiscal</span></div>
+<div class="loginFooter"><i class="liveDot" aria-hidden="true"></i> FEITO PARA QUEM MOVE A CIDADE</div>
+<div class="loginOrb" aria-hidden="true"></div>
+</aside>
 <div class="loginCard">
 <div class="brand"><div class="mf">MF</div><div><b>MF MOTO PEÇAS</b><small>CENTRAL DE OPERAÇÕES</small></div></div>
 <h1>A LOJA ACELERA.<br><span class="redtxt">VOCÊ CONTROLA.</span></h1>
 <p class="muted">Vendas, peças e motos organizadas em uma operação só.</p>
 <div class="tabs"><button id="tabLogin" class="on">Entrar</button><button id="tabRegister">Criar acesso</button></div>
 <form id="authForm">
-<div id="nameField" class="field hide"><label>Nome</label><input id="authName" class="input"></div>
-<div class="field"><label>E-mail</label><input id="authEmail" class="input" type="email" required></div>
-<div class="field"><label>Senha</label><div class="passWrap"><input id="authPass" class="input" type="password" minlength="8" autocomplete="current-password" required><button class="btn passToggle" type="button" onclick="togglePass('authPass',this)">Mostrar</button></div></div>
+<div id="nameField" class="field hide"><label for="authName">Nome</label><input id="authName" class="input" autocomplete="name"></div>
+<div class="field"><label for="authEmail">E-mail</label><input id="authEmail" class="input" type="email" autocomplete="username" placeholder="voce@exemplo.com" required></div>
+<div class="field"><label for="authPass">Senha</label><div class="passWrap"><input id="authPass" class="input" type="password" minlength="8" autocomplete="current-password" required><button class="btn passToggle" type="button" onclick="togglePass('authPass',this)">Mostrar</button></div></div>
 <button id="authSubmit" class="btn red full">ENTRAR NA CENTRAL</button>
-<div id="authError" class="redtxt"></div>
+<div id="authError" class="redtxt" role="alert" aria-live="polite"></div>
 </form>
+<p class="loginHint">Sua oficina, organizada em um só lugar.</p>
 </div>
 </section>
 <div id="app" class="app hide">
 <aside class="side"><div class="brand"><div class="mf">MF</div><div><b>MF MOTO PEÇAS</b><small>GESTÃO</small></div></div><nav id="nav" class="nav"></nav></aside>
-<main class="main"><header class="top"><span>MF / <b id="crumb">VISÃO GERAL</b><span class="systemStatus"><i class="liveDot"></i>Sistema online</span></span><div class="actions"><button class="btn red" onclick="go(\'atendimento\')">+ Atendimento</button><button class="btn" onclick="logout()">Sair</button></div></header><div id="content" class="content"></div></main>
+<main class="main"><header class="top"><span>MF / <b id="crumb">VISÃO GERAL</b><span class="systemStatus"><i class="liveDot"></i>Sistema online</span></span><div class="actions"><button class="btn red" onclick="go('atendimento')">+ Atendimento</button><button class="btn" onclick="logout()">Sair</button></div></header><div id="content" class="content"></div></main>
 <nav id="mobileNav" class="mobile"></nav>
 </div>
-<div id="modal" class="modal hide"></div><div id="toast" class="toast hide"></div>
+<div id="modal" class="modal hide"></div><div id="toast" class="toast hide" role="status" aria-live="polite"></div>
 <script>
 var NAV=[['overview','⌁','Visão geral'],['atendimento','⚙','Atendimento'],['orders','◉','Ordens'],['budgets','◇','Orçamentos'],['inventory','▦','Estoque'],['clients','♙','Clientes'],['fiscal','§','Fiscal'],['security','⌾','Segurança']];
 var S={token:localStorage.mf_token||'',page:'overview',clients:[],inventory:[],orders:[],budgets:[],sales:[],fiscal:[],cart:[],chat:[],aiDraft:null,attDraft:null,lastAttendance:null};
 function qs(s){return document.querySelector(s)}function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
 function brl(n){return Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}function dt(d){return d?new Date(d).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'}):'-'}
-function toast(t,err){var x=qs('#toast');x.textContent=t;x.style.borderColor=err?'#6b1e22':'#285b3e';x.classList.remove('hide');setTimeout(function(){x.classList.add('hide')},3000)}
+var toastTimer;function toast(t,err){clearTimeout(toastTimer);var x=qs('#toast');x.textContent=t;x.style.borderColor=err?'#6b1e22':'#285b3e';x.classList.remove('hide');toastTimer=setTimeout(function(){x.classList.add('hide')},4000)}
 async function api(url,opt){opt=opt||{};var h=Object.assign({'content-type':'application/json'},opt.headers||{});if(S.token)h.authorization='Bearer '+S.token;var r=await fetch('/api'+url,Object.assign({},opt,{headers:h})),d={};try{d=await r.json()}catch(e){}if(!r.ok){if(r.status===401&&S.token)logout();throw Error(d.error||'Erro na operação')}return d}
 function showApp(ok){qs('#login').classList.toggle('hide',ok);qs('#app').classList.toggle('hide',!ok)}
 function logout(){localStorage.removeItem('mf_token');S.token='';showApp(false);loadRegistrationStatus()}
 function togglePass(id,b){var i=qs('#'+id);if(!i)return;i.type=i.type==='password'?'text':'password';if(b)b.textContent=i.type==='password'?'Mostrar':'Ocultar'}
 async function loadRegistrationStatus(){try{var d=await api('/auth/registration-status');qs('#tabRegister').classList.toggle('hide',!d.open);if(!d.open&&authMode==='register')authModeSet('login')}catch(e){qs('#tabRegister').classList.add('hide')}}
-var authMode='login';function authModeSet(m){authMode=m;qs('#tabLogin').classList.toggle('on',m==='login');qs('#tabRegister').classList.toggle('on',m==='register');qs('#nameField').classList.toggle('hide',m==='login');qs('#authSubmit').textContent=m==='login'?'ENTRAR NA CENTRAL':'CRIAR ACESSO'}
+var authMode='login';function authModeSet(m){authMode=m;qs('#tabLogin').classList.toggle('on',m==='login');qs('#tabRegister').classList.toggle('on',m==='register');qs('#nameField').classList.toggle('hide',m==='login');qs('#authSubmit').textContent=m==='login'?'ENTRAR NA CENTRAL':'CRIAR ACESSO';qs('#authName').required=m==='register';qs('#authPass').autocomplete=m==='login'?'current-password':'new-password';qs('#authError').textContent='';bindMotionButtons(document)}
 qs('#tabLogin').onclick=function(){authModeSet('login')};qs('#tabRegister').onclick=function(){authModeSet('register')};
-qs('#authForm').onsubmit=async function(e){e.preventDefault();try{var body={name:qs('#authName').value,email:qs('#authEmail').value,password:qs('#authPass').value};var d=await api('/auth/'+(authMode==='login'?'login':'register'),{method:'POST',body:JSON.stringify(body)});S.token=d.token;localStorage.mf_token=S.token;await boot()}catch(x){qs('#authError').textContent=x.message}};
+qs('#authForm').onsubmit=async function(e){
+  e.preventDefault();var button=qs('#authSubmit');if(button.disabled)return;
+  button.disabled=true;button.setAttribute('aria-busy','true');button.textContent='CONECTANDO…';qs('#authError').textContent='';
+  try{var body={name:qs('#authName').value,email:qs('#authEmail').value,password:qs('#authPass').value};var d=await api('/auth/'+(authMode==='login'?'login':'register'),{method:'POST',body:JSON.stringify(body)});S.token=d.token;localStorage.mf_token=S.token;await boot()}
+  catch(x){qs('#authError').textContent=x.message}
+  finally{button.disabled=false;button.removeAttribute('aria-busy');button.textContent=authMode==='login'?'ENTRAR NA CENTRAL':'CRIAR ACESSO'}
+};
 
 function mfButtonType(b,label){
   var l=String(label||'').toLowerCase();
   if(b.classList.contains('startRideBtn'))return 'hero';
   if(b.closest('.nav')||b.closest('.mobile')||b.closest('.tabs')||b.classList.contains('quickLink'))return 'browse';
-  if(/ia|intelig/.test(l))return 'ai';
+  if(/\bia\b|intelig/.test(l))return 'ai';
   if(/consultar|escanear/.test(l))return 'scan';
   if(/imprimir|80 ?mm|impressora/.test(l))return 'print';
   if(/excluir/.test(l))return 'delete';
@@ -1059,67 +80,93 @@ function mfButtonType(b,label){
 function mfButtonGlyph(type){
   return {ai:'✦',scan:'⌁',commit:'✓',edit:'✎',delete:'!',print:'▤',next:'›',add:'+',browse:'◎',utility:'·'}[type]||'◎';
 }
+// Enhance existing controls without changing their labels or business actions.
+var motionPreference=window.matchMedia('(prefers-reduced-motion: reduce)');
 function bindMotionButtons(root){
   root=root||document;
-  root.querySelectorAll('button').forEach(function(b){
+  var buttons=Array.from(root.querySelectorAll('button'));
+  if(root.matches&&root.matches('button'))buttons.unshift(root);
+  buttons.forEach(function(b){
     if(b.dataset.motionBound)return;
     b.dataset.motionBound='1';b.classList.add('uiMotion');
-
-    var label=(b.textContent||'').replace(/\s+/g,' ').trim();
-    var type=mfButtonType(b,label);
+    var label=(b.textContent||'').replace(/\s+/g,' ').trim(),type=mfButtonType(b,label);
     b.classList.add('mf-'+type);
     if(label.length<=3||b.classList.contains('passToggle')||b.closest('.modalHead'))b.classList.add('mfCompact');
-
     if(!b.classList.contains('startRideBtn')){
-      var glyph=document.createElement('span');glyph.className='mfBtnGlyph';glyph.setAttribute('aria-hidden','true');glyph.textContent=mfButtonGlyph(type);
-      var fx=document.createElement('i');fx.className='mfBtnFx';fx.setAttribute('aria-hidden','true');
-      b.appendChild(glyph);b.appendChild(fx);
+      var glyph=document.createElement('span');glyph.className='mfBtnGlyph';glyph.setAttribute('aria-hidden','true');glyph.textContent=mfButtonGlyph(type);b.appendChild(glyph);
     }
-
-    if(window.matchMedia&&window.matchMedia('(hover:hover)').matches){
-      b.addEventListener('pointermove',function(e){
-        if(b.classList.contains('startRideBtn'))return;
-        var r=b.getBoundingClientRect(),x=(e.clientX-r.left)/Math.max(1,r.width),y=(e.clientY-r.top)/Math.max(1,r.height);
-        b.style.setProperty('--bx',(x*100).toFixed(1)+'%');
-        b.style.setProperty('--by',(y*100).toFixed(1)+'%');
-      });
-      b.addEventListener('pointerleave',function(){
-        b.style.setProperty('--bx','50%');b.style.setProperty('--by','50%');b.classList.remove('ui-press');
-      });
-    }
-
-    b.addEventListener('pointerdown',function(e){
-      b.classList.add('ui-press');
-      if(!b.classList.contains('startRideBtn')){
-        var r=b.getBoundingClientRect(),p=document.createElement('i');
-        p.className='mfBtnPulse';p.style.left=(e.clientX-r.left)+'px';p.style.top=(e.clientY-r.top)+'px';
-        b.appendChild(p);
-        b.classList.remove('mf-fire');void b.offsetWidth;b.classList.add('mf-fire');
-        setTimeout(function(){p.remove();b.classList.remove('mf-fire')},520);
-      }
-    });
-    ['pointerup','pointercancel'].forEach(function(ev){
-      b.addEventListener(ev,function(){b.classList.remove('ui-press')});
-    });
+  });
+  var products=Array.from(root.querySelectorAll('.product'));if(root.matches&&root.matches('.product'))products.push(root);products.forEach(function(el){
+    if(!el.hasAttribute('tabindex')){el.tabIndex=0;el.setAttribute('role','button')}
+  });
+  var fields=Array.from(root.querySelectorAll('.field'));if(root.matches&&root.matches('.field'))fields.push(root);fields.forEach(function(field){
+    var label=field.querySelector('label'),input=field.querySelector('input,select,textarea');
+    if(label&&input&&!label.htmlFor){if(!input.id)input.id='mf-field-'+(++fieldSequence);label.htmlFor=input.id}
   });
 }
+var fieldSequence=0,motionFrame=0,motionTarget=null,motionEvent=null;
+document.addEventListener('pointermove',function(e){
+  if(motionPreference.matches||e.pointerType==='touch')return;
+  var b=e.target.closest('button');if(!b||b.disabled)return;
+  motionTarget=b;motionEvent={x:e.clientX,y:e.clientY};
+  if(motionFrame)return;
+  motionFrame=requestAnimationFrame(function(){
+    motionFrame=0;if(!motionTarget.isConnected)return;
+    var r=motionTarget.getBoundingClientRect();
+    motionTarget.style.setProperty('--bx',((motionEvent.x-r.left)/r.width*100).toFixed(1)+'%');
+    motionTarget.style.setProperty('--by',((motionEvent.y-r.top)/r.height*100).toFixed(1)+'%');
+  });
+});
+document.addEventListener('pointerdown',function(e){
+  var b=e.target.closest('button');if(!b||b.disabled||motionPreference.matches)return;
+  b.classList.add('ui-press');
+  if(!b.classList.contains('startRideBtn')){
+    var r=b.getBoundingClientRect(),pulse=document.createElement('i');
+    pulse.className='mfBtnPulse';pulse.setAttribute('aria-hidden','true');
+    pulse.style.left=(e.clientX-r.left)+'px';pulse.style.top=(e.clientY-r.top)+'px';b.appendChild(pulse);
+    setTimeout(function(){pulse.remove()},560);
+  }
+});
+function releaseMotion(){document.querySelectorAll('.ui-press').forEach(function(b){b.classList.remove('ui-press')})}
+['pointerup','pointercancel'].forEach(function(ev){document.addEventListener(ev,releaseMotion)});
+window.addEventListener('blur',releaseMotion);
+document.addEventListener('keydown',function(e){
+  var product=e.target.closest('.product');
+  if(product&&(e.key==='Enter'||e.key===' ')){e.preventDefault();product.click()}
+});
 var motionObserver=new MutationObserver(function(ms){
-  ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===1){if(n.matches&&n.matches('button'))bindMotionButtons(n.parentNode||document);else if(n.querySelectorAll)bindMotionButtons(n)}})});
+  ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===1){if(n.querySelectorAll)bindMotionButtons(n)}})});
 });
 motionObserver.observe(document.documentElement,{childList:true,subtree:true});
-function navs(){var a=NAV.map(function(n){return '<button data-page="'+n[0]+'" class="'+(S.page===n[0]?'on':'')+'">'+n[1]+' '+n[2]+'</button>'}).join('');qs('#nav').innerHTML=a;qs('#mobileNav').innerHTML=a;document.querySelectorAll('[data-page]').forEach(function(b){b.onclick=function(){go(b.dataset.page)}});bindMotionButtons(document)}
+function navs(){var a=NAV.map(function(n){return '<button data-page="'+n[0]+'" class="'+(S.page===n[0]?'on':'')+'"'+(S.page===n[0]?' aria-current="page"':'')+'>'+n[1]+' '+n[2]+'</button>'}).join('');qs('#nav').innerHTML=a;qs('#mobileNav').innerHTML=a;document.querySelectorAll('[data-page]').forEach(function(b){b.onclick=function(){go(b.dataset.page)}});bindMotionButtons(document)}
 async function boot(){showApp(true);navs();await go('overview')}async function go(p){S.page=p;navs();var n=NAV.find(function(x){return x[0]===p});qs('#crumb').textContent=(n?n[2]:p).toUpperCase();var fn={overview:overview,atendimento:pos,pos:pos,inventory:inventory,orders:orders,budgets:budgets,clients:clients,fiscal:fiscal,security:security}[p];if(fn)try{await fn();var box=qs('#content');box.classList.remove('page-enter');void box.offsetWidth;box.classList.add('page-enter');bindMotionButtons(document)}catch(e){toast(e.message,true)}}
 function hero(t,s,a){return '<div class="hero"><div><div class="eyebrow">MF / RIDE CONTROL</div><h1>'+t+'</h1><div class="muted">'+s+'</div></div><div class="actions">'+(a||'')+'</div></div>'}
 function badge(s){var c=s==='concluido'||s==='emitida'?'g':s==='pendente'||s==='rascunho'?'y':'r';return '<span class="badge '+c+'">'+esc(String(s||'-').replaceAll('_',' '))+'</span>'}
-function modal(title,html){qs('#modal').innerHTML='<div class="modalCard"><div class="modalHead"><b>'+esc(title)+'</b><button class="btn" onclick="closeModal()">×</button></div><div class="modalBody">'+html+'</div></div>';qs('#modal').classList.remove('hide');bindMotionButtons(qs('#modal'))}function closeModal(){qs('#modal').classList.add('hide');qs('#modal').innerHTML=''}
+var modalReturnFocus=null;
+function modal(title,html){
+  var box=qs('#modal');if(box.classList.contains('hide'))modalReturnFocus=document.activeElement;
+  box.innerHTML='<div class="modalCard" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1"><div class="modalHead"><b id="modalTitle">'+esc(title)+'</b><button class="btn" aria-label="Fechar janela" onclick="closeModal()">×</button></div><div class="modalBody">'+html+'</div></div>';
+  box.classList.remove('hide');document.body.classList.add('modal-open');qs('#app').inert=true;qs('#login').inert=true;bindMotionButtons(box);
+  box.querySelector('.modalCard').focus();
+}
+function closeModal(){qs('#modal').classList.add('hide');qs('#modal').innerHTML='';document.body.classList.remove('modal-open');qs('#app').inert=false;qs('#login').inert=false;if(modalReturnFocus&&modalReturnFocus.isConnected)modalReturnFocus.focus()}
+qs('#modal').addEventListener('keydown',function(e){
+  if(e.key==='Escape'){e.preventDefault();closeModal();return}
+  if(e.key!=='Tab')return;
+  var controls=Array.from(this.querySelectorAll('button:not(:disabled),input:not(:disabled),select:not(:disabled),textarea:not(:disabled),a[href],[tabindex="0"]')).filter(function(el){return el.getClientRects().length});
+  if(!controls.length){e.preventDefault();return}
+  var first=controls[0],last=controls[controls.length-1];
+  if(e.shiftKey&&(document.activeElement===first||document.activeElement.classList.contains('modalCard'))){e.preventDefault();last.focus()}
+  else if(!e.shiftKey&&(document.activeElement===last||document.activeElement.classList.contains('modalCard'))){e.preventDefault();first.focus()}
+});
 async function del(url,back){if(!confirm('Excluir este registro?'))return;try{await api(url,{method:'DELETE'});toast('Excluído.');back()}catch(e){toast(e.message,true)}}
 
 function bindStartRide(){
   var b=qs('#startRideBtn');if(!b)return;
-  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reduce=motionPreference.matches||window.matchMedia('(hover: none)').matches;
   function resetTilt(){b.style.setProperty('--rx','0deg');b.style.setProperty('--ry','0deg');b.style.setProperty('--mx','50%');b.style.setProperty('--my','50%')}
   b.onpointermove=function(e){
-    if(reduce||b.classList.contains('is-igniting'))return;
+    if(motionPreference.matches||e.pointerType==='touch'||b.classList.contains('is-igniting'))return;
     var r=b.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
     b.style.setProperty('--mx',(x*100).toFixed(1)+'%');b.style.setProperty('--my',(y*100).toFixed(1)+'%');
     b.style.setProperty('--ry',((x-.5)*9).toFixed(2)+'deg');b.style.setProperty('--rx',((.5-y)*7).toFixed(2)+'deg');
@@ -1127,7 +174,7 @@ function bindStartRide(){
   b.onpointerleave=resetTilt;
   b.onclick=function(){
     if(b.classList.contains('is-igniting'))return;
-    if(reduce){go('atendimento');return}
+    if(reduce||motionPreference.matches){go('atendimento');return}
     resetTilt();b.classList.add('is-igniting');
     var t=qs('#startRideTitle'),s=qs('#startRideSub');
     if(t)t.textContent='INICIANDO…';if(s)s.textContent='SINCRONIZANDO MF RIDE CONTROL';
@@ -1142,12 +189,12 @@ function bindStartRide(){
       if(done)return;done=true;
       if(timer)clearTimeout(timer);
       await go('atendimento');
-      fx.classList.remove('on');
+      v.pause();fx.classList.remove('on');
       setTimeout(function(){fx.remove()},220);
     }
     function fallbackRide(){
       fx.classList.add('video-failed');
-      timer=setTimeout(finishRide,760);
+      if(timer)clearTimeout(timer);timer=setTimeout(finishRide,220);
     }
 
     requestAnimationFrame(function(){
@@ -1160,7 +207,7 @@ function bindStartRide(){
     });
     v.onended=finishRide;
     v.onerror=fallbackRide;
-    timer=setTimeout(finishRide,3400);
+    timer=setTimeout(finishRide,900);
   };
 }
 async function overview(){
@@ -1647,7 +694,7 @@ async function security(){
 async function fiscal(){S.fiscal=await api('/fiscal');S.sales=await api('/sales');qs('#content').innerHTML=hero('FISCAL','Rascunhos e emissão via provedor autorizado.','<button class="btn red" onclick="openFiscal()">+ Nova nota</button>')+'<div class="warn"><b>Emissão correta:</b> sem credenciais de provedor fiscal/SEFAZ, o documento permanece em rascunho. Só aparece como emitido após autorização real.</div><div class="tableWrap"><table class="table"><thead><tr><th>Tipo</th><th>Cliente</th><th>Total</th><th>Status</th><th>Chave/ref.</th><th></th></tr></thead><tbody>'+(S.fiscal.map(function(f){return '<tr><td><b>'+esc(f.type)+'</b></td><td>'+esc(f.client_name||'Consumidor')+'</td><td>'+brl(f.total)+'</td><td>'+badge(f.status)+'</td><td><small>'+esc(f.access_key||f.provider_ref||'-')+'</small></td><td>'+(f.status==='rascunho'?'<button class="btn" onclick="issueFiscal(\''+f.id+'\')">Emitir</button>':'')+'</td></tr>'}).join('')||'<tr><td colspan="6" class="empty">Nenhum documento.</td></tr>')+'</tbody></table></div>'}
 function openFiscal(){modal('Novo documento fiscal','<form id="fiscalForm" class="form"><div class="field"><label>Venda</label><select name="sale_id" id="fiscalSale"><option value="">Avulsa</option>'+S.sales.map(function(s){return '<option value="'+s.id+'">'+dt(s.created_at)+' · '+brl(s.total)+'</option>'}).join('')+'</select></div><div class="field"><label>Tipo</label><select name="type"><option>NFC-e</option><option>NF-e</option><option>NFS-e</option></select></div><div class="field"><label>Cliente</label><input id="fiscalClient" class="input" name="client_name"></div><div class="field"><label>CPF/CNPJ</label><input class="input" name="client_document"></div><div class="field span"><label>Total</label><input id="fiscalTotal" class="input" type="number" step=".01" name="total" required></div><textarea id="fiscalItems" class="hide" name="items">[]</textarea><button class="btn red span">Salvar rascunho</button></form>');qs('#fiscalSale').onchange=function(e){var s=S.sales.find(function(x){return x.id===e.target.value});if(s){qs('#fiscalClient').value=s.client_name||'';qs('#fiscalTotal').value=s.total;qs('#fiscalItems').value=JSON.stringify(s.items||[])}};qs('#fiscalForm').onsubmit=async function(e){e.preventDefault();var d=Object.fromEntries(new FormData(e.target));d.items=JSON.parse(d.items||'[]');try{await api('/fiscal',{method:'POST',body:JSON.stringify(d)});closeModal();toast('Rascunho fiscal criado.');fiscal()}catch(x){toast(x.message,true)}}}
 async function issueFiscal(id){try{await api('/fiscal/'+id+'/issue',{method:'POST'});toast('Documento autorizado.');fiscal()}catch(e){toast(e.message,true)}}
-bindMotionButtons(document);var rv=qs('#rideVideoPreloader');if(rv){try{rv.load()}catch(e){}}if(S.token)boot();else{showApp(false);loadRegistrationStatus()}
+bindMotionButtons(document);if(S.token)boot();else{showApp(false);loadRegistrationStatus()}
 </script>
 </body>
 </html>
