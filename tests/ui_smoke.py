@@ -31,6 +31,7 @@ with sync_playwright() as p:
  page.locator('#authSubmit').click();page.locator('.cockpit').wait_for();page.wait_for_timeout(700)
  assert page.locator('#mobileNav,.mobile,.loginStory').count()==0
  assert page.locator('#nav button').count()==8
+ assert page.locator('#sidebarToggle').count()==0
  for width in [1440,390,320,768]:
   page.set_viewport_size({'width':width,'height':844});page.wait_for_timeout(400)
   page.evaluate('setSidebarExpanded(false)');page.wait_for_timeout(400)
@@ -38,7 +39,7 @@ with sync_playwright() as p:
   assert page.locator('#sidebarSearch').is_hidden()
   page.evaluate('scrollTo(0,0)')
   page.screenshot(path=str(ARTIFACTS/('rail-'+str(width)+'.png')))
-  page.locator('#sidebarToggle').click();page.wait_for_timeout(400)
+  page.locator('#sideCollapse').click();page.wait_for_timeout(400)
   assert page.locator('#sidebarSearch').is_visible()
   assert page.locator('#workspaceSide').bounding_box()['width']>240
   page.screenshot(path=str(ARTIFACTS/('expanded-'+str(width)+'.png')))
@@ -48,25 +49,25 @@ with sync_playwright() as p:
   page.locator('#sidebarSearch').fill('sem-resultado')
   assert page.locator('#sideNoResults').is_visible()
   page.locator('#sidebarSearch').fill('')
-  page.keyboard.press('Escape');assert page.locator('#sidebarToggle').get_attribute('aria-expanded')=='false'
+  page.keyboard.press('Escape');assert page.locator('#sideCollapse').get_attribute('aria-expanded')=='false'
   page.keyboard.press('Control+k');assert page.locator('#sidebarSearch').evaluate('(el)=>el===document.activeElement')
   page.keyboard.press('Escape')
   if width<=760:
-   page.locator('#sidebarToggle').click();page.wait_for_timeout(350)
+   page.locator('#sideCollapse').click();page.wait_for_timeout(350)
    page.locator('#sideCollapse').focus();page.keyboard.press('Shift+Tab')
    assert page.locator('#nav button').last.evaluate('(el)=>el===document.activeElement')
    page.locator('#sidebarBackdrop').click(position={'x':width-5,'y':700})
-   assert page.locator('#sidebarToggle').get_attribute('aria-expanded')=='false'
+   assert page.locator('#sideCollapse').get_attribute('aria-expanded')=='false'
   for tab in ['inventory','clients','orders','budgets','fiscal','security','atendimento','overview']:
-   page.locator('#sidebarToggle').click();page.wait_for_timeout(350)
+   page.locator('#sideCollapse').click();page.wait_for_timeout(350)
    page.locator('#nav [data-page="'+tab+'"]').click();page.wait_for_timeout(400)
    assert page.locator('#nav [data-page="'+tab+'"]').get_attribute('aria-current')=='page'
    assert page.locator('#content .hero h1').count()==1
-   if width<=760:assert page.locator('#sidebarToggle').get_attribute('aria-expanded')=='false'
-   else:page.locator('#sidebarToggle').click();page.wait_for_timeout(350)
+   if width<=760:assert page.locator('#sideCollapse').get_attribute('aria-expanded')=='false'
+   else:page.locator('#sideCollapse').click();page.wait_for_timeout(350)
    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),str(width)+' overflow in '+tab
  page.emulate_media(reduced_motion='reduce')
- page.locator('#sidebarToggle').click()
+ page.locator('#sideCollapse').click()
  assert page.locator('#workspaceSide').evaluate('(el)=>getComputedStyle(el).transitionDuration')=='0s'
  page.keyboard.press('Escape')
  assert not errors,errors

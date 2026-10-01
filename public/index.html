@@ -1005,7 +1005,7 @@ button.uiMotion.mf-browse:not(.startRideBtn){
 /* ===== END MF CINEMA V7 ===== */
 
 </style>
-<link rel="stylesheet" href="/sidebar.css?v=1">
+<link rel="stylesheet" href="/sidebar.css?v=2">
 </head>
 <body>
 <section id="login" class="login">
@@ -1033,7 +1033,7 @@ button.uiMotion.mf-browse:not(.startRideBtn){
 <div class="workspaceFooter"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 6-4 4 4 4m8-8 4 4-4 4m-3-11-2 14"/></svg><span>MF / Ride Control</span></div>
 </aside>
 <div id="sidebarBackdrop" class="sidebarBackdrop" aria-hidden="true"></div>
-<main class="main"><header class="top"><span>MF / <b id="crumb">VISÃO GERAL</b><span class="systemStatus"><i class="liveDot"></i>Sistema online</span></span><div class="actions"><button class="btn red" onclick="go('atendimento')">+ Atendimento</button><button class="btn" onclick="logout()">Sair</button><button id="sidebarToggle" class="sidebarToggle" type="button" aria-label="Expandir navegação" aria-controls="workspaceSide" aria-expanded="false"><span aria-hidden="true">⋯</span></button></div></header><div id="content" class="content"></div></main>
+<main class="main"><header class="top"><span>MF / <b id="crumb">VISÃO GERAL</b><span class="systemStatus"><i class="liveDot"></i>Sistema online</span></span><div class="actions"><button class="btn red" onclick="go('atendimento')">+ Atendimento</button><button class="btn" onclick="logout()">Sair</button></div></header><div id="content" class="content"></div></main>
 
 </div>
 <div id="modal" class="modal hide"></div><div id="toast" class="toast hide"></div>
@@ -1136,17 +1136,17 @@ function navs(){
 }
 function setSidebarExpanded(expanded){
   sidebarExpanded=!!expanded;qs('#app').classList.toggle('sidebar-expanded',sidebarExpanded);
-  ['sidebarToggle','sideCollapse'].forEach(function(id){var b=qs('#'+id);b.setAttribute('aria-expanded',String(sidebarExpanded));b.setAttribute('aria-label',sidebarExpanded?'Recolher navegação':'Expandir navegação')});
+  ['sideCollapse'].forEach(function(id){var b=qs('#'+id);b.setAttribute('aria-expanded',String(sidebarExpanded));b.setAttribute('aria-label',sidebarExpanded?'Recolher navegação':'Expandir navegação')});
   qs('.main').inert=sidebarMobile.matches&&sidebarExpanded;document.body.classList.toggle('sidebar-open',sidebarMobile.matches&&sidebarExpanded);
-  if(!sidebarExpanded){qs('#sidebarSearch').value='';filterSidebar();if(qs('#workspaceSide').contains(document.activeElement)&&document.activeElement!==qs('#sideCollapse'))qs('#sidebarToggle').focus()}
+  if(!sidebarExpanded){qs('#sidebarSearch').value='';filterSidebar();if(qs('#workspaceSide').contains(document.activeElement)&&document.activeElement!==qs('#sideCollapse'))qs('#sideCollapse').focus()}
 }
 function initSidebar(){
-  qs('#sidebarToggle').onclick=qs('#sideCollapse').onclick=function(){setSidebarExpanded(!sidebarExpanded);if(sidebarMobile.matches&&sidebarExpanded)qs('#sideCollapse').focus()};
-  qs('#sidebarBackdrop').onclick=function(){setSidebarExpanded(false);qs('#sidebarToggle').focus()};
+  qs('#sideCollapse').onclick=function(){setSidebarExpanded(!sidebarExpanded);if(sidebarMobile.matches&&sidebarExpanded)qs('#sideCollapse').focus()};
+  qs('#sidebarBackdrop').onclick=function(){setSidebarExpanded(false);qs('#sideCollapse').focus()};
   qs('#sidebarSearch').oninput=filterSidebar;
   sidebarMobile.addEventListener('change',function(){setSidebarExpanded(false)});
   document.addEventListener('keydown',function(e){
-    if(e.key==='Escape'&&sidebarExpanded){e.preventDefault();setSidebarExpanded(false);qs('#sidebarToggle').focus();return}
+    if(e.key==='Escape'&&sidebarExpanded){e.preventDefault();setSidebarExpanded(false);qs('#sideCollapse').focus();return}
     if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'&&!qs('#app').classList.contains('hide')&&qs('#modal').classList.contains('hide')){e.preventDefault();setSidebarExpanded(true);qs('#sidebarSearch').focus();return}
     if(e.key==='Tab'&&sidebarMobile.matches&&sidebarExpanded){
       var items=Array.from(qs('#workspaceSide').querySelectorAll('button,input')).filter(function(el){return !el.disabled&&el.getClientRects().length}),first=items[0],last=items[items.length-1];

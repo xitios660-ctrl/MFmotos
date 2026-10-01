@@ -21,7 +21,7 @@ O sistema nunca marca uma nota como emitida sem autorização do provedor fiscal
 
 A navegação segue a referência fornecida: uma barra compacta de ícones que se expande para mostrar os nomes das áreas, identidade da MF Moto Peças e busca de atalhos. O estilo específico está em `public/sidebar.css`; o restante da interface mantém o visual MF Cinema V7.
 
-Os três pontos no cabeçalho e a seta na lateral alternam os estados. Em telas pequenas, o painel aberto aparece sobre o conteúdo e fecha ao selecionar uma área, tocar fora ou pressionar Escape. Ctrl/Cmd+K abre a busca. O painel aceita teclado e respeita movimento reduzido.
+A seta na lateral alterna os estados; o cabeçalho não tem um segundo botão para a mesma navegação. A barra usa preto, cinza e vermelho para combinar com a identidade MF. Em telas pequenas, o painel aberto aparece sobre o conteúdo e fecha ao selecionar uma área, tocar fora ou pressionar Escape. Ctrl/Cmd+K abre a busca. O painel aceita teclado e respeita movimento reduzido.
 
 ### Verificação sem banco
 
