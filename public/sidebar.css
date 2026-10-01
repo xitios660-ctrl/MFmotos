@@ -33,3 +33,55 @@ body.sidebar-open{overflow:hidden}
 .app:not(.sidebar-expanded) .workspaceSide::after{display:none}
 .app:not(.sidebar-expanded) .workspaceLogo{width:28px;height:28px;flex-basis:28px}
 @media(max-width:760px){.app:not(.sidebar-expanded) .workspaceSide{height:92px!important}}
+
+/* Full-width workspace with a floating menu; closed navigation reserves no column. */
+#app.app{--rail-column:0px;display:block!important;grid-template-columns:none!important;transition:none;width:100%;min-height:100svh}
+#app.app>.main{grid-column:auto;width:100%;min-width:0}
+#app .content{width:100%;max-width:none;margin:0;padding:24px!important}
+#app .top{padding-left:76px!important;gap:14px}
+#app .top>span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#app .top>.actions{flex-shrink:0}
+#app .side.workspaceSide{
+  position:fixed!important;inset:10px auto auto 12px;width:44px!important;height:44px!important;
+  margin:0;padding:0!important;border:0!important;border-radius:14px;
+  background:transparent!important;box-shadow:none;gap:0;pointer-events:none;
+  transition:width .25s ease,height .25s ease;z-index:65;
+}
+#app:not(.sidebar-expanded) .workspaceBrand{display:none}
+#app .workspaceSide::after{display:none}
+#app .workspaceSide button.sideCollapse.uiMotion{
+  position:absolute!important;inset:0;width:44px;min-height:44px;height:44px;padding:0!important;
+  display:grid;place-items:center;border-radius:14px!important;
+  background:linear-gradient(145deg,#302029,#141217)!important;
+  border:1px solid #ff768838!important;color:#ffd3db;
+  box-shadow:inset 0 1px 0 #ffffff0c,0 4px 15px #0003!important;
+  transform:none!important;cursor:pointer;pointer-events:auto;
+  transition:background .2s,border-color .2s,box-shadow .2s;
+}
+#app .workspaceSide button.sideCollapse.uiMotion:hover{border-color:#ff738399!important;background:#35202b!important;box-shadow:0 0 18px #ff3d591c!important}
+#app .sideCollapse svg{width:24px;height:24px;transform:none}
+#app .sideMenuDots,#app .sideMenuClose{transition:opacity .18s}
+#app .sideMenuClose{opacity:0}
+#app.sidebar-expanded .sideMenuDots{opacity:0}
+#app.sidebar-expanded .sideMenuClose{opacity:1}
+#app.sidebar-expanded .side.workspaceSide{
+  inset:10px auto auto 10px;width:min(280px,calc(100vw - 20px))!important;height:calc(100svh - 20px)!important;
+  padding:18px 15px!important;gap:17px;background:linear-gradient(165deg,#19151b,#09090c)!important;
+  border:1px solid #48303c!important;border-radius:22px;pointer-events:auto;
+  box-shadow:0 24px 80px #0009,inset 0 1px 0 #ffffff08;
+}
+#app.sidebar-expanded .workspaceBrand{padding:3px 56px 3px 3px;min-height:44px;gap:10px;overflow:visible}
+#app.sidebar-expanded .workspaceSide button.sideCollapse.uiMotion{inset:12px 12px auto auto;width:44px;height:44px;min-height:44px}
+#app.sidebar-expanded .sidebarBackdrop{display:block;position:fixed;inset:0;z-index:55;background:#020203a6;backdrop-filter:blur(4px);cursor:pointer}
+#app .workspaceSide :is(button,input):focus-visible{outline:2px solid #ff9bab;outline-offset:3px}
+@media(max-width:760px){
+  #app .content{padding:14px 12px 24px!important}
+  #app .top{padding-left:66px!important;gap:8px}
+  #app .side.workspaceSide{inset:9px auto auto 10px}
+  #app .top>.actions{gap:5px}
+  #app.sidebar-expanded .side.workspaceSide{inset:8px auto auto 8px;width:min(280px,calc(100vw - 16px))!important;height:calc(100svh - 16px)!important}
+  #app .mfWelcome .startRideLabel strong{font-size:clamp(14px,4vw,18px)!important}
+}
+@media(prefers-reduced-motion:reduce){
+  #app .side.workspaceSide,#app .sideCollapse svg,#app .sideMenuDots,#app .sideMenuClose,#app .sideCollapse.uiMotion{transition:none!important}
+}

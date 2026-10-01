@@ -65,7 +65,11 @@ with sync_playwright() as p:
  for width in [1440,390,320,768]:
   page.set_viewport_size({'width':width,'height':844});page.wait_for_timeout(400)
   page.evaluate('setSidebarExpanded(false)');page.wait_for_timeout(400)
-  assert page.locator('#workspaceSide').bounding_box()['width']<85
+  assert page.locator('#workspaceSide').bounding_box()['width']==44
+  assert page.locator('.main').bounding_box()['x']==0
+  assert abs(page.locator('.main').bounding_box()['width']-width)<1
+  assert abs(page.locator('#content').bounding_box()['width']-width)<1
+  assert page.locator('#sideCollapse').bounding_box()['width']==44
   assert page.locator('#sidebarSearch').is_hidden()
   assert page.locator('#nav').is_hidden()
   assert page.locator('.workspaceProfile').is_hidden()
@@ -79,6 +83,10 @@ with sync_playwright() as p:
   assert page.locator('.workspaceProfile').is_visible()
   assert page.locator('.workspaceFooter').is_visible()
   assert page.locator('#workspaceSide').bounding_box()['width']>240
+  assert page.locator('.main').evaluate('(el)=>el.inert')
+  drawer=page.locator('#workspaceSide').bounding_box()
+  toggle=page.locator('#sideCollapse').bounding_box()
+  assert drawer['x']<=toggle['x'] and toggle['x']+toggle['width']<=drawer['x']+drawer['width']
   page.screenshot(path=str(ARTIFACTS/('expanded-'+str(width)+'.png')))
   page.locator('#sidebarSearch').fill('orcamento')
   assert page.locator('#nav button:visible').count()==1
@@ -89,7 +97,7 @@ with sync_playwright() as p:
   page.keyboard.press('Escape');assert page.locator('#sideCollapse').get_attribute('aria-expanded')=='false'
   page.keyboard.press('Control+k');assert page.locator('#sidebarSearch').evaluate('(el)=>el===document.activeElement')
   page.keyboard.press('Escape')
-  if width<=760:
+  if width in [1440,390,320,768]:
    page.locator('#sideCollapse').click();page.wait_for_timeout(350)
    page.locator('#sideCollapse').focus();page.keyboard.press('Shift+Tab')
    assert page.locator('#nav button').last.evaluate('(el)=>el===document.activeElement')
@@ -100,8 +108,7 @@ with sync_playwright() as p:
    page.locator('#nav [data-page="'+tab+'"]').click();page.wait_for_timeout(400)
    assert page.locator('#nav [data-page="'+tab+'"]').get_attribute('aria-current')=='page'
    assert page.locator('#content .hero h1').count()==1
-   if width<=760:assert page.locator('#sideCollapse').get_attribute('aria-expanded')=='false'
-   else:page.locator('#sideCollapse').click();page.wait_for_timeout(350)
+   assert page.locator('#sideCollapse').get_attribute('aria-expanded')=='false'
    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),str(width)+' overflow in '+tab
  # Dialog navigation uses the keyboard and does not write any real records.
  page.evaluate("go('clients')")
@@ -126,5 +133,5 @@ with sync_playwright() as p:
  assert page.locator('#workspaceSide').evaluate('(el)=>getComputedStyle(el).transitionDuration')=='0s'
  page.keyboard.press('Escape')
  assert not errors,errors
- print('PASS: eight shortcuts, welcome and start attendance, accessible dialog focus/labels/escape, no overview, collapse/expand, responsive rail/drawer, search with accent normalization, keyboard shortcut, mobile focus and backdrop, all modules at 320/390/768/1440 px, reduced motion; no browser errors. APIs mocked.')
+ print('PASS: eight shortcuts, welcome and start attendance, accessible dialog focus/labels/escape, no overview, collapse/expand, full-width workspace and overlay drawer, search with accent normalization, keyboard shortcut, mobile focus and backdrop, all modules at 320/390/768/1440 px, reduced motion; no browser errors. APIs mocked.')
  browser.close()

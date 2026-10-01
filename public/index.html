@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#070707">
-<meta name="mf-ui-version" content="8.1">
+<meta name="mf-ui-version" content="8.2">
 <link rel="preload" href="/Roda.mp4?v=7" as="video" type="video/mp4">
 <title>MF Moto Peças • Gestão</title>
 <style>
@@ -1005,7 +1005,7 @@ button.uiMotion.mf-browse:not(.startRideBtn){
 /* ===== END MF CINEMA V7 ===== */
 
 </style>
-<link rel="stylesheet" href="/sidebar.css?v=4">
+<link rel="stylesheet" href="/sidebar.css?v=5">
 <link rel="stylesheet" href="/workspace-polish.css?v=1">
 <link rel="stylesheet" href="/login-cinema.css?v=2">
 </head>
@@ -1034,7 +1034,7 @@ button.uiMotion.mf-browse:not(.startRideBtn){
 <div id="app" class="app hide">
 <aside id="workspaceSide" class="side workspaceSide" aria-label="Navegação principal">
 <div class="workspaceBrand"><svg class="workspaceLogo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 4h15l-2 4H3zM7 10h11l-2 4H5zM9 16h7l-2 4H7z"/></svg><span class="workspaceTitle">MF <small>Moto Peças</small></span></div>
-<button id="sideCollapse" class="sideCollapse" type="button" aria-label="Expandir navegação" aria-controls="workspaceSide" aria-expanded="false"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m8 5 5 5-5 5"/></svg></button>
+<button id="sideCollapse" class="sideCollapse" type="button" aria-label="Expandir navegação" aria-controls="workspaceSide" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><g class="sideMenuDots" fill="currentColor"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></g><path class="sideMenuClose" d="m7 7 10 10M17 7 7 17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
 <div class="workspaceProfile"><div class="workspaceAvatar" aria-hidden="true">MF</div><div class="workspaceProfileCopy"><b>MF Moto Peças</b><small>Central de operações</small></div></div>
 <div class="workspaceSearch"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="5"/><path d="m12 12 4 4"/></svg><input id="sidebarSearch" type="search" placeholder="Buscar atalhos" aria-label="Buscar atalhos" autocomplete="off"><kbd aria-hidden="true">⌘ K</kbd></div>
 <nav id="nav" class="nav" aria-label="Áreas do sistema"></nav><div id="sideNoResults" class="sideNoResults hide" role="status">Nenhum atalho encontrado.</div>
@@ -1161,24 +1161,25 @@ function filterSidebar(){
 }
 function navs(){
   qs('#nav').innerHTML=NAV.map(function(n){return '<button type="button" data-page="'+n[0]+'" aria-label="'+esc(n[2])+'" title="'+esc(n[2])+'" class="'+(S.page===n[0]?'on':'')+'"'+(S.page===n[0]?' aria-current="page"':'')+'><span class="sideNavIcon">'+sideIcon(n[0])+'</span><span class="sideNavLabel">'+esc(n[2])+'</span></button>'}).join('');
-  document.querySelectorAll('#nav [data-page]').forEach(function(b){b.onclick=function(){if(sidebarMobile.matches&&sidebarExpanded)setSidebarExpanded(false);go(b.dataset.page)}});
+  document.querySelectorAll('#nav [data-page]').forEach(function(b){b.onclick=function(){if(sidebarExpanded)setSidebarExpanded(false);go(b.dataset.page)}});
   filterSidebar();bindMotionButtons(document);
 }
 function setSidebarExpanded(expanded){
   sidebarExpanded=!!expanded;qs('#app').classList.toggle('sidebar-expanded',sidebarExpanded);
+  qs('#sidebarBackdrop').setAttribute('aria-hidden',String(!sidebarExpanded));
   ['sideCollapse'].forEach(function(id){var b=qs('#'+id);b.setAttribute('aria-expanded',String(sidebarExpanded));b.setAttribute('aria-label',sidebarExpanded?'Recolher navegação':'Expandir navegação')});
-  qs('.main').inert=sidebarMobile.matches&&sidebarExpanded;document.body.classList.toggle('sidebar-open',sidebarMobile.matches&&sidebarExpanded);
+  qs('.main').inert=sidebarExpanded;document.body.classList.toggle('sidebar-open',sidebarExpanded);
   if(!sidebarExpanded){qs('#sidebarSearch').value='';filterSidebar();if(qs('#workspaceSide').contains(document.activeElement)&&document.activeElement!==qs('#sideCollapse'))qs('#sideCollapse').focus()}
 }
 function initSidebar(){
-  qs('#sideCollapse').onclick=function(){setSidebarExpanded(!sidebarExpanded);if(sidebarMobile.matches&&sidebarExpanded)qs('#sideCollapse').focus()};
+  qs('#sideCollapse').onclick=function(){setSidebarExpanded(!sidebarExpanded);if(sidebarExpanded)qs('#sideCollapse').focus()};
   qs('#sidebarBackdrop').onclick=function(){setSidebarExpanded(false);qs('#sideCollapse').focus()};
   qs('#sidebarSearch').oninput=filterSidebar;
   sidebarMobile.addEventListener('change',function(){setSidebarExpanded(false)});
   document.addEventListener('keydown',function(e){
     if(e.key==='Escape'&&sidebarExpanded){e.preventDefault();setSidebarExpanded(false);qs('#sideCollapse').focus();return}
     if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'&&!qs('#app').classList.contains('hide')&&qs('#modal').classList.contains('hide')){e.preventDefault();setSidebarExpanded(true);qs('#sidebarSearch').focus();return}
-    if(e.key==='Tab'&&sidebarMobile.matches&&sidebarExpanded){
+    if(e.key==='Tab'&&sidebarExpanded){
       var items=Array.from(qs('#workspaceSide').querySelectorAll('button,input')).filter(function(el){return !el.disabled&&el.getClientRects().length}),first=items[0],last=items[items.length-1];
       if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
     }
